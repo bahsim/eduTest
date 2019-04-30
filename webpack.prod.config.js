@@ -1,18 +1,14 @@
-'use strict';
-
-var path = require('path')
-var webpack = require('webpack')
 
 module.exports = {
   
   mode: 'production',
   
 	entry: {
-		administrator: __dirname + '/ui/pages/administrator'
+		administrator: __dirname + '/client/pages/administrator'
 	},
   
   output: {
-    path: __dirname + '/ui/dist',
+    path: __dirname + '/public',
     filename: '[name].js',
     publicPath: '/'
   },

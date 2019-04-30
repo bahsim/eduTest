@@ -1,27 +1,28 @@
-'use strict';
-
-const NODE_ENV = process.env.NODE_ENV || 'development';
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
-var path = require('path')
-var webpack = require('webpack')
+// const webpack = require('webpack')
 
 module.exports = {
+  
   mode: 'development',
-  devtool: NODE_ENV == 'development' ? "inline-source-map" : null,
+	
+  devtool: "inline-source-map",
   
 	entry: {
-		administrator: __dirname + '/ui/pages/administrator'
+		administrator: [
+			// "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
+			__dirname + '/client/pages/administrator'
+		]
 	},
   
   output: {
-    path: __dirname + '/ui/dist',
+    path: __dirname + '/public',
     filename: '[name].js',
     publicPath: '/'
   },
+	
 	plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    // new webpack.HotModuleReplacementPlugin()
   ],
+	
   module: {
     rules: [
 			{

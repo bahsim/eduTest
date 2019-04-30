@@ -4,10 +4,9 @@ const Config = function () {
 		appMode:	"development",
 		appPort:	"80",
 		
-		dbName:		"eduTest",
-		dbPath: 	"mongodb://localhost:27017", 
+		dbPath: 	"mongodb://localhost:27017/edutTest", 
 		
-		pathStatic: "ui/dist",
+		pathStatic: "public",
 	};
 };
 
