@@ -14,6 +14,7 @@ import Workspace from './Workspace'
 import Regions from '../components/Regions'
 import NewRegion from '../components/NewRegion'
 import EditRegion from '../components/EditRegion'
+import DeleteRegion from '../components/DeleteRegion'
 
 import Members from '../components/Members'
 
@@ -51,6 +52,8 @@ const Main = (props) => (
 		workspace={
 			<Switch>
 				<Route path="/admin" exact component={null} />
+				
+				
 				<Route path="/admin/regions" exact component={() => (
 					<Workspace MainComponent={Regions} />
 				)}/>
@@ -60,9 +63,16 @@ const Main = (props) => (
 				<Route path="/admin/regions/edit" exact component={() => (
 					<Workspace MainComponent={EditRegion} />
 				)}/>
+				<Route path="/admin/regions/delete" exact component={() => (
+					<Workspace MainComponent={DeleteRegion} />
+				)}/>
+				
+				
 				<Route path="/admin/regions/members" exact component={() => (
 					<Workspace MainComponent={Members} />
 				)}/>
+				
+				
 				<Route path="/admin/tests" component={() => <Tests/>} />
 				<Route path="/admin/events" component={() => <Events/>} />
 				<Route path="/admin/results" component={() => <Results/>} />

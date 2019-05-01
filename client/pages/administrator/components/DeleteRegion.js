@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
+import queryString from 'query-string'
+import { Mutation, Query } from "react-apollo";
 
-import NewGraphQL from '../containers/NewGraphQL'
+import DeleteGraphQL from '../containers/DeleteGraphQL'
 
 import FETCH_REGIONS from '../../../queries/fetchRegions';
-import ADD_REGION from '../../../mutations/addRegion';
+import FETCH_REGION from '../../../queries/fetchRegion';
+import DELETE_REGION from '../../../mutations/deleteRegion';
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button';
 
@@ -19,14 +21,12 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: '100%',
-  },
 	button: {
     margin: theme.spacing.unit,
   },
+	title: {
+		marginBottom: theme.spacing.unit*3,
+	},
 })
 
 const panel = () => ([
@@ -37,71 +37,70 @@ const panel = () => ([
 	},
 ])
 
-class NewRegion extends Component {  
-	state = {}
+class DeleteRegion extends Component {  
+	state = {
+		id: '',
+	}
 	
 	componentDidMount() {
 		const { setPanel } = this.props
-		
+		const { id } = queryString.parse(location.search)
+
 		setPanel(panel())
+		this.setState({ id })
 	}	
 	
 	handleSubmit = (e) => {
 		e.preventDefault()
 		
 		const { history, action } = this.props
-		const name = e.target.name.value.trim()
+		const { id } = this.state
 		
-		if (name === '') return
-		
-		action({ variables: { name } })
+		action({ variables: { id } })
 		history.replace('/admin/regions')
 	}
 	
 	render() {
-		const { classes } = this.props
+		const { classes, queryData } = this.props
+		const { id } = this.state
 		
 		return (
-			<Grid container >
+			<Grid container>
 				<Grid item xs={6}>
-					<Typography  variant="h6" color="inherit">
-						{"Новый регион"}
+					<Typography  variant="h6" color="inherit" className={classes.title}>
+						{`Удаление записи ${queryData.name}`}
 					</Typography>
 					<form 
 						onSubmit={this.handleSubmit} 
 						noValidate 
 						autoComplete="off"
 					>
-						<TextField
-							label="Наименование"
-							name="name"
-							className={classes.textField}
-							margin="normal"
-						/>
 						<Button 
 							type="submit" 
 							variant="contained" 
+							color="secondary" 
 							className={classes.button}
-							color="primary"
 						>
-							Сохранить
+							Продолжить
 						</Button>
 					</form>
 				</Grid>
 			</Grid>
-		);
+		)
 	}	
 }
 
-const NewGraphQLProps = {
-	mutation		: ADD_REGION,
+const DeleteGraphQLProps = {
+	query				: FETCH_REGION,
+	mutation		: DELETE_REGION,
 	updateGQL		: FETCH_REGIONS,
 	updateData	: 'regions',
-	actionName	: 'addRegion',
+	actionName	: 'deleteRegion',
+	dataName		: 'region',
 }
 
-export default NewGraphQL(NewGraphQLProps)(
+export default DeleteGraphQL(DeleteGraphQLProps)(
 	withStyles(styles)(
-		withRouter(NewRegion)
+		withRouter(DeleteRegion)
 	)
 )

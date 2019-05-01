@@ -54,10 +54,10 @@ const AdministratorLayout = (props) => {
 				</Toolbar>
 			</AppBar>
 			<Grid container spacing={8}>
-				<Grid item xs={3}>
+				<Grid item xs={2}>
 					<Paper>{Menu(menu, history)}</Paper>
 				</Grid>
-				<Grid item xs={9}>
+				<Grid item xs={10}>
 					{workspace}
 				</Grid>
 			</Grid>

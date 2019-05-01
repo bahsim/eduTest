@@ -8,8 +8,6 @@ import { ApolloProvider } from 'react-apollo';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
-import * as main 	from './reducers/main';
-
 import Main from './containers/Main'
 
 const cache = new InMemoryCache()

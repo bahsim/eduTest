@@ -8,7 +8,6 @@ const path = require('path')
 const app = express()
 
 const config = require('../config')
-const routes = require('../routes');
 
 const appPort = process.env.PORT 			|| config.appPort;
 const appMode = process.env.NODE_ENV 	|| config.appMode;

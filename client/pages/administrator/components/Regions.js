@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 
-import query from '../../../queries/fetchRegions';
+import FETCH_REGIONS from '../../../queries/fetchRegions';
 
 import { withStyles } from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
+
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import PeopleIcon from '@material-ui/icons/People'
 
 const styles = theme => ({
@@ -21,6 +29,9 @@ const styles = theme => ({
     left: '50%',
 		transform: 'translate(-50%, -50%)',
   },
+	tableRow: {
+		cursor: 'pointer',
+	},
 })
 
 const panelList = () => ([
@@ -40,7 +51,12 @@ const panelListSelected = () => ([
 	{
 		link	: '/admin/regions/edit',
 		icon	: EditIcon,
-		label	:	'Изменить',
+		label	:	'Переименовать',
+	},
+	{
+		link	: '/admin/regions/delete',
+		icon	: DeleteForeverIcon,
+		label	:	'Удалить',
 	},
 	{
 		link	: '/admin/regions/members',
@@ -50,13 +66,14 @@ const panelListSelected = () => ([
 ])
 
 class Regions extends Component {  
-	state = {}
+	state = {
+		currentItem: '',
+	}
 	
 	componentDidMount() {
 		const { setPanel } = this.props
 		
 		setPanel(panelList())
-		
 	}	
 	
 	selectItem = (id) => {
@@ -67,13 +84,16 @@ class Regions extends Component {
 		panel[2].link += `?id=${id}`
 		
 		setPanel(panel)
+		this.setState({ currentItem: id })
 	}
 	
 	render() {
 		const { classes } = this.props;
+		const { currentItem } = this.state
+		
 		return (
-			<Query query={query}>
-				{({ data: regions, error, loading, refetch }) => {
+			<Query query={FETCH_REGIONS}>
+				{({ data, error, loading, refetch }) => {
 					if (error) {
 						return (
 							<div className={classes.fullHeight}>
@@ -81,24 +101,48 @@ class Regions extends Component {
 									<Typography  variant="h6" color="inherit">
 										{`Error! ${error.message}`}
 									</Typography>
-								</div>;
+								</div>
 							</div>
 						)
 						return 
 					}
-					if (loading) {
+					
+					const { regions } = data
+					
+					if (loading || !regions) {
 						return (
 							<div className={classes.fullHeight}>
-								<CircularProgress className={classes.centeral} color="secondary" />
+								<CircularProgress className={classes.centeral} color="primary" />
 							</div>
 						)
 					}
 					
-					console.log(regions)
-					
 					return (
-						<div onClick={() => this.selectItem('id')}>
-							Regions
+						<div>
+							<Typography  variant="h6" color="inherit">
+								{"Регионы"}
+							</Typography>
+							<Table>
+								<TableHead>
+									<TableRow>
+										<TableCell>Наименование</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{regions.map(item => (
+										<TableRow hover
+											key={item.id} 
+											className={classes.tableRow}
+											selected={currentItem === item.id}
+											onClick={() =>this.selectItem(item.id)}
+										>
+											<TableCell component="th" scope="row" >
+												{item.name}
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
 						</div>
 					);
 				}}
@@ -106,6 +150,5 @@ class Regions extends Component {
 		)
 	}	
 }
-
 
 export default withStyles(styles)(Regions)

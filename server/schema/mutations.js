@@ -26,6 +26,25 @@ const mutation = new GraphQLObjectType({
         return (new Region({ name })).save()
       }
     },
+    editRegion: {
+      type: RegionType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parentValue, { id, name }) {
+        return Region.edit(id, name)
+      }
+    },
+    deleteRegion: {
+      type: RegionType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) }
+      },
+      resolve(parentValue, { id }) {				
+				return Region.deleteOne({ _id: id })
+      }
+    },
     addGroup: {
       type: GroupType,
       args: {
