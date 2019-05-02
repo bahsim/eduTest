@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const graphql = require('graphql')
 
 const RegionType = require('./region_type')
+const RegionGroupsType = require('./region_groups_type')
 const Region = mongoose.model('region')
 
 const GroupType = require('./group_type')
@@ -20,7 +21,7 @@ const RootQuery = new GraphQLObjectType({
 		regions: {
 			type: new GraphQLList(RegionType),
 			resolve() {
-				return Region.find({})
+				return Region.find({}, null, {sort: { name: 1 }})
 			}
 		},
 		region: {
@@ -30,11 +31,11 @@ const RootQuery = new GraphQLObjectType({
 				return Region.findById(id)
 			}
 		},
-		groups: {
-			type: new GraphQLList(GroupType),
-			args: { regionId: { type: new GraphQLNonNull(GraphQLID) } },
-			resolve(parentValue, { regionId }) {
-				return Group.find({ regionId: regionId })
+		regionGroups: {
+			type: RegionGroupsType,
+			args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+			resolve(parentValue, { id }) {
+				return Region.findById(id)
 			}
 		},
 		group: {

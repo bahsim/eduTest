@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import { Mutation, Query } from "react-apollo";
+import { Query } from "react-apollo";
 import { withRouter } from 'react-router-dom'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 
-const EditGraphQL = myProps => BaseComponent => {
+const ViewGraphQL = myProps => BaseComponent => {
   
-	class EditGraphQLHOC extends Component {
+	class ViewGraphQLHOC extends Component {
 		state = {
 			id: '',
 		}
@@ -19,7 +19,7 @@ const EditGraphQL = myProps => BaseComponent => {
 		}	
 		
     render() {
-			const { query, mutation, dataName } = myProps
+			const { query, dataName } = myProps
 			const { id } = this.state
 			
 			const fullHeight = {
@@ -33,7 +33,7 @@ const EditGraphQL = myProps => BaseComponent => {
 				left: '50%',
 				transform: 'translate(-50%, -50%)',
 			}
-
+			
       return (
 				
 				<Query query={query} variables={{ id }}>
@@ -62,15 +62,10 @@ const EditGraphQL = myProps => BaseComponent => {
 						}
 						
 						return (
-							<Mutation mutation={mutation}>
-								{(action, { data }) => (
-									<BaseComponent 
-										action={action} 
-										queryData={queryData}
-										{...this.props} 
-									/>
-								)}
-							</Mutation>
+							<BaseComponent 
+								queryData={queryData}
+								{...this.props} 
+							/>
 						)
 					}}
 				</Query>
@@ -78,7 +73,7 @@ const EditGraphQL = myProps => BaseComponent => {
     }
   }
 	
-	return withRouter(EditGraphQLHOC)
+	return withRouter(ViewGraphQLHOC)
 }
 
-export default EditGraphQL
+export default ViewGraphQL

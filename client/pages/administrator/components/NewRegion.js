@@ -7,7 +7,6 @@ import FETCH_REGIONS from '../../../queries/fetchRegions';
 import ADD_REGION from '../../../mutations/addRegion';
 
 import { withStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button';
@@ -37,13 +36,26 @@ const panel = () => ([
 	},
 ])
 
+const Breadcrumbs = () => ([
+	{
+		type	: 'link',
+		label	:	'Регионы',
+		link	: '/admin/regions',
+	},
+	{
+		type	: 'label',
+		label	:	'Новый регион',
+	},
+])
+
 class NewRegion extends Component {  
 	state = {}
 	
 	componentDidMount() {
-		const { setPanel } = this.props
+		const { setPanel, setBreadcrumbs } = this.props
 		
 		setPanel(panel())
+		setBreadcrumbs(Breadcrumbs())
 	}	
 	
 	handleSubmit = (e) => {
@@ -55,7 +67,7 @@ class NewRegion extends Component {
 		if (name === '') return
 		
 		action({ variables: { name } })
-		history.replace('/admin/regions')
+			.then(() => history.replace('/admin/regions'))
 	}
 	
 	render() {
@@ -64,9 +76,6 @@ class NewRegion extends Component {
 		return (
 			<Grid container >
 				<Grid item xs={6}>
-					<Typography  variant="h6" color="inherit">
-						{"Новый регион"}
-					</Typography>
 					<form 
 						onSubmit={this.handleSubmit} 
 						noValidate 
@@ -77,6 +86,7 @@ class NewRegion extends Component {
 							name="name"
 							className={classes.textField}
 							margin="normal"
+							autoFocus
 						/>
 						<Button 
 							type="submit" 

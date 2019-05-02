@@ -12,8 +12,8 @@ import Layout from '../../../layouts/AdministratorLayout'
 import Workspace from './Workspace'
 
 import Regions from '../components/Regions'
+import ViewRegion from '../components/ViewRegion'
 import NewRegion from '../components/NewRegion'
-import EditRegion from '../components/EditRegion'
 import DeleteRegion from '../components/DeleteRegion'
 
 import Members from '../components/Members'
@@ -45,41 +45,45 @@ const Menu = [
 	},
 ]
 
-const Main = (props) => (
-	<Layout 
-		title="Администратор"
-		menu={Menu}
-		workspace={
-			<Switch>
-				<Route path="/admin" exact component={null} />
-				
-				
-				<Route path="/admin/regions" exact component={() => (
-					<Workspace MainComponent={Regions} />
-				)}/>
-				<Route path="/admin/regions/new" exact component={() => (
-					<Workspace MainComponent={NewRegion} />
-				)}/>
-				<Route path="/admin/regions/edit" exact component={() => (
-					<Workspace MainComponent={EditRegion} />
-				)}/>
-				<Route path="/admin/regions/delete" exact component={() => (
-					<Workspace MainComponent={DeleteRegion} />
-				)}/>
-				
-				
-				<Route path="/admin/regions/members" exact component={() => (
-					<Workspace MainComponent={Members} />
-				)}/>
-				
-				
-				<Route path="/admin/tests" component={() => <Tests/>} />
-				<Route path="/admin/events" component={() => <Events/>} />
-				<Route path="/admin/results" component={() => <Results/>} />
-				<Route path="/*" render={() => <Redirect to="/admin" />}/>
-			</Switch>
-		}
-	/>
-)
+const Main = (props) => {
+	
+	return (
+		<Layout 
+			title="Администратор"
+			menu={Menu}
+			workspace={
+				<Switch>
+					<Route path="/admin" exact component={null} />
+					
+					
+					<Route path="/admin/regions" exact component={() => (
+						<Workspace MainComponent={Regions} />
+					)}/>
+					<Route path="/admin/regions/new" exact component={() => (
+						<Workspace MainComponent={NewRegion} />
+					)}/>
+					<Route path="/admin/regions/edit" exact component={() => (
+						<Workspace MainComponent={EditRegion} />
+					)}/>
+					<Route path="/admin/regions/:id/members" exact component={() => (
+						<Workspace MainComponent={Members} />
+					)}/>
+					<Route path="/admin/regions/:id/delete" exact component={() => (
+						<Workspace MainComponent={DeleteRegion} />
+					)}/>
+					<Route path="/admin/regions/:id" exact component={() => (
+							<Workspace MainComponent={ViewRegion} />
+					)}/>
+					
+					
+					<Route path="/admin/tests" component={() => <Tests/>} />
+					<Route path="/admin/events" component={() => <Events/>} />
+					<Route path="/admin/results" component={() => <Results/>} />
+					<Route path="/*" render={() => <Redirect to="/admin" />}/>
+				</Switch>
+			}
+		/>
+	)
+}
 
 export default Main

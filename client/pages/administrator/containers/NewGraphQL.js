@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import queryString from 'query-string'
 import { Mutation } from "react-apollo";
 
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -29,7 +28,7 @@ const NewGraphQL = myProps => BaseComponent => {
 					const fullData = cache.readQuery({ query: updateGQL });
 					cache.writeQuery({
 						query: updateGQL,
-						data: { [updateData]: fullData[updateData].concat([data[actionName]]) },
+						data: { [updateData]: [ data[actionName], ...fullData[updateData] ] },
 					});
 				}}					
 			>

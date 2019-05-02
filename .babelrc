@@ -2,6 +2,7 @@
   "presets": [ "react", "es2015" ],
 	"plugins": [
 		"transform-react-display-name",
-		"transform-class-properties"
+		"transform-class-properties",
+		"transform-object-rest-spread"
 	]
 }

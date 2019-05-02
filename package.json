@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "apollo-client": "^2.5.1",
-    "axios": "^0.18.0",
     "express": "^4.16.3",
     "express-graphql": "^0.8.0",
     "graphql": "^14.2.1",
@@ -25,6 +24,7 @@
     "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
+    "@material-ui/lab": "^3.0.0-alpha.30",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-link-http": "^1.5.14",
     "babel-core": "^6.26.3",
@@ -32,6 +32,7 @@
     "babel-plugin-react-display-name": "^2.0.0",
     "babel-plugin-react-transform": "^3.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",

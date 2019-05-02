@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import queryString from 'query-string'
 import { Mutation, Query } from "react-apollo";
+import { withRouter } from 'react-router-dom'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Typography from '@material-ui/core/Typography'
 
 const DeleteGraphQL = myProps => BaseComponent => {
   
@@ -12,7 +13,7 @@ const DeleteGraphQL = myProps => BaseComponent => {
 		}
 		
 		componentDidMount() {
-			const { id } = queryString.parse(location.search)
+			const { id } = this.props.match.params
 
 			this.setState({ id })
 		}	
@@ -65,11 +66,9 @@ const DeleteGraphQL = myProps => BaseComponent => {
 								mutation={mutation}
 								update={(cache, { data }) => {
 									const fullData = cache.readQuery({ query: updateGQL });
-									console.log(fullData[updateData], data[actionName])
 									const result = fullData[updateData].filter(item => item.id !== id)
 									cache.writeQuery({
 										query: updateGQL,
-										// data: { [updateData]: fullData[updateData].concat([data[actionName]]) },
 										data: { [updateData]: result },
 									});
 								}}					
@@ -89,7 +88,7 @@ const DeleteGraphQL = myProps => BaseComponent => {
     }
   }
 	
-	return DeleteGraphQLHOC
+	return withRouter(DeleteGraphQLHOC)
 }
 
 export default DeleteGraphQL

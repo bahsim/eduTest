@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
-import queryString from 'query-string'
 import { Mutation, Query } from "react-apollo";
 
 import DeleteGraphQL from '../containers/DeleteGraphQL'
@@ -27,13 +26,33 @@ const styles = theme => ({
 	title: {
 		marginBottom: theme.spacing.unit*3,
 	},
+	margin: {
+    margin: theme.spacing.unit,
+  },
 })
 
-const panel = () => ([
+const panelMain = () => ([
 	{
 		link		: '/admin/regions',
 		icon		: ArrowBackIcon,
 		label		:	'Назад',
+	},
+])
+
+const Breadcrumbs = () => ([
+	{
+		type	: 'link',
+		label	:	'Регионы',
+		link	: '/admin/regions',
+	},
+	{
+		type	: 'link',
+		label	:	'',
+		link	: '/admin/regions',
+	},
+	{
+		type	: 'label',
+		label	:	'Удаление',
 	},
 ])
 
@@ -43,11 +62,20 @@ class DeleteRegion extends Component {
 	}
 	
 	componentDidMount() {
-		const { setPanel } = this.props
-		const { id } = queryString.parse(location.search)
+		const { setPanel, queryData, setBreadcrumbs } = this.props
+		const { id } = this.props.match.params
 
-		setPanel(panel())
+		const panel = panelMain()		
+		panel[0].link += `/${id}`
+		
+		setPanel(panel)
 		this.setState({ id })
+		
+		const breadcrumbs = Breadcrumbs()		
+		breadcrumbs[1].link += `/${id}`
+		breadcrumbs[1].label = queryData.name
+		
+		setBreadcrumbs(breadcrumbs)
 	}	
 	
 	handleSubmit = (e) => {
@@ -57,7 +85,7 @@ class DeleteRegion extends Component {
 		const { id } = this.state
 		
 		action({ variables: { id } })
-		history.replace('/admin/regions')
+			.then(() => history.replace('/admin/regions'))
 	}
 	
 	render() {
@@ -67,8 +95,8 @@ class DeleteRegion extends Component {
 		return (
 			<Grid container>
 				<Grid item xs={6}>
-					<Typography  variant="h6" color="inherit" className={classes.title}>
-						{`Удаление записи ${queryData.name}`}
+					<Typography  variant="h6" color="inherit" className={classes.title, classes.margin}>
+						{queryData.name}
 					</Typography>
 					<form 
 						onSubmit={this.handleSubmit} 
@@ -81,7 +109,7 @@ class DeleteRegion extends Component {
 							color="secondary" 
 							className={classes.button}
 						>
-							Продолжить
+							Удалить
 						</Button>
 					</form>
 				</Grid>
