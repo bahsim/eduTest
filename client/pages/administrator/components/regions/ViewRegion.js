@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 
-import EditGraphQL from '../containers/EditGraphQL'
+import EditGraphQL from '../../../common/hoc/EditGraphQL'
 
-import FETCH_REGION from '../../../queries/fetchRegion'
-import EDIT_REGION from '../../../mutations/editRegion'
+import FETCH_REGION from '../../../../queries/fetchRegion'
+import EDIT_REGION from '../../../../mutations/editRegion'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -68,25 +68,24 @@ const Breadcrumbs = () => ([
 
 class ViewRegion extends Component {  
 	state = {
-		id: '',
 		edit: false,
 	}
 	
 	componentDidMount() {
+		const { id } = this.props.queryProps.queryParams
+		
 		const { setPanel } = this.props
-		const { id } = this.props.match.params
-
 		const panel = panelMain()		
+		
 		panel[1].link += `/${id}/members`
 		panel[2].link += `/${id}/delete`
 		
 		setPanel(panel)
-		this.setState({ id })
 		
 		this.setBreadcrumbs()
-	}	
+	}
 	
-	setBreadcrumbs() {
+	setBreadcrumbs = () => {
 		const { queryData, setBreadcrumbs } = this.props
 		
 		const breadcrumbs = Breadcrumbs()		
@@ -98,9 +97,9 @@ class ViewRegion extends Component {
 	handleSubmit = e => {
 		e.preventDefault()
 		
-		const { history, action } = this.props
+		const { history, action, queryProps } = this.props
 		const name = e.target.name.value.trim()
-		const { id } = this.state
+		const { id } = queryProps.queryParams
 		
 		if (name === '') return
 		
@@ -114,6 +113,7 @@ class ViewRegion extends Component {
 	render() {
 		const { classes, queryData } = this.props
 		const { edit } = this.state
+		
 		return (
 			<Grid container >
 				<Grid item xs={6}>
@@ -165,14 +165,27 @@ class ViewRegion extends Component {
 	}	
 }
 
-const EditGraphQLProps = {
-	query			: FETCH_REGION,
-	mutation	: EDIT_REGION,
-	dataName	: 'region',
-}
-
-export default EditGraphQL(EditGraphQLProps)(
-	withStyles(styles)(
-		withRouter(ViewRegion)
+const ViewRegionGQL =  (
+	EditGraphQL(
+		withStyles(styles)(
+			ViewRegion
+		)
 	)
 )
+
+const ViewRegionCover = (props) => {
+	
+	const queryProps = {
+		query				: FETCH_REGION,
+		mutation		: EDIT_REGION,
+		dataName		: 'region',
+	}
+	
+	queryProps.queryParams = { 
+		id: props.match.params.id
+	}
+	
+	return <ViewRegionGQL {...props} queryProps={queryProps} />
+}
+
+export default withRouter(ViewRegionCover)

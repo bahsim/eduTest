@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 
-import ViewGraphQL from '../containers/ViewGraphQL'
-
-import FETCH_REGION_GROUPS from '../../../queries/fetchRegionGroups'
-
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
@@ -12,10 +8,11 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 
-
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit'
+
+import RegionsList from '../../../common/components/RegionsList'
 
 const styles = theme => ({
 	groupsList: {
@@ -23,14 +20,9 @@ const styles = theme => ({
 	}
 })
 
-const panelList = () => ([
+const panelRegionSelected = () => ([
 	{
-		link		: '/admin/regions',
-		icon		: ArrowBackIcon,
-		label		:	'Назад',
-	},
-	{
-		link	: '/admin/regions/members/groups/new',
+		link	: '/admin/members',
 		icon	: AddIcon,
 		label	:	'Добавить группу',
 	},
@@ -90,70 +82,48 @@ const panelItemSelected = () => ([
 	},
 ])
 
-const Breadcrumbs = () => ([
-	{
-		type	: 'link',
-		label	:	'Регионы',
-		link	: '/admin/regions',
-	},
-	{
-		type	: 'link',
-		label	:	'Регион',
-		link	: '/admin/regions',
-	},
+const BreadcrumbsInit = () => ([
 	{
 		type	: 'label',
 		label	:	'Участники',
 	},
 ])
-
-const groups = [
-	{id:'1', name:'Группа 1'},
-	{id:'2', name:'Группа 2'},
-	{id:'3', name:'Группа 3'},
-	{id:'4', name:'Группа 4'},
-	{id:'5', name:'Группа 5'},
-	{id:'6', name:'Группа 6'},
-	{id:'7', name:'Группа 7'},
-	{id:'8', name:'Группа 8'},
-	{id:'9', name:'Группа 9'},
-	{id:'10', name:'Группа 10'},
-	{id:'11', name:'Группа 11'},
-	{id:'12', name:'Группа 12'},
-	{id:'1', name:'Группа 1'},
-	{id:'2', name:'Группа 2'},
-	{id:'3', name:'Группа 3'},
-	{id:'4', name:'Группа 4'},
-	{id:'5', name:'Группа 5'},
-	{id:'6', name:'Группа 6'},
-	{id:'7', name:'Группа 7'},
-	{id:'8', name:'Группа 8'},
-	{id:'9', name:'Группа 9'},
-	{id:'10', name:'Группа 10'},
-	{id:'11', name:'Группа 11'},
-	{id:'12', name:'Группа 12'},
-]
+const BreadcrumbsRegion = () => ([
+	{
+		type	: 'label',
+		label	:	'Участники',
+	},
+	{
+		type	: 'label',
+		label	:	'Регион',
+	},
+])
 
 class Members extends Component {  
 	state = {
-		height: '0',
+		regionId: '',
 	}
 	
 	componentDidMount() {
-		const { setPanel, history, location, setBreadcrumbs, queryData } = this.props
-		const { id } = this.props.match.params
+		const { setPanel, setBreadcrumbs } = this.props
 				
-		const panel = panelList()		
-		panel[0].link += `/${id}`
-		
-		setPanel(panel)
-		
-		const breadcrumbs = Breadcrumbs()		
-		breadcrumbs[1].link += `/${id}`
-		breadcrumbs[1].label = queryData.name
-		
-		setBreadcrumbs(breadcrumbs)
+		setPanel([])
+		setBreadcrumbs(BreadcrumbsInit())
 	}	
+	
+	selectRegion = (regionId, regionName) => {
+		const { setPanel, setBreadcrumbs } = this.props
+		
+		this.setState({regionId})
+		
+		const breadcrumbs = BreadcrumbsRegion()
+		breadcrumbs[1].label = regionName
+		setBreadcrumbs(breadcrumbs)
+		
+		const panel = panelRegionSelected()
+		panel[0].link += `/${regionId}/groups/new`
+		setPanel(panel)
+	}
 	
 	selectGroup = (groupId, groupName) => {
 		const { id } = this.props.match.params
@@ -189,6 +159,7 @@ class Members extends Component {
 	
 	render() {
 		const { classes, queryData, height } = this.props
+		const { regionId } = this.state
 		
 		const listStyle = { height, overflow: 'auto' }
 		
@@ -196,21 +167,22 @@ class Members extends Component {
 			<Grid container alignItems="stretch">
 				<Grid item xs={3}>
 					<div style={listStyle}>
-						<List component="nav"  className={classes.groupsList}>
-							{groups.map((el, idx) => (
-								<div key={idx} onClick={() => this.selectGroup(el.id, el.name)}>
-									<ListItem button>
-										<ListItemText primary={el.name} />
-									</ListItem>
-									<Divider />
-								</div>
-							))}
-						</List>
+						<RegionsList
+							label="Регион"
+							selectedItem={regionId} 
+							onClick={this.selectRegion} 
+							onDoubleClick={() => {}}
+						/>
 					</div>
 				</Grid>
-				<Grid item xs={9}>
+				<Grid item xs={3}>
 					<div style={listStyle}>
-						table
+						groups
+					</div>
+				</Grid>
+				<Grid item xs={6}>
+					<div style={listStyle}>
+						items
 					</div>
 				</Grid>
 			</Grid>
@@ -218,13 +190,7 @@ class Members extends Component {
 	}	
 }
 
-const ViewGraphQLProps = {
-	query			: FETCH_REGION_GROUPS,
-	dataName	: 'regionGroups',
-}
-
-export default ViewGraphQL(ViewGraphQLProps)(
-	withStyles(styles)(
-		withRouter(Members)
-	)
+export default withStyles(styles)(
+	withRouter(Members)
 )
+	

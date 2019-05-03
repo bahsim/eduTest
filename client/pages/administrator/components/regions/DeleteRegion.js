@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import { Mutation, Query } from "react-apollo";
 
-import DeleteGraphQL from '../containers/DeleteGraphQL'
+import DeleteGraphQL from '../../../common/hoc/DeleteGraphQL'
 
-import FETCH_REGIONS from '../../../queries/fetchRegions';
-import FETCH_REGION from '../../../queries/fetchRegion';
-import DELETE_REGION from '../../../mutations/deleteRegion';
+import FETCH_REGIONS from '../../../../queries/fetchRegions';
+import FETCH_REGION from '../../../../queries/fetchRegion';
+import DELETE_REGION from '../../../../mutations/deleteRegion';
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -118,17 +118,30 @@ class DeleteRegion extends Component {
 	}	
 }
 
-const DeleteGraphQLProps = {
-	query				: FETCH_REGION,
-	mutation		: DELETE_REGION,
-	updateGQL		: FETCH_REGIONS,
-	updateData	: 'regions',
-	actionName	: 'deleteRegion',
-	dataName		: 'region',
-}
-
-export default DeleteGraphQL(DeleteGraphQLProps)(
-	withStyles(styles)(
-		withRouter(DeleteRegion)
+const DeleteRegionGQL =  (
+	DeleteGraphQL(
+		withStyles(styles)(
+			DeleteRegion
+		)
 	)
 )
+
+const DeleteRegionCover = (props) => {
+	
+	const queryProps = {
+		query				: FETCH_REGION,
+		mutation		: DELETE_REGION,
+		updateGQL		: FETCH_REGIONS,
+		updateData	: 'regions',
+		actionName	: 'deleteRegion',
+		dataName		: 'region',
+	}
+	
+	queryProps.queryParams = { 
+		id: props.match.params.id
+	}
+	
+	return <DeleteRegionGQL {...props} queryProps={queryProps} />
+}
+
+export default withRouter(DeleteRegionCover)

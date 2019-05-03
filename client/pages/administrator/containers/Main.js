@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
+import PeopleIcon from '@material-ui/icons/People'
 import ListIcon from '@material-ui/icons/List';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import ArchiveIcon from '@material-ui/icons/Archive';
@@ -11,22 +12,27 @@ import Layout from '../../../layouts/AdministratorLayout'
 
 import Workspace from './Workspace'
 
-import Regions from '../components/Regions'
-import ViewRegion from '../components/ViewRegion'
-import NewRegion from '../components/NewRegion'
-import DeleteRegion from '../components/DeleteRegion'
+import Regions from '../components/regions/Regions'
+import ViewRegion from '../components/regions/ViewRegion'
+import NewRegion from '../components/regions/NewRegion'
+import DeleteRegion from '../components/regions/DeleteRegion'
 
-import Members from '../components/Members'
+import Members from '../components/members/Members'
 
-import Tests from '../components/Tests'
-import Events from '../components/Events'
-import Results from '../components/Results'
+import Tests from '../components/tests/Tests'
+import Events from '../components/events/Events'
+import Results from '../components/results/Results'
 
 const Menu = [
 	{
 		link	: '/admin/regions',
 		icon	: <DeviceHubIcon/>,
 		label	:	'Регионы',
+	},
+	{
+		link	: '/admin/members',
+		icon	: <PeopleIcon/>,
+		label	:	'Участники',
 	},
 	{
 		link	: '/admin/tests',
@@ -53,6 +59,7 @@ const Main = (props) => {
 			menu={Menu}
 			workspace={
 				<Switch>
+				
 					<Route path="/admin" exact component={null} />
 					
 					
@@ -62,10 +69,7 @@ const Main = (props) => {
 					<Route path="/admin/regions/new" exact component={() => (
 						<Workspace MainComponent={NewRegion} />
 					)}/>
-					<Route path="/admin/regions/edit" exact component={() => (
-						<Workspace MainComponent={EditRegion} />
-					)}/>
-					<Route path="/admin/regions/:id/members" exact component={() => (
+					<Route path="/admin/regions/:id/members" component={() => (
 						<Workspace MainComponent={Members} />
 					)}/>
 					<Route path="/admin/regions/:id/delete" exact component={() => (
@@ -73,6 +77,10 @@ const Main = (props) => {
 					)}/>
 					<Route path="/admin/regions/:id" exact component={() => (
 							<Workspace MainComponent={ViewRegion} />
+					)}/>
+					
+					<Route path="/admin/members" exact component={() => (
+						<Workspace MainComponent={Members} />
 					)}/>
 					
 					

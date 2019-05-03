@@ -3,11 +3,18 @@ import { Mutation } from "react-apollo";
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-const NewGraphQL = myProps => BaseComponent => {
+const NewGraphQL = BaseComponent => {
   
-	const NewGraphQLHOC = (props) => {
+	const NewGraphQLHOC = props => {
 		
-		const { mutation, updateGQL, updateData, actionName } = myProps
+		const { queryProps } = props
+		
+		const { 
+			mutation, 
+			updateGQL, 
+			updateData, 
+			actionName,
+		} = queryProps
 		
 		const fullHeight = {
 			position: 'relative',
@@ -33,10 +40,7 @@ const NewGraphQL = myProps => BaseComponent => {
 				}}					
 			>
 				{(action, { data }) => (
-					<BaseComponent 
-						action={action} 
-						{...props} 
-					/>
+					<BaseComponent action={action} {...props} />
 				)}
 			</Mutation>
 		)

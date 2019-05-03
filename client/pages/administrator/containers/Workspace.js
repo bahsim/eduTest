@@ -20,6 +20,9 @@ const styles = theme => ({
 		margin: theme.spacing.unit/2,
 		marginRight: theme.spacing.unit*2,
 	},
+	emptyMenu: {
+		padding: theme.spacing.unit*1.5,
+	},
   breadcrumbs: {
     marginBottom: theme.spacing.unit,
     paddingLeft: theme.spacing.unit,
@@ -36,14 +39,17 @@ const styles = theme => ({
 })
 
 const Menu = (list, classes, history) => (
-	list.map((el,idx) => (
-		<Button key={idx} className={classes.button} 
-			onClick={() => history.replace(el.link)}
-		>
-			<el.icon className={classes.icon}/>
-			{el.label}
-		</Button>
-	))
+	list.length === 0 ? 
+		<div className={classes.emptyMenu}><br/></div>
+	:
+		list.map((el,idx) => (
+			<Button key={idx} className={classes.button} 
+				onClick={() => history.replace(el.link)}
+			>
+				<el.icon className={classes.icon}/>
+				{el.label}
+			</Button>
+		))
 )
 
 const BreadcrumbsPanel = (list, classes, history) => (

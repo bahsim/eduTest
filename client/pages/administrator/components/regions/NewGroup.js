@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 
-import NewGraphQL from '../containers/NewGraphQL'
+import NewGraphQL from '../../../common/hoc/NewGraphQL'
 
-import FETCH_REGIONS from '../../../queries/fetchRegions';
-import ADD_REGION from '../../../mutations/addRegion';
+import FETCH_REGIONS from '../../../../queries/fetchRegions';
+import ADD_REGION from '../../../../mutations/addRegion';
 
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -44,11 +44,11 @@ const Breadcrumbs = () => ([
 	},
 	{
 		type	: 'label',
-		label	:	'Новый регион',
+		label	:	'Новый группа',
 	},
 ])
 
-class NewRegion extends Component {  
+class NewGroup extends Component {  
 	state = {}
 	
 	componentDidMount() {
@@ -112,6 +112,6 @@ const NewGraphQLProps = {
 
 export default NewGraphQL(NewGraphQLProps)(
 	withStyles(styles)(
-		withRouter(NewRegion)
+		withRouter(NewGroup)
 	)
 )
