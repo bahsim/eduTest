@@ -38,48 +38,50 @@ const styles = theme => ({
 	}
 })
 
-const Menu = (list, classes, history) => (
+const Menu = (that, list, classes, history) => (
 	list.length === 0 ? 
 		<div className={classes.emptyMenu}><br/></div>
 	:
-		list.map((el,idx) => (
-			<Button key={idx} className={classes.button} 
-				onClick={() => history.replace(el.link)}
-			>
-				<el.icon className={classes.icon}/>
-				{el.label}
-			</Button>
-		))
+		list.map((el,idx) => {
+			switch (el.type) {
+				case 'action':
+					return(
+						<Button key={idx} className={classes.button} 
+							onClick={() => that.setState({mainComponentAction: el.action}, () =>{
+								that.setState({mainComponentAction: ''})
+							})}
+						>
+							<el.icon className={classes.icon}/>
+							{el.label}
+						</Button>
+					)
+				case 'link':
+					return(
+						<Button key={idx} className={classes.button} 
+							onClick={() => history.replace(el.link)}
+						>
+							<el.icon className={classes.icon}/>
+							{el.label}
+						</Button>
+					)
+			}
+		})
 )
 
 const BreadcrumbsPanel = (list, classes, history) => (
-	list.map((el,idx) => {
-		switch (el.type) {
-			case 'link':
-				return (
-					<Link key={idx} color="inherit" href={el.link}
-						onClick={(e) => {e.preventDefault(); history.replace(el.link)}}
-					>
-						<Typography color="textPrimary" className={classes.breadcrumb}>
-							{el.label}
-						</Typography>
-					</Link>
-				)
-			case 'label': 
-				return (
-					<Typography key={idx} color="textPrimary" className={classes.breadcrumb}>
-						{el.label}
-					</Typography>
-				)
-		}
-	})
+	list.map((el,idx) => (
+		<Typography key={idx} color="textPrimary" className={classes.breadcrumb}>
+			{el}
+		</Typography>
+	))
 )
 
 class Workspace extends Component {  
 	state = {
-		mainspaceTop			: 0,
-		panelContent			: [],
-		breadcrumbsContent: [],
+		mainspaceTop				: 0,
+		panelContent				: [],
+		breadcrumbsContent	: [],
+		mainComponentAction	: '',
 	}
 	
 	componentDidMount() {
@@ -99,7 +101,12 @@ class Workspace extends Component {
 	
 	render() {
 		const { classes, MainComponent, history } = this.props
-		const { mainspaceTop, panelContent, breadcrumbsContent } = this.state
+		const { 
+			mainspaceTop, 
+			panelContent, 
+			breadcrumbsContent, 
+			mainComponentAction 
+		} = this.state
 		
 		const registryHeight = ((window.innerHeight - mainspaceTop) - 45 ) + 'px'
 		const styleMainspace = {height: registryHeight, overflow: 'auto'}
@@ -112,11 +119,12 @@ class Workspace extends Component {
 					</Breadcrumbs>
 				</Paper>
 				<Paper className={classes.panel}>
-					{Menu(panelContent, classes, history)}
+					{Menu(this, panelContent, classes, history)}
 				</Paper>
 				<div ref={(el) => this.mainspace = el }>
 					<Paper className={classes.mainspace} style={styleMainspace}>
 						<MainComponent
+							panelAction={mainComponentAction}
 							height={registryHeight}
 							setPanel={panelContent => this.setState({panelContent})}
 							setBreadcrumbs={breadcrumbsContent => this.setState({breadcrumbsContent})}

@@ -14,7 +14,6 @@ const ViewGraphQL = BaseComponent => {
 		const { 
 			query, 
 			queryParams, 
-			dataName,
 		} = queryProps
 		
 		const fullHeight = {
@@ -30,7 +29,7 @@ const ViewGraphQL = BaseComponent => {
 		}
 		
 		return (
-			<Query query={query} variables={{ ...queryParams }}>
+			<Query query={query.value} variables={{ ...queryParams }}>
 				{({ data, error, loading }) => {
 					
 					if (error) {
@@ -45,7 +44,7 @@ const ViewGraphQL = BaseComponent => {
 						)
 					}
 					
-					if (loading || !data[dataName]) {
+					if (loading || !data[query.name]) {
 						return (
 							<div style={fullHeight}>
 								<CircularProgress style={central} color="primary" />
@@ -54,7 +53,7 @@ const ViewGraphQL = BaseComponent => {
 					}
 					
 					return (
-						<BaseComponent queryData={data[dataName]} {...props} />
+						<BaseComponent queryData={data[query.name]} {...props} />
 					)
 				}}
 			</Query>

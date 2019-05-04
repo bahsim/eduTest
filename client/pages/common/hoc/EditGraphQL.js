@@ -13,9 +13,8 @@ const EditGraphQL = BaseComponent => {
 		
 		const { 
 			query, 
-			queryParams, 
 			mutation, 
-			dataName,
+			queryParams, 
 		} = queryProps
 		
 		const fullHeight = {
@@ -31,7 +30,7 @@ const EditGraphQL = BaseComponent => {
 		}
 		
 		return (
-			<Query query={query} variables={{ ...queryParams }}>
+			<Query query={query.value} variables={{ ...queryParams }}>
 				{({ data, error, loading }) => {
 					
 					if (error) {
@@ -46,7 +45,7 @@ const EditGraphQL = BaseComponent => {
 						)
 					}
 					
-					const queryData = data[dataName]
+					const queryData = data[query.name]
 					
 					if (loading || !queryData) {
 						return (
@@ -57,7 +56,7 @@ const EditGraphQL = BaseComponent => {
 					}
 					
 					return (
-						<Mutation mutation={mutation}>
+						<Mutation mutation={mutation.value}>
 							{(action, { data }) => (
 								<BaseComponent 
 									action={action} 

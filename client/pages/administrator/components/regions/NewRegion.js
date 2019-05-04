@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 
 import NewGraphQL from '../../../common/hoc/NewGraphQL'
-
-import FETCH_REGIONS from '../../../../queries/fetchRegions';
-import ADD_REGION from '../../../../mutations/addRegion';
+import { MUTATE_ADD_REGION } from '../../../../database/mutations'
+import { QUERY_REGIONS } from '../../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -28,34 +27,25 @@ const styles = theme => ({
   },
 })
 
-const panel = () => ([
-	{
-		link		: '/admin/regions',
-		icon		: ArrowBackIcon,
-		label		:	'Назад',
-	},
-])
+const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
 
-const Breadcrumbs = () => ([
-	{
-		type	: 'link',
-		label	:	'Регионы',
-		link	: '/admin/regions',
-	},
-	{
-		type	: 'label',
-		label	:	'Новый регион',
-	},
-])
+const PANEL_BACK 	= panelLink('/admin/regions', ArrowBackIcon, 'Назад')
+
+const BREADCRUMBS_REGIONS			= 'Регионы'
+const BREADCRUMBS_NEW_REGION 	= 'Новый регион'
+
+const LABEL_NAME 	= 'Наименование'
+const LABEL_SAVE 	= 'Сохранить'
 
 class NewRegion extends Component {  
-	state = {}
 	
 	componentDidMount() {
 		const { setPanel, setBreadcrumbs } = this.props
 		
-		setPanel(panel())
-		setBreadcrumbs(Breadcrumbs())
+		const panel = [{...PANEL_BACK}]
+		setPanel(panel)
+		
+		setBreadcrumbs([BREADCRUMBS_REGIONS, BREADCRUMBS_NEW_REGION])
 	}	
 	
 	handleSubmit = (e) => {
@@ -82,7 +72,7 @@ class NewRegion extends Component {
 						autoComplete="off"
 					>
 						<TextField
-							label="Наименование"
+							label={LABEL_NAME}
 							name="name"
 							className={classes.textField}
 							margin="normal"
@@ -94,7 +84,7 @@ class NewRegion extends Component {
 							className={classes.button}
 							color="primary"
 						>
-							Сохранить
+							{LABEL_SAVE}
 						</Button>
 					</form>
 				</Grid>
@@ -114,10 +104,8 @@ const NewRegionGQL =  (
 const NewRegionCover = (props) => {
 	
 	const queryProps = {
-		mutation		: ADD_REGION,
-		updateGQL		: FETCH_REGIONS,
-		updateData	: 'regions',
-		actionName	: 'addRegion',
+		mutation	: MUTATE_ADD_REGION,
+		update		: QUERY_REGIONS,
 	}
 	
 	return <NewRegionGQL {...props} queryProps={queryProps} />

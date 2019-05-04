@@ -6,12 +6,12 @@ const RegionSchema = new Schema({
 })
 
 RegionSchema.statics.edit = function(id, name) {
-  const Region = mongoose.model('region');
+  const Model = mongoose.model('region');
 
-  return Region.findById(id)
-    .then(region => {
-      region.name = name
-      return region.save()
+  return Model.findById(id)
+    .then(item => {
+      item.name = name
+      return item.save()
     })
 }
 

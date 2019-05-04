@@ -14,10 +14,7 @@ const DeleteGraphQL = BaseComponent => {
 		const { 
 			query, 
 			mutation, 
-			updateGQL, 
-			updateData, 
-			actionName, 
-			dataName,
+			update,
 			queryParams
 		} = queryProps
 		
@@ -37,7 +34,7 @@ const DeleteGraphQL = BaseComponent => {
 
 		return (
 			
-			<Query query={query} variables={{ ...queryParams }}>
+			<Query query={query.value} variables={{ ...queryParams }}>
 				{({ data, error, loading }) => {
 					
 					if (error) {
@@ -52,7 +49,7 @@ const DeleteGraphQL = BaseComponent => {
 						)
 					}
 					
-					const queryData = data[dataName]
+					const queryData = data[query.name]
 					
 					if (loading || !queryData) {
 						return (
@@ -64,13 +61,13 @@ const DeleteGraphQL = BaseComponent => {
 					
 					return (
 						<Mutation 
-							mutation={mutation}
+							mutation={mutation.value}
 							update={(cache, { data }) => {
-								const fullData = cache.readQuery({ query: updateGQL });
-								const result = fullData[updateData].filter(item => item.id !== id)
+								const fullData = cache.readQuery({ query: update.value });
+								const result = fullData[update.name].filter(item => item.id !== id)
 								cache.writeQuery({
-									query: updateGQL,
-									data: { [updateData]: result },
+									query: update.value,
+									data: { [update.name]: result },
 								});
 							}}					
 						>

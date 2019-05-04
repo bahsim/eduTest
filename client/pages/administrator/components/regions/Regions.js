@@ -6,33 +6,14 @@ import PageviewIcon from '@material-ui/icons/Pageview'
 
 import RegionsList from '../../../common/components/RegionsList'
 
-const panelList = () => ([
-	{
-		link	: '/admin/regions/new',
-		icon	: AddIcon,
-		label	:	'Добавить',
-	},
-])
+const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
 
-const panelListSelected = () => ([
-	{
-		link	: '/admin/regions/new',
-		icon	: AddIcon,
-		label	:	'Добавить',
-	},
-	{
-		link	: '/admin/regions',
-		icon	: PageviewIcon,
-		label	:	'Открыть',
-	},
-])
+const PANEL_ADD 	= panelLink('/admin/regions/new', AddIcon, 'Добавить')
+const PANEL_OPEN 	= panelLink('/admin/regions', PageviewIcon, 'Открыть')
 
-const Breadcrumbs = () => ([
-	{
-		type	: 'label',
-		label	:	'Регионы',
-	},
-])
+const BREADCRUMBS_REGIONS	= 'Регионы'
+
+const LABEL_NAME = 'Наименование'
 
 class Regions extends Component {  
 	state = {
@@ -42,17 +23,20 @@ class Regions extends Component {
 	componentDidMount() {
 		const { setPanel, setBreadcrumbs } = this.props
 		
-		setPanel(panelList())
-		setBreadcrumbs(Breadcrumbs())
+		setPanel([{...PANEL_ADD}])
+		setBreadcrumbs([BREADCRUMBS_REGIONS])
 	}	
 	
 	selectItem = (id) => {
 		const { setPanel } = this.props
 		
-		const panel = panelListSelected()		
+		const panel = [
+			{...PANEL_ADD},
+			{...PANEL_OPEN}
+		]
 		panel[1].link += `/${id}`
-		
 		setPanel(panel)
+		
 		this.setState({ currentItem: id })
 	}
 	
@@ -68,7 +52,7 @@ class Regions extends Component {
 		
 		return (
 			<RegionsList
-				label="Наименование"
+				label={LABEL_NAME}
 				selectedItem={currentItem} 
 				onClick={this.selectItem} 
 				onDoubleClick={this.openItem}

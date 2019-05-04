@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 
 import EditGraphQL from '../../../common/hoc/EditGraphQL'
-
-import FETCH_REGION from '../../../../queries/fetchRegion'
-import EDIT_REGION from '../../../../mutations/editRegion'
+import { MUTATE_EDIT_REGION } from '../../../../database/mutations'
+import { QUERY_REGION } from '../../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -16,7 +15,6 @@ import IconButton from '@material-ui/core/IconButton'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import PeopleIcon from '@material-ui/icons/People'
 
 const styles = theme => ({
   container: {
@@ -36,35 +34,16 @@ const styles = theme => ({
   },	
 })
 
-const panelMain = () => ([
-	{
-		link	: '/admin/regions',
-		icon	: ArrowBackIcon,
-		label	:	'Назад',
-	},
-	{
-		link	: '/admin/regions',
-		icon	: PeopleIcon,
-		label	:	'Участники',
-	},
-	{
-		link	: '/admin/regions',
-		icon	: DeleteForeverIcon,
-		label	:	'Удалить регион',
-	},
-])
+const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
 
-const Breadcrumbs = () => ([
-	{
-		type	: 'link',
-		label	:	'Регионы',
-		link	: '/admin/regions',
-	},
-	{
-		type	: 'label',
-		label	:	'Регионы',
-	},
-])
+const PANEL_BACK 	= panelLink('/admin/regions', ArrowBackIcon, 'Назад')
+const PANEL_DELETE 	= panelLink('/admin/regions', DeleteForeverIcon, 'Удалить регион')
+
+const BREADCRUMBS_REGIONS	= 'Регионы'
+
+const LABEL_NEW_NAME 	= 'Новое наименование'
+const LABEL_SAVE 			= 'Сохранить'
+const LABEL_CLOSE 		= 'Закрыть'
 
 class ViewRegion extends Component {  
 	state = {
@@ -73,13 +52,13 @@ class ViewRegion extends Component {
 	
 	componentDidMount() {
 		const { id } = this.props.queryProps.queryParams
-		
 		const { setPanel } = this.props
-		const panel = panelMain()		
 		
-		panel[1].link += `/${id}/members`
-		panel[2].link += `/${id}/delete`
-		
+		const panel = [
+			{...PANEL_BACK},
+			{...PANEL_DELETE}
+		]
+		panel[1].link += `/${id}/delete`
 		setPanel(panel)
 		
 		this.setBreadcrumbs()
@@ -88,10 +67,7 @@ class ViewRegion extends Component {
 	setBreadcrumbs = () => {
 		const { queryData, setBreadcrumbs } = this.props
 		
-		const breadcrumbs = Breadcrumbs()		
-		breadcrumbs[1].label = queryData.name
-		
-		setBreadcrumbs(breadcrumbs)
+		setBreadcrumbs([BREADCRUMBS_REGIONS, queryData.name])
 	}
 	
 	handleSubmit = e => {
@@ -135,7 +111,7 @@ class ViewRegion extends Component {
 							autoComplete="off"
 						>
 							<TextField
-								label="Новое наименование"
+								label={LABEL_NEW_NAME}
 								name="name"
 								defaultValue={queryData.name}
 								className={classes.textField}
@@ -148,14 +124,14 @@ class ViewRegion extends Component {
 								className={classes.button}
 								color="primary"
 							>
-								Сохранить
+								{LABEL_SAVE}
 							</Button>
 							<Button 
 								variant="contained" 
 								className={classes.button}
 								onClick={() => this.setState({edit: false})}
 							>
-								Закрыть
+								{LABEL_CLOSE}
 							</Button>
 						</form>
 					}
@@ -176,9 +152,8 @@ const ViewRegionGQL =  (
 const ViewRegionCover = (props) => {
 	
 	const queryProps = {
-		query				: FETCH_REGION,
-		mutation		: EDIT_REGION,
-		dataName		: 'region',
+		query			: QUERY_REGION,
+		mutation	: MUTATE_EDIT_REGION,
 	}
 	
 	queryProps.queryParams = { 

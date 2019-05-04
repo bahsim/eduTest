@@ -13,6 +13,10 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit'
 
 import RegionsList from '../../../common/components/RegionsList'
+import GroupsList from '../../../common/components/GroupsList'
+
+import NewGroup from './NewGroup'
+import EditGroup from './EditGroup'
 
 const styles = theme => ({
 	groupsList: {
@@ -20,172 +24,175 @@ const styles = theme => ({
 	}
 })
 
-const panelRegionSelected = () => ([
-	{
-		link	: '/admin/members',
-		icon	: AddIcon,
-		label	:	'Добавить группу',
-	},
-])
+const panelAction = (action, icon, label) => ({ type: 'action', action, icon, label })
 
-const panelGroupSelected = () => ([
-	{
-		link		: '/admin/regions',
-		icon		: ArrowBackIcon,
-		label		:	'Назад',
-	},
-	{
-		link	: '/admin/regions/members/groups/new',
-		icon	: AddIcon,
-		label	:	'Добавить группу',
-	},
-	{
-		link	: '/admin/regions/members/groups/edit',
-		icon	: EditIcon,
-		label	:	'Изменить группу',
-	},
-	{
-		link	: '/admin/regions/members/new',
-		icon	: AddIcon,
-		label	:	'Добавить участника',
-	},
-])
+const PANEL_BACK 				= panelAction('goBack', ArrowBackIcon, 'Назад')
+const PANEL_ADD_GROUP 	= panelAction('newGroup', AddIcon, 'Добавить группу')
+const PANEL_EDIT_GROUP 	= panelAction('editGroup', EditIcon, 'Изменить группу')
+const PANEL_ADD_ITEM 		= panelAction('addItem', AddIcon, 'Добавить участника')
+const PANEL_EDIT_ITEM 	= panelAction('editItem', EditIcon, 'Изменить участника')
 
-const panelItemSelected = () => ([
-	{
-		link		: '/admin/regions',
-		icon		: ArrowBackIcon,
-		label		:	'Назад',
-	},
-	{
-		link	: '/admin/regions/members/groups/new',
-		icon	: AddIcon,
-		label	:	'Добавить группу',
-	},
-	{
-		link	: '/admin/regions/members/groups/edit',
-		icon	: EditIcon,
-		label	:	'Изменить группу',
-		type	: 'link',
-	},
-	{
-		link	: '/admin/regions/members/new',
-		icon	: AddIcon,
-		label	:	'Добавить участника',
-		type	: 'link',
-	},
-	{
-		link	: '/admin/regions/members/edit',
-		icon	: EditIcon,
-		label	:	'Изменить участника',
-		type	: 'link',
-	},
-])
+const BREADCRUMBS_MEMBERS 	= 'Участники'
+const BREADCRUMBS_NEW_GROUP = 'Новая группа'
 
-const BreadcrumbsInit = () => ([
-	{
-		type	: 'label',
-		label	:	'Участники',
-	},
-])
-const BreadcrumbsRegion = () => ([
-	{
-		type	: 'label',
-		label	:	'Участники',
-	},
-	{
-		type	: 'label',
-		label	:	'Регион',
-	},
-])
+const MODE_MAIN 			= 'MAIN'
+const MODE_NEW_GROUP 	= 'NEW_GROUP'
+const MODE_EDIT_GROUP = 'EDIT_GROUP'
+
+const LABEL_REGION 	= 'Регион'
+const LABEL_GROUP 	= 'Группа'
 
 class Members extends Component {  
 	state = {
-		regionId: '',
+		regionName	: '',
+		regionId		: '',
+		groupName		: '',
+		groupId			: '',
+		mode				: MODE_MAIN,
+		breadcrumbs	: [],
+		panel				: [],
+		panelAction	: '',
 	}
 	
 	componentDidMount() {
 		const { setPanel, setBreadcrumbs } = this.props
 				
 		setPanel([])
-		setBreadcrumbs(BreadcrumbsInit())
+		setBreadcrumbs([BREADCRUMBS_MEMBERS])
 	}	
+	
+	componentDidUpdate(prevProps) {
+		this.catchParentActions(prevProps)
+	}
+	
+	catchParentActions = (prevProps) => {
+		const { panelAction, setPanel, setBreadcrumbs } = this.props
+		const { regionName, panel, breadcrumbs } = this.state
+		
+		if (panelAction === prevProps.panelAction || panelAction === this.state.panelAction) return
+		
+		switch(panelAction) {
+			case PANEL_ADD_GROUP.action:
+				this.setState({ panelAction, mode: MODE_NEW_GROUP })
+				setPanel([{...PANEL_BACK}])
+				setBreadcrumbs([BREADCRUMBS_MEMBERS, regionName, BREADCRUMBS_NEW_GROUP])
+				break
+			case PANEL_EDIT_GROUP.action:
+				this.setState({ panelAction, mode: MODE_EDIT_GROUP })
+				setPanel([{...PANEL_BACK}])
+				break
+			case PANEL_BACK.action:
+				this.setState({ panelAction, mode: MODE_MAIN })
+				setPanel(panel)
+				setBreadcrumbs(breadcrumbs)
+				break
+		}
+	}
+	
+	handleSaveNewGroup = () => {
+		const { setPanel, setBreadcrumbs } = this.props
+		const { panelAction, panel, breadcrumbs } = this.state
+		
+		this.setState({ panelAction: '', mode: MODE_MAIN })
+		setPanel(panel)
+		setBreadcrumbs(breadcrumbs)
+	}
+	
+	handleSaveEditGroup = (newName) => {
+		const { setPanel, setBreadcrumbs } = this.props
+		const { panelAction, panel, breadcrumbs, regionName, groupName } = this.state
+		
+		this.setState({ panelAction: '', mode: MODE_MAIN, groupName: newName })
+		setPanel(panel)
+		setBreadcrumbs([BREADCRUMBS_MEMBERS, regionName, newName])
+	}
 	
 	selectRegion = (regionId, regionName) => {
 		const { setPanel, setBreadcrumbs } = this.props
 		
-		this.setState({regionId})
-		
-		const breadcrumbs = BreadcrumbsRegion()
-		breadcrumbs[1].label = regionName
-		setBreadcrumbs(breadcrumbs)
-		
-		const panel = panelRegionSelected()
+		const panel = [{...PANEL_ADD_GROUP}]
 		panel[0].link += `/${regionId}/groups/new`
 		setPanel(panel)
+		
+		const breadcrumbs = [BREADCRUMBS_MEMBERS, regionName]
+		setBreadcrumbs(breadcrumbs)
+		
+		this.setState({ panel, breadcrumbs, regionId, regionName, groupId: '', groupName: '' })
 	}
 	
 	selectGroup = (groupId, groupName) => {
-		const { id } = this.props.match.params
-		const { setPanel, setBreadcrumbs, queryData } = this.props
+		const { setPanel, setBreadcrumbs } = this.props
+		const { regionName } = this.state
 		
-		const panel = panelGroupSelected()		
-		panel[1].link += `?id=${id}&groupId=${groupId}`
-		panel[2].link += `?id=${id}&groupId=${groupId}`
-		
+		const panel = [
+			{...PANEL_ADD_GROUP},
+			{...PANEL_EDIT_GROUP},
+			{...PANEL_ADD_ITEM}
+		]
+		panel[0].link += `/${groupId}/groups/new`
 		setPanel(panel)
-		
-		const breadcrumbs = Breadcrumbs()		
-		breadcrumbs[1].link += `/${id}`
-		breadcrumbs[1].label = queryData.name
-		breadcrumbs.push({
-			type	: 'label',
-			label	:	groupName,
-		})
+
+		const breadcrumbs = [BREADCRUMBS_MEMBERS, regionName, groupName]
 		setBreadcrumbs(breadcrumbs)
-	}
-	
-	selectItem = (groupId, itemId) => {
-		const { id } = this.props.match.params
-		const { setPanel } = this.props
 		
-		const panel = panelItemSelected()		
-		panel[1].link += `?id=${id}&groupId=${groupId}`
-		panel[2].link += `?id=${id}&groupId=${groupId}`
-		panel[3].link += `?id=${id}&groupId=${groupId}&itemId=${itemId}`
-		
-		setPanel(panel)
+		this.setState({ panel, breadcrumbs, groupId, groupName })
 	}
 	
 	render() {
 		const { classes, queryData, height } = this.props
-		const { regionId } = this.state
+		const { regionId, groupId, mode } = this.state
 		
 		const listStyle = { height, overflow: 'auto' }
 		
+		const listsDisplay = (
+			mode === MODE_MAIN ? {display: ''} : { display: 'none'}
+		)
+		
 		return (
-			<Grid container alignItems="stretch">
-				<Grid item xs={3}>
-					<div style={listStyle}>
-						<RegionsList
-							label="Регион"
-							selectedItem={regionId} 
-							onClick={this.selectRegion} 
-							onDoubleClick={() => {}}
-						/>
-					</div>
-				</Grid>
-				<Grid item xs={3}>
-					<div style={listStyle}>
-						groups
-					</div>
-				</Grid>
-				<Grid item xs={6}>
-					<div style={listStyle}>
-						items
-					</div>
-				</Grid>
-			</Grid>
+			<div>
+				<div style={listsDisplay}>
+					<Grid container alignItems="stretch" spacing={8}>
+						<Grid item xs={3}>
+							<div style={listStyle}>
+								<RegionsList
+									label={LABEL_REGION}
+									selectedItem={regionId} 
+									onClick={this.selectRegion} 
+								/>
+							</div>
+						</Grid>
+						<Grid item xs={3}>
+							<div style={listStyle}>
+								{regionId !== '' &&
+									<GroupsList
+										regionId={regionId}
+									label={LABEL_GROUP}
+										selectedItem={groupId} 
+										onClick={this.selectGroup} 
+									/>
+								}
+							</div>
+						</Grid>
+						<Grid item xs={6}>
+							<div style={listStyle}>
+								items
+							</div>
+						</Grid>
+					</Grid>
+				</div>
+				{mode === MODE_NEW_GROUP &&
+					<NewGroup 
+						regionId={regionId} 
+						onSave={this.handleSaveNewGroup}
+					/>
+				}
+				{mode === MODE_EDIT_GROUP &&
+					<EditGroup 
+						groupId={groupId} 
+						onSave={this.handleSaveEditGroup}
+					/>
+				}
+			</div>
 		)
 	}	
 }

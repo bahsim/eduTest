@@ -23,6 +23,8 @@ import Tests from '../components/tests/Tests'
 import Events from '../components/events/Events'
 import Results from '../components/results/Results'
 
+const APP_TITLE = 'Администратор'
+
 const Menu = [
 	{
 		link	: '/admin/regions',
@@ -55,22 +57,17 @@ const Main = (props) => {
 	
 	return (
 		<Layout 
-			title="Администратор"
+			title={APP_TITLE}
 			menu={Menu}
 			workspace={
 				<Switch>
-				
 					<Route path="/admin" exact component={null} />
-					
 					
 					<Route path="/admin/regions" exact component={() => (
 						<Workspace MainComponent={Regions} />
 					)}/>
 					<Route path="/admin/regions/new" exact component={() => (
 						<Workspace MainComponent={NewRegion} />
-					)}/>
-					<Route path="/admin/regions/:id/members" component={() => (
-						<Workspace MainComponent={Members} />
 					)}/>
 					<Route path="/admin/regions/:id/delete" exact component={() => (
 						<Workspace MainComponent={DeleteRegion} />
@@ -82,7 +79,6 @@ const Main = (props) => {
 					<Route path="/admin/members" exact component={() => (
 						<Workspace MainComponent={Members} />
 					)}/>
-					
 					
 					<Route path="/admin/tests" component={() => <Tests/>} />
 					<Route path="/admin/events" component={() => <Events/>} />

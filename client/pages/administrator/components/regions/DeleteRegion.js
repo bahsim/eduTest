@@ -3,10 +3,8 @@ import { withRouter } from 'react-router-dom'
 import { Mutation, Query } from "react-apollo";
 
 import DeleteGraphQL from '../../../common/hoc/DeleteGraphQL'
-
-import FETCH_REGIONS from '../../../../queries/fetchRegions';
-import FETCH_REGION from '../../../../queries/fetchRegion';
-import DELETE_REGION from '../../../../mutations/deleteRegion';
+import { MUTATE_DELETE_REGION } from '../../../../database/mutations'
+import { QUERY_REGIONS, QUERY_REGION } from '../../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -31,30 +29,14 @@ const styles = theme => ({
   },
 })
 
-const panelMain = () => ([
-	{
-		link		: '/admin/regions',
-		icon		: ArrowBackIcon,
-		label		:	'Назад',
-	},
-])
+const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
 
-const Breadcrumbs = () => ([
-	{
-		type	: 'link',
-		label	:	'Регионы',
-		link	: '/admin/regions',
-	},
-	{
-		type	: 'link',
-		label	:	'',
-		link	: '/admin/regions',
-	},
-	{
-		type	: 'label',
-		label	:	'Удаление',
-	},
-])
+const PANEL_BACK 	= panelLink('/admin/regions', ArrowBackIcon, 'Назад')
+
+const BREADCRUMBS_REGIONS	= 'Регионы'
+const BREADCRUMBS_DEL_REGION = 'Удаление'
+
+const LABEL_DELETE 	= 'Удалить'
 
 class DeleteRegion extends Component {  
 	state = {
@@ -65,17 +47,13 @@ class DeleteRegion extends Component {
 		const { setPanel, queryData, setBreadcrumbs } = this.props
 		const { id } = this.props.match.params
 
-		const panel = panelMain()		
+		const panel = [{...PANEL_BACK}]
 		panel[0].link += `/${id}`
-		
 		setPanel(panel)
+		
+		setBreadcrumbs([BREADCRUMBS_REGIONS, queryData.name, BREADCRUMBS_DEL_REGION])
+		
 		this.setState({ id })
-		
-		const breadcrumbs = Breadcrumbs()		
-		breadcrumbs[1].link += `/${id}`
-		breadcrumbs[1].label = queryData.name
-		
-		setBreadcrumbs(breadcrumbs)
 	}	
 	
 	handleSubmit = (e) => {
@@ -109,7 +87,7 @@ class DeleteRegion extends Component {
 							color="secondary" 
 							className={classes.button}
 						>
-							Удалить
+							{LABEL_DELETE}
 						</Button>
 					</form>
 				</Grid>
@@ -129,12 +107,9 @@ const DeleteRegionGQL =  (
 const DeleteRegionCover = (props) => {
 	
 	const queryProps = {
-		query				: FETCH_REGION,
-		mutation		: DELETE_REGION,
-		updateGQL		: FETCH_REGIONS,
-		updateData	: 'regions',
-		actionName	: 'deleteRegion',
-		dataName		: 'region',
+		query			: QUERY_REGION,
+		mutation	: MUTATE_DELETE_REGION,
+		update		: QUERY_REGIONS,
 	}
 	
 	queryProps.queryParams = { 

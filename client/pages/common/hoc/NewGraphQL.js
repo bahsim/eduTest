@@ -11,9 +11,8 @@ const NewGraphQL = BaseComponent => {
 		
 		const { 
 			mutation, 
-			updateGQL, 
-			updateData, 
-			actionName,
+			update,
+			updateParams,
 		} = queryProps
 		
 		const fullHeight = {
@@ -30,12 +29,14 @@ const NewGraphQL = BaseComponent => {
 
 		return (
 			<Mutation 
-				mutation={mutation}
+				mutation={mutation.value}
 				update={(cache, { data }) => {
-					const fullData = cache.readQuery({ query: updateGQL });
+					const fullData = cache.readQuery({ query: update.value, variables: {...updateParams} });
+					
 					cache.writeQuery({
-						query: updateGQL,
-						data: { [updateData]: [ data[actionName], ...fullData[updateData] ] },
+						query: update.value,
+						variables: {...updateParams},
+						data: { [update.name]: [ data[mutation.name], ...fullData[update.name] ] },
 					});
 				}}					
 			>
