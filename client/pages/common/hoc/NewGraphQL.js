@@ -31,7 +31,11 @@ const NewGraphQL = BaseComponent => {
 			<Mutation 
 				mutation={mutation.value}
 				update={(cache, { data }) => {
-					const fullData = cache.readQuery({ query: update.value, variables: {...updateParams} });
+					
+					const fullData = cache.readQuery({ 
+						query: update.value, 
+						variables: {...updateParams} 
+					});
 					
 					cache.writeQuery({
 						query: update.value,

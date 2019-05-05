@@ -11,12 +11,14 @@ import Divider from '@material-ui/core/Divider'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 
 import RegionsList from '../../../common/components/RegionsList'
 import GroupsList from '../../../common/components/GroupsList'
 
 import NewGroup from './NewGroup'
 import EditGroup from './EditGroup'
+import DeleteGroup from './DeleteGroup'
 
 const styles = theme => ({
 	groupsList: {
@@ -29,6 +31,7 @@ const panelAction = (action, icon, label) => ({ type: 'action', action, icon, la
 const PANEL_BACK 				= panelAction('goBack', ArrowBackIcon, 'Назад')
 const PANEL_ADD_GROUP 	= panelAction('newGroup', AddIcon, 'Добавить группу')
 const PANEL_EDIT_GROUP 	= panelAction('editGroup', EditIcon, 'Изменить группу')
+const PANEL_DEL_GROUP 	= panelAction('deleteGroup', DeleteForeverIcon, 'Удалить группу')
 const PANEL_ADD_ITEM 		= panelAction('addItem', AddIcon, 'Добавить участника')
 const PANEL_EDIT_ITEM 	= panelAction('editItem', EditIcon, 'Изменить участника')
 
@@ -38,6 +41,10 @@ const BREADCRUMBS_NEW_GROUP = 'Новая группа'
 const MODE_MAIN 			= 'MAIN'
 const MODE_NEW_GROUP 	= 'NEW_GROUP'
 const MODE_EDIT_GROUP = 'EDIT_GROUP'
+const MODE_DEL_GROUP 	= 'DELETE_GROUP'
+const MODE_NEW_ITEM 	= 'NEW_ITEM'
+const MODE_EDIT_ITEM 	= 'EDIT_ITEM'
+const MODE_DEL_ITEM 	= 'DELETE_ITEM'
 
 const LABEL_REGION 	= 'Регион'
 const LABEL_GROUP 	= 'Группа'
@@ -81,6 +88,10 @@ class Members extends Component {
 				this.setState({ panelAction, mode: MODE_EDIT_GROUP })
 				setPanel([{...PANEL_BACK}])
 				break
+			case PANEL_DEL_GROUP.action:
+				this.setState({ panelAction, mode: MODE_DEL_GROUP })
+				setPanel([{...PANEL_BACK}])
+				break
 			case PANEL_BACK.action:
 				this.setState({ panelAction, mode: MODE_MAIN })
 				setPanel(panel)
@@ -98,6 +109,22 @@ class Members extends Component {
 		setBreadcrumbs(breadcrumbs)
 	}
 	
+	handleDeleteGroup = (newName) => {
+		const { setPanel, setBreadcrumbs } = this.props
+		const { panelAction, panel, breadcrumbs, regionName, groupName } = this.state
+		
+		setPanel({...PANEL_ADD_GROUP})
+		setBreadcrumbs([BREADCRUMBS_MEMBERS, regionName])
+		this.setState({ 
+			panelAction: '', 
+			mode: MODE_MAIN, 
+			groupId: '', 
+			groupName: ''
+		})
+		setPanel(panel)
+		setBreadcrumbs([BREADCRUMBS_MEMBERS, regionName, newName])
+	}
+
 	handleSaveEditGroup = (newName) => {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { panelAction, panel, breadcrumbs, regionName, groupName } = this.state
@@ -107,11 +134,25 @@ class Members extends Component {
 		setBreadcrumbs([BREADCRUMBS_MEMBERS, regionName, newName])
 	}
 	
+	handleDeleteGroup = (newName) => {
+		const { setPanel, setBreadcrumbs } = this.props
+		const { regionName } = this.state
+		
+		this.setState({ 
+			panelAction: '', 
+			mode: MODE_MAIN, 
+			groupId: '', 
+			groupName: ''
+		})
+
+		setPanel([{...PANEL_ADD_GROUP}])
+		setBreadcrumbs([BREADCRUMBS_MEMBERS, regionName])
+	}
+
 	selectRegion = (regionId, regionName) => {
 		const { setPanel, setBreadcrumbs } = this.props
 		
 		const panel = [{...PANEL_ADD_GROUP}]
-		panel[0].link += `/${regionId}/groups/new`
 		setPanel(panel)
 		
 		const breadcrumbs = [BREADCRUMBS_MEMBERS, regionName]
@@ -124,15 +165,15 @@ class Members extends Component {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { regionName } = this.state
 		
-		const panel = [
+		const panel =[
 			{...PANEL_ADD_GROUP},
 			{...PANEL_EDIT_GROUP},
+			{...PANEL_DEL_GROUP},
 			{...PANEL_ADD_ITEM}
 		]
-		panel[0].link += `/${groupId}/groups/new`
 		setPanel(panel)
-
-		const breadcrumbs = [BREADCRUMBS_MEMBERS, regionName, groupName]
+		
+		const breadcrumbs =[BREADCRUMBS_MEMBERS, regionName, groupName]
 		setBreadcrumbs(breadcrumbs)
 		
 		this.setState({ panel, breadcrumbs, groupId, groupName })
@@ -166,7 +207,7 @@ class Members extends Component {
 								{regionId !== '' &&
 									<GroupsList
 										regionId={regionId}
-									label={LABEL_GROUP}
+										label={LABEL_GROUP}
 										selectedItem={groupId} 
 										onClick={this.selectGroup} 
 									/>
@@ -190,6 +231,13 @@ class Members extends Component {
 					<EditGroup 
 						groupId={groupId} 
 						onSave={this.handleSaveEditGroup}
+					/>
+				}
+				{mode === MODE_DEL_GROUP &&
+					<DeleteGroup 
+						groupId={groupId} 
+						regionId={regionId} 
+						onDelete={this.handleDeleteGroup}
 					/>
 				}
 			</div>

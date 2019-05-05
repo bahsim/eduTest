@@ -92,6 +92,7 @@ const NewGroupCover = (props) => {
 	queryProps.updateParams = {
 		regionId: props.regionId
 	}
+	
 	return <NewGroupGQL {...props} queryProps={queryProps} />
 }
 

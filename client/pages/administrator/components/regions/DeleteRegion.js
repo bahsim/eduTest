@@ -8,25 +8,18 @@ import { QUERY_REGIONS, QUERY_REGION } from '../../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
 const styles = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
 	button: {
     margin: theme.spacing.unit,
   },
 	title: {
+    margin: theme.spacing.unit,
 		marginBottom: theme.spacing.unit*3,
 	},
-	margin: {
-    margin: theme.spacing.unit,
-  },
 })
 
 const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
@@ -71,27 +64,20 @@ class DeleteRegion extends Component {
 		const { id } = this.state
 		
 		return (
-			<Grid container>
-				<Grid item xs={6}>
-					<Typography  variant="h6" color="inherit" className={classes.title, classes.margin}>
-						{queryData.name}
-					</Typography>
-					<form 
-						onSubmit={this.handleSubmit} 
-						noValidate 
-						autoComplete="off"
-					>
-						<Button 
-							type="submit" 
-							variant="contained" 
-							color="secondary" 
-							className={classes.button}
-						>
-							{LABEL_DELETE}
-						</Button>
-					</form>
-				</Grid>
-			</Grid>
+			<div>
+				<Typography  variant="h6" color="inherit" className={classes.title}>
+					{queryData.name}
+				</Typography>
+				<Button 
+					type="submit" 
+					variant="contained" 
+					color="secondary" 
+					className={classes.button}
+					onClick={this.handleSubmit}
+				>
+					{LABEL_DELETE}
+				</Button>
+			</div>
 		)
 	}	
 }

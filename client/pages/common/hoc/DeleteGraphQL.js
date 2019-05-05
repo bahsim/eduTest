@@ -15,7 +15,8 @@ const DeleteGraphQL = BaseComponent => {
 			query, 
 			mutation, 
 			update,
-			queryParams
+			queryParams,
+			updateParams,
 		} = queryProps
 		
 		const { id } = queryParams
@@ -31,7 +32,7 @@ const DeleteGraphQL = BaseComponent => {
 			left: '50%',
 			transform: 'translate(-50%, -50%)',
 		}
-
+		
 		return (
 			
 			<Query query={query.value} variables={{ ...queryParams }}>
@@ -63,10 +64,17 @@ const DeleteGraphQL = BaseComponent => {
 						<Mutation 
 							mutation={mutation.value}
 							update={(cache, { data }) => {
-								const fullData = cache.readQuery({ query: update.value });
+								
+								const fullData = cache.readQuery({ 
+									query: update.value, 
+									variables: {...updateParams} 
+								});
+								
 								const result = fullData[update.name].filter(item => item.id !== id)
+								
 								cache.writeQuery({
 									query: update.value,
+									variables: {...updateParams},
 									data: { [update.name]: result },
 								});
 							}}					

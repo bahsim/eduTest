@@ -10,12 +10,7 @@ const EditGraphQL = BaseComponent => {
 	const EditGraphQLHOC = props => {
 		
 		const { queryProps } = props
-		
-		const { 
-			query, 
-			mutation, 
-			queryParams, 
-		} = queryProps
+		const { query, mutation, queryParams } = queryProps
 		
 		const fullHeight = {
 			position: 'relative',
