@@ -3,10 +3,6 @@ import { withRouter } from 'react-router-dom'
 
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Divider from '@material-ui/core/Divider'
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import AddIcon from '@material-ui/icons/Add';

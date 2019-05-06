@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom'
 
 import NewGraphQL from '../../../common/hoc/NewGraphQL'
@@ -9,8 +9,6 @@ import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button';
-
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
 const styles = theme => ({
   container: {

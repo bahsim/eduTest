@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom'
-import { Mutation, Query } from "react-apollo";
 
 import DeleteGraphQL from '../../../common/hoc/DeleteGraphQL'
 import { MUTATE_DELETE_MEMBER } from '../../../../database/mutations'
@@ -9,8 +8,6 @@ import { QUERY_MEMBERS, QUERY_MEMBER } from '../../../../database/queries'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
-
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
 const styles = theme => ({
 	button: {
