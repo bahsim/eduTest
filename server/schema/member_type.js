@@ -7,12 +7,12 @@ const {
 	GraphQLID,
 } = graphql
 
-const RegionType = new GraphQLObjectType({
-  name:  'RegionType',
+const MemberType = new GraphQLObjectType({
+  name:  'MemberType',
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
   })
 })
 
-module.exports = RegionType
+module.exports = MemberType

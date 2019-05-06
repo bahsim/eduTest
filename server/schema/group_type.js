@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 const graphql = require('graphql')
 
-const Region = mongoose.model('group')
-
 const {
 	GraphQLObjectType,
 	GraphQLString,

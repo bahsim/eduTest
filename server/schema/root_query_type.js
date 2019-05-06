@@ -8,6 +8,9 @@ const Region = mongoose.model('region')
 const GroupType = require('./group_type')
 const Group = mongoose.model('group')
 
+const MemberType = require('./member_type')
+const Member = mongoose.model('member')
+
 const { 
 	GraphQLObjectType, 
 	GraphQLList, 
@@ -50,6 +53,20 @@ const RootQuery = new GraphQLObjectType({
 			args: { id: { type: new GraphQLNonNull(GraphQLID) } },
 			resolve(parentValue, { id }) {
 				return Group.findById(id)
+			}
+		},
+		members: {
+			type: new GraphQLList(MemberType),
+			args: { groupId: { type: new GraphQLNonNull(GraphQLID) } },
+			resolve(parentValue, { groupId }) {
+				return Member.find({ groupId: groupId }, null, {sort: { name: 1 }})
+			}
+		},
+		member: {
+			type: MemberType,
+			args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+			resolve(parentValue, { id }) {
+				return Member.findById(id)
 			}
 		},
 	})

@@ -20,4 +20,14 @@ GroupSchema.statics.edit = function(id, name) {
     })
 }
 
+GroupSchema.statics.delete = function(id) {
+  const Group = mongoose.model('group');
+  const Member = mongoose.model('member');
+	
+	return Group.deleteOne({ _id: id })
+    .then(() => {
+      return Member.deleteMany({groupId: id})
+    })
+}
+
 mongoose.model('group', GroupSchema)
