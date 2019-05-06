@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, FunctionComponent } from 'react';
 import { withRouter } from 'react-router-dom'
 
 import EditGraphQL from '../../../common/hoc/EditGraphQL'
@@ -17,21 +17,17 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 
 const styles = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: '100%',
+    marginLeft  : theme.spacing.unit,
+    marginRight : theme.spacing.unit,
+    width       : '100%',
   },
 	button: {
-    margin: theme.spacing.unit,
+    margin      : theme.spacing.unit,
   },
 	margin: {
-    margin: theme.spacing.unit,
-  },	
+    margin      : theme.spacing.unit,
+  },
 })
 
 const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
@@ -45,69 +41,99 @@ const LABEL_NEW_NAME 	= 'Новое наименование'
 const LABEL_SAVE 			= 'Сохранить'
 const LABEL_CLOSE 		= 'Закрыть'
 
-class ViewRegion extends Component {  
+interface PanelArray {
+  length: number;
+  [item: number]: {type: string, link: any, icon: any, label: any };
+}
+interface BreadcrumbsArray {
+  length: number;
+  [item: number]: string;
+}
+
+interface ViewRegionProps {
+  classes: {
+    textField : object,
+    button    : object,
+    margin    : object,
+  },
+  setPanel      : (PanelArray) => any,
+  setBreadcrumbs: (BreadcrumbsArray) => any,
+  queryProps    : {
+    queryParams : {
+      id  : string,
+    }
+  },
+  queryData     : any,
+  history       : { replace: (url: string) => any},
+  action        : (args: { variables: { id: string, name: string }}) => any,
+}
+
+interface ViewRegionState {
+  edit: boolean,
+}
+class ViewRegion extends Component<ViewRegionProps,ViewRegionState> {
 	state = {
 		edit: false,
 	}
-	
+
 	componentDidMount() {
 		const { id } = this.props.queryProps.queryParams
 		const { setPanel } = this.props
-		
+
 		const panel = [
 			{...PANEL_BACK},
 			{...PANEL_DELETE}
 		]
 		panel[1].link += `/${id}/delete`
 		setPanel(panel)
-		
+
 		this.setBreadcrumbs()
 	}
-	
+
 	setBreadcrumbs = () => {
 		const { queryData, setBreadcrumbs } = this.props
-		
+
 		setBreadcrumbs([BREADCRUMBS_REGIONS, queryData.name])
 	}
-	
+
 	handleSubmit = e => {
 		e.preventDefault()
-		
+
 		const { history, action, queryProps } = this.props
 		const name = e.target.name.value.trim()
 		const { id } = queryProps.queryParams
-		
+
 		if (name === '') return
-		
-		action({ variables: { id, name } })
+
+		action({ variables: { id, name }})
 			.then(() => {
 				this.setState({edit: false})
 				this.setBreadcrumbs()
 			})
 	}
-	
+
 	render() {
 		const { classes, queryData } = this.props
 		const { edit } = this.state
-		
+
 		return (
 			<Grid container >
 				<Grid item xs={6}>
 					<Typography  variant="h6" color="inherit" className={classes.margin}>
 						{queryData.name}
 						{!edit &&
-							<IconButton 
-								aria-label="Delete" 
+							<IconButton
+								aria-label="Delete"
 								onClick={() => this.setState({edit: true})}
 							>
 								<EditIcon fontSize="small" />
 							</IconButton>
 						}
-					</Typography>					
+					</Typography>
 					{edit &&
-						<form 
-							onSubmit={this.handleSubmit} 
-							noValidate 
+						<form
+							onSubmit={this.handleSubmit}
+							noValidate
 							autoComplete="off"
 						>
 							<TextField
@@ -118,16 +144,16 @@ class ViewRegion extends Component {
 								margin="normal"
 								autoFocus
 							/>
-							<Button 
-								type="submit" 
-								variant="contained" 
+							<Button
+								type="submit"
+								variant="contained"
 								className={classes.button}
 								color="primary"
 							>
 								{LABEL_SAVE}
 							</Button>
-							<Button 
-								variant="contained" 
+							<Button
+								variant="contained"
 								className={classes.button}
 								onClick={() => this.setState({edit: false})}
 							>
@@ -138,7 +164,7 @@ class ViewRegion extends Component {
 				</Grid>
 			</Grid>
 		)
-	}	
+	}
 }
 
 const ViewRegionGQL =  (
@@ -149,17 +175,25 @@ const ViewRegionGQL =  (
 	)
 )
 
-const ViewRegionCover = (props) => {
-	
+interface CoverProps {
+  match: {
+    params: {
+      id: string,
+    }
+  }
+}
+
+const ViewRegionCover: FunctionComponent<CoverProps> = (props) => {
+
 	const queryProps = {
 		query			: QUERY_REGION,
 		mutation	: MUTATE_EDIT_REGION,
+    queryParams: {
+  		id: props.match.params.id
+  	},
 	}
-	
-	queryProps.queryParams = { 
-		id: props.match.params.id
-	}
-	
+
+
 	return <ViewRegionGQL {...props} queryProps={queryProps} />
 }
 

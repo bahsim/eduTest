@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 
@@ -13,13 +13,13 @@ import RegionsList from '../../../common/components/RegionsList'
 import GroupsList from '../../../common/components/GroupsList'
 import MembersList from '../../../common/components/MembersList'
 
-import NewGroup from './NewGroup'
-import EditGroup from './EditGroup'
-import DeleteGroup from './DeleteGroup'
+import NewGroup from './NewGroup.tsx'
+import EditGroup from './EditGroup.tsx'
+import DeleteGroup from './DeleteGroup.tsx'
 
-import NewMember from './NewMember'
-import EditMember from './EditMember'
-import DeleteMember from './DeleteMember'
+import NewMember from './NewMember.tsx'
+import EditMember from './EditMember.tsx'
+import DeleteMember from './DeleteMember.tsx'
 
 const styles = theme => ({
 	groupsList: {
@@ -53,7 +53,7 @@ const LABEL_REGIONS_LIST 	= 'Регионы'
 const LABEL_GROUPS_LIST 	= 'Группы'
 const LABEL_MEMBERS_LIST 	= 'Участники'
 
-class Members extends Component {  
+class Members extends Component {
 	state = {
 		regionName	: '',
 		regionId		: '',
@@ -66,24 +66,24 @@ class Members extends Component {
 		panel				: [],
 		panelAction	: '',
 	}
-	
+
 	componentDidMount() {
 		const { setPanel, setBreadcrumbs } = this.props
-				
+
 		setPanel([])
 		setBreadcrumbs([BREADCRUMBS_MEMBERS])
-	}	
-	
+	}
+
 	componentDidUpdate(prevProps) {
 		this.catchParentActions(prevProps)
 	}
-	
+
 	catchParentActions = (prevProps) => {
 		const { panelAction, setPanel, setBreadcrumbs } = this.props
 		const { regionName, panel, breadcrumbs } = this.state
-		
+
 		if (panelAction === prevProps.panelAction || panelAction === this.state.panelAction) return
-		
+
 		switch(panelAction) {
 			case PANEL_ADD_GROUP.action:
 				this.setState({ panelAction, mode: MODE_NEW_GROUP })
@@ -118,33 +118,33 @@ class Members extends Component {
 				break
 		}
 	}
-	
+
 	handleSaveNewGroup = () => {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { panelAction, panel, breadcrumbs } = this.state
-		
+
 		this.setState({ panelAction: '', mode: MODE_MAIN })
 		setPanel(panel)
 		setBreadcrumbs(breadcrumbs)
 	}
-	
+
 	handleSaveEditGroup = (newName) => {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { panelAction, panel, breadcrumbs, regionName } = this.state
-		
+
 		this.setState({ panelAction: '', mode: MODE_MAIN, groupName: newName })
 		setPanel(panel)
 		setBreadcrumbs([BREADCRUMBS_MEMBERS, regionName, newName])
 	}
-	
+
 	handleDeleteGroup = (newName) => {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { regionName } = this.state
-		
-		this.setState({ 
-			panelAction: '', 
-			mode: MODE_MAIN, 
-			groupId: '', 
+
+		this.setState({
+			panelAction: '',
+			mode: MODE_MAIN,
+			groupId: '',
 			groupName: ''
 		})
 
@@ -155,29 +155,29 @@ class Members extends Component {
 	handleSaveNewMember = () => {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { panelAction, panel, breadcrumbs } = this.state
-		
+
 		this.setState({ panelAction: '', mode: MODE_MAIN })
 		setPanel(panel)
 		setBreadcrumbs(breadcrumbs)
 	}
-	
+
 	handleSaveEditMember = (newName) => {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { panelAction, panel, breadcrumbs, regionName, groupName } = this.state
-		
+
 		this.setState({ panelAction: '', mode: MODE_MAIN, memberName: newName })
 		setPanel(panel)
 		setBreadcrumbs([BREADCRUMBS_MEMBERS, regionName, groupName, newName])
 	}
-	
+
 	handleDeleteMember = (newName) => {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { regionName, groupName } = this.state
-		
-		this.setState({ 
-			panelAction: '', 
-			mode: MODE_MAIN, 
-			memberId: '', 
+
+		this.setState({
+			panelAction: '',
+			mode: MODE_MAIN,
+			memberId: '',
 			memberName: ''
 		})
 
@@ -187,29 +187,29 @@ class Members extends Component {
 
 	selectRegion = (regionId, regionName) => {
 		const { setPanel, setBreadcrumbs } = this.props
-		
+
 		const panel = [{...PANEL_ADD_GROUP}]
 		setPanel(panel)
-		
+
 		const breadcrumbs = [BREADCRUMBS_MEMBERS, regionName]
 		setBreadcrumbs(breadcrumbs)
-		
-		this.setState({ 
-			panel, 
-			breadcrumbs, 
-			regionId, 
-			regionName, 
-			groupId: '', 
-			groupName: '', 
-			memberId: '', 
-			memberName: '', 
+
+		this.setState({
+			panel,
+			breadcrumbs,
+			regionId,
+			regionName,
+			groupId: '',
+			groupName: '',
+			memberId: '',
+			memberName: '',
 		})
 	}
-	
+
 	selectGroup = (groupId, groupName) => {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { regionName } = this.state
-		
+
 		const panel =[
 			{...PANEL_ADD_GROUP},
 			{...PANEL_EDIT_GROUP},
@@ -217,24 +217,24 @@ class Members extends Component {
 			{...PANEL_ADD_MEMBER}
 		]
 		setPanel(panel)
-		
+
 		const breadcrumbs =[BREADCRUMBS_MEMBERS, regionName, groupName]
 		setBreadcrumbs(breadcrumbs)
-		
-		this.setState({ 
-			panel, 
-			breadcrumbs, 
-			groupId, 
+
+		this.setState({
+			panel,
+			breadcrumbs,
+			groupId,
 			groupName,
-			memberId: '', 
-			memberName: '', 
+			memberId: '',
+			memberName: '',
 		})
 	}
-	
+
 	selectMember = (memberId, memberName) => {
 		const { setPanel, setBreadcrumbs } = this.props
 		const { regionName, groupName } = this.state
-		
+
 		const panel =[
 			{...PANEL_ADD_GROUP},
 			{...PANEL_EDIT_GROUP},
@@ -244,23 +244,23 @@ class Members extends Component {
 			{...PANEL_DEL_MEMBER},
 		]
 		setPanel(panel)
-		
+
 		const breadcrumbs =[BREADCRUMBS_MEMBERS, regionName, groupName, memberName]
 		setBreadcrumbs(breadcrumbs)
-		
+
 		this.setState({ panel, breadcrumbs, memberId, memberName })
 	}
-	
+
 	render() {
 		const { classes, queryData, height } = this.props
 		const { regionId, groupId, memberId, mode } = this.state
-		
+
 		const listStyle = { height, overflow: 'auto' }
-		
+
 		const listsDisplay = (
 			mode === MODE_MAIN ? {display: ''} : { display: 'none'}
 		)
-		
+
 		return (
 			<div>
 				<div style={listsDisplay}>
@@ -269,8 +269,8 @@ class Members extends Component {
 							<div style={listStyle}>
 								<RegionsList
 									label={LABEL_REGIONS_LIST}
-									selectedItem={regionId} 
-									onClick={this.selectRegion} 
+									selectedItem={regionId}
+									onClick={this.selectRegion}
 								/>
 							</div>
 						</Grid>
@@ -280,8 +280,8 @@ class Members extends Component {
 									<GroupsList
 										regionId={regionId}
 										label={LABEL_GROUPS_LIST}
-										selectedItem={groupId} 
-										onClick={this.selectGroup} 
+										selectedItem={groupId}
+										onClick={this.selectGroup}
 									/>
 								}
 							</div>
@@ -293,8 +293,8 @@ class Members extends Component {
 										regionId={regionId}
 										groupId={groupId}
 										label={LABEL_MEMBERS_LIST}
-										selectedItem={memberId} 
-										onClick={this.selectMember} 
+										selectedItem={memberId}
+										onClick={this.selectMember}
 									/>
 								}
 							</div>
@@ -302,50 +302,49 @@ class Members extends Component {
 					</Grid>
 				</div>
 				{mode === MODE_NEW_GROUP &&
-					<NewGroup 
-						regionId={regionId} 
+					<NewGroup
+						regionId={regionId}
 						onSave={this.handleSaveNewGroup}
 					/>
 				}
 				{mode === MODE_EDIT_GROUP &&
-					<EditGroup 
-						groupId={groupId} 
+					<EditGroup
+						groupId={groupId}
 						onSave={this.handleSaveEditGroup}
 					/>
 				}
 				{mode === MODE_DEL_GROUP &&
-					<DeleteGroup 
-						groupId={groupId} 
-						regionId={regionId} 
+					<DeleteGroup
+						groupId={groupId}
+						regionId={regionId}
 						onDelete={this.handleDeleteGroup}
 					/>
 				}
 				{mode === MODE_NEW_MEMBER &&
-					<NewMember 
-						regionId={regionId} 
-						groupId={groupId} 
+					<NewMember
+						regionId={regionId}
+						groupId={groupId}
 						onSave={this.handleSaveNewMember}
 					/>
 				}
 				{mode === MODE_EDIT_MEMBER &&
-					<EditMember 
-						memberId={memberId} 
+					<EditMember
+						memberId={memberId}
 						onSave={this.handleSaveEditMember}
 					/>
 				}
 				{mode === MODE_DEL_MEMBER &&
-					<DeleteMember 
-						memberId={memberId} 
-						groupId={groupId} 
+					<DeleteMember
+						memberId={memberId}
+						groupId={groupId}
 						onDelete={this.handleDeleteMember}
 					/>
 				}
 			</div>
 		)
-	}	
+	}
 }
 
 export default withStyles(styles)(
 	withRouter(Members)
 )
-	

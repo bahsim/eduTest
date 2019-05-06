@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Query } from 'react-apollo';
 
 import ViewGraphQL from '../hoc/ViewGraphQL'
@@ -21,17 +21,17 @@ const styles = theme => ({
 	},
 })
 
-const RegionsList = (props) => {  
-	
-	const { 
-		classes, 
-		queryData, 
+const RegionsList = (props) => {
+
+	const {
+		classes,
+		queryData,
 		label,
-		selectedItem, 
-		onClick, 
+		selectedItem,
+		onClick,
 		onDoubleClick,
 	} = props;
-	
+
 	const handleOnClick = (
 		onClick ? onClick : () => {}
 	)
@@ -41,7 +41,7 @@ const RegionsList = (props) => {
 	const currentItem = (
 		selectedItem ? selectedItem : ''
 	)
-	
+
 	return (
 		<Table>
 			<TableHead>
@@ -52,7 +52,7 @@ const RegionsList = (props) => {
 			<TableBody>
 				{queryData.map(item => (
 					<TableRow hover
-						key={item.id} 
+						key={item.id}
 						className={classes.tableRow}
 						selected={currentItem === item.id}
 						onClick={() => handleOnClick(item.id, item.name)}
@@ -77,13 +77,12 @@ const RegionsListGQL =  (
 )
 
 const RegionsListCover = (props) => {
-	
+
 	const queryProps = {
-		query			: QUERY_REGIONS,
+		query				: QUERY_REGIONS,
+		queryParams	: {}
 	}
-	
-	queryProps.queryParams = {}
-	
+
 	return <RegionsListGQL {...props} queryProps={queryProps} />
 }
 

@@ -1,21 +1,21 @@
 import React from 'react'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
-import DeviceHubIcon from '@material-ui/icons/DeviceHub';
+import DeviceHubIcon from '@material-ui/icons/DeviceHub'
 import PeopleIcon from '@material-ui/icons/People'
-import ListIcon from '@material-ui/icons/List';
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import ArchiveIcon from '@material-ui/icons/Archive';
+import ListIcon from '@material-ui/icons/List'
+import ScheduleIcon from '@material-ui/icons/Schedule'
+import ArchiveIcon from '@material-ui/icons/Archive'
 
 import Layout from '../../../layouts/AdministratorLayout'
 
 import Workspace from './Workspace'
 
 import Regions from '../components/regions/Regions'
-import ViewRegion from '../components/regions/ViewRegion'
-import NewRegion from '../components/regions/NewRegion'
-import DeleteRegion from '../components/regions/DeleteRegion'
+import ViewRegion from '../components/regions/ViewRegion.tsx'
+import NewRegion from '../components/regions/NewRegion.tsx'
+import DeleteRegion from '../components/regions/DeleteRegion.tsx'
 
 import Members from '../components/members/Members'
 
@@ -54,15 +54,15 @@ const Menu = [
 ]
 
 const Main = (props) => {
-	
+
 	return (
-		<Layout 
+		<Layout
 			title={APP_TITLE}
 			menu={Menu}
 			workspace={
 				<Switch>
 					<Route path="/admin" exact component={null} />
-					
+
 					<Route path="/admin/regions" exact component={() => (
 						<Workspace MainComponent={Regions} />
 					)}/>
@@ -75,11 +75,11 @@ const Main = (props) => {
 					<Route path="/admin/regions/:id" exact component={() => (
 							<Workspace MainComponent={ViewRegion} />
 					)}/>
-					
+
 					<Route path="/admin/members" exact component={() => (
 						<Workspace MainComponent={Members} />
 					)}/>
-					
+
 					<Route path="/admin/tests" component={() => <Tests/>} />
 					<Route path="/admin/events" component={() => <Events/>} />
 					<Route path="/admin/results" component={() => <Results/>} />

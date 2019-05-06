@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import NewGraphQL from '../../../common/hoc/NewGraphQL'
@@ -8,60 +8,66 @@ import { QUERY_GROUPS } from '../../../../database/queries'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 
 const styles = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: '100%',
+    marginLeft  : theme.spacing.unit,
+    marginRight : theme.spacing.unit,
+    width       : '100%',
   },
 	button: {
-    margin: theme.spacing.unit,
+    margin  : theme.spacing.unit,
   },
 })
 
 const LABEL_NAME 	= 'Наименование'
 const LABEL_SAVE 	= 'Сохранить'
 
-const NewGroup = (props) => {  
-	
-	const { classes, onSave, regionId, action } = props
-	
+interface ComponentProps {
+  classes: {
+    container : object,
+    textField : object,
+    button    : object,
+  },
+  onSave  : () => any,
+  regionId: string,
+  action  : (
+    args: { variables: {
+      name    : string,
+      regionId: string }}) => any,
+}
+
+const NewGroup: FunctionComponent<ComponentProps> = (props) => {
+
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		
+
 		const name = e.target.name.value.trim()
-		
 		if (name === '') return
-		
-		action({ variables: { name, regionId } })
-			.then(() => onSave())
+
+		props.action({ variables: {
+      name    : name,
+      regionId: props.regionId
+    }})
+		.then(() => props.onSave())
 	}
-	
+
 	return (
 		<Grid container >
 			<Grid item xs={6}>
-				<form 
-					onSubmit={handleSubmit} 
-					noValidate 
-					autoComplete="off"
-				>
+				<form onSubmit={handleSubmit} noValidate autoComplete="off">
 					<TextField
 						label={LABEL_NAME}
 						name="name"
-						className={classes.textField}
+						className={props.classes.textField}
 						margin="normal"
 						autoFocus
 					/>
-					<Button 
-						type="submit" 
-						variant="contained" 
-						className={classes.button}
+					<Button
+						type="submit"
+						variant="contained"
+						className={props.classes.button}
 						color="primary"
 					>
 						{LABEL_SAVE}
@@ -80,17 +86,20 @@ const NewGroupGQL =  (
 	)
 )
 
-const NewGroupCover = (props) => {
-	
+interface CoverProps {
+  regionId: string,
+}
+
+const NewGroupCover: FunctionComponent<CoverProps> = (props) => {
+
 	const queryProps = {
-		mutation	: MUTATE_ADD_GROUP,
-		update		: QUERY_GROUPS,
+		mutation    : MUTATE_ADD_GROUP,
+		update      : QUERY_GROUPS,
+    updateParams: {
+  		regionId: props.regionId
+  	}
 	}
-	
-	queryProps.updateParams = {
-		regionId: props.regionId
-	}
-	
+
 	return <NewGroupGQL {...props} queryProps={queryProps} />
 }
 

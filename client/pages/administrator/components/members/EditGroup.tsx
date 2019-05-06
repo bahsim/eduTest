@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { withRouter } from 'react-router-dom'
 
 import EditGraphQL from '../../../common/hoc/EditGraphQL'
@@ -11,10 +11,6 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
@@ -28,41 +24,50 @@ const styles = theme => ({
 const LABEL_NAME 	= 'Наименование'
 const LABEL_SAVE 	= 'Сохранить'
 
-const EditGroup = (props) => {  
-	
-	const { classes, onSave, queryData, groupId, action } = props
-	
+interface ComponentProps {
+  classes: {
+    textField : object,
+    button    : object,
+  },
+  onSave: (name: string) => any,
+  queryData: { name: string },
+  groupId   : string,
+  action    : (args: { variables: { name: string, id: string }}) => any,
+}
+
+const EditGroup: FunctionComponent<ComponentProps> = (props) => {
+
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		
+
 		const name = e.target.name.value.trim()
-		
+
 		if (name === '') return
-		
-		action({ variables: { name, id: groupId } })
-			.then(() => onSave(name))
+
+		props.action({ variables: { name: name, id: props.groupId } })
+			.then(() => props.onSave(name))
 	}
-	
+
 	return (
 		<Grid container >
 			<Grid item xs={6}>
-				<form 
-					onSubmit={handleSubmit} 
-					noValidate 
+				<form
+					onSubmit={handleSubmit}
+					noValidate
 					autoComplete="off"
 				>
 					<TextField
 						label={LABEL_NAME}
-						defaultValue={queryData.name}
+						defaultValue={props.queryData.name}
 						name="name"
-						className={classes.textField}
+						className={props.classes.textField}
 						margin="normal"
 						autoFocus
 					/>
-					<Button 
-						type="submit" 
-						variant="contained" 
-						className={classes.button}
+					<Button
+						type="submit"
+						variant="contained"
+						className={props.classes.button}
 						color="primary"
 					>
 						{LABEL_SAVE}
@@ -81,16 +86,20 @@ const EditGroupGQL =  (
 	)
 )
 
-const EditGroupCover = (props) => {
-	
+interface CoverProps {
+  groupId: string,
+}
+
+const EditGroupCover: FunctionComponent<CoverProps> = (props) => {
+
 	const queryProps = {
 		query			: QUERY_GROUP,
 		mutation	: MUTATE_EDIT_GROUP,
+    queryParams: {
+  		id  : props.groupId
+  	},
 	}
-	
-	queryProps.queryParams = {
-		id: props.groupId
-	}
+
 	return <EditGroupGQL {...props} queryProps={queryProps} />
 }
 

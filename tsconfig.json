@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "outDir": "build",
+    "jsx": "preserve",
+  },
+  "exclude": ["node_modules"],
+  "files1": ["typings/index.d.ts", "entry.ts"]
+}

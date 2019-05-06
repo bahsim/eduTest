@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, FunctionComponent } from 'react';
 import { withRouter } from 'react-router-dom'
 import { Mutation, Query } from "react-apollo";
 
@@ -14,10 +14,10 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
 const styles = theme => ({
 	button: {
-    margin: theme.spacing.unit,
+    margin			: theme.spacing.unit,
   },
 	title: {
-    margin: theme.spacing.unit,
+    margin			: theme.spacing.unit,
 		marginBottom: theme.spacing.unit*3,
 	},
 })
@@ -31,47 +31,64 @@ const BREADCRUMBS_DEL_REGION = 'Удаление'
 
 const LABEL_DELETE 	= 'Удалить'
 
-class DeleteRegion extends Component {  
+interface DeleteRegionProps {
+	classes: {
+    button	: object,
+    title   : object,
+  },
+  setPanel      : (PanelArray) => any,
+  setBreadcrumbs: (BreadcrumbsArray) => any,
+  queryProps    : {
+    queryParams : {
+      id  : string,
+    }
+  },
+  queryData     : any,
+  history       : { replace: (url: string) => any},
+  action        : (args: { variables: { id: string }}) => any,
+}
+
+class DeleteRegion extends Component<DeleteRegionProps> {
 	state = {
 		id: '',
 	}
-	
+
 	componentDidMount() {
 		const { setPanel, queryData, setBreadcrumbs } = this.props
-		const { id } = this.props.match.params
+		const { id } = this.props.queryProps.queryParams
 
 		const panel = [{...PANEL_BACK}]
 		panel[0].link += `/${id}`
 		setPanel(panel)
-		
+
 		setBreadcrumbs([BREADCRUMBS_REGIONS, queryData.name, BREADCRUMBS_DEL_REGION])
-		
+
 		this.setState({ id })
-	}	
-	
+	}
+
 	handleSubmit = (e) => {
 		e.preventDefault()
-		
+
 		const { history, action } = this.props
 		const { id } = this.state
-		
+
 		action({ variables: { id } })
 			.then(() => history.replace('/admin/regions'))
 	}
-	
+
 	render() {
 		const { classes, queryData } = this.props
 		const { id } = this.state
-		
+
 		return (
 			<div>
 				<Typography  variant="h6" color="inherit" className={classes.title}>
 					{queryData.name}
 				</Typography>
-				<Button 
-					type="submit" 
-					variant="contained" 
-					color="secondary" 
+				<Button
+					type="submit"
+					variant="contained"
+					color="secondary"
 					className={classes.button}
 					onClick={this.handleSubmit}
 				>
@@ -79,7 +96,7 @@ class DeleteRegion extends Component {
 				</Button>
 			</div>
 		)
-	}	
+	}
 }
 
 const DeleteRegionGQL =  (
@@ -90,18 +107,25 @@ const DeleteRegionGQL =  (
 	)
 )
 
-const DeleteRegionCover = (props) => {
-	
+interface CoverProps {
+  match: {
+    params: {
+      id: string,
+    }
+  }
+}
+
+const DeleteRegionCover: FunctionComponent<CoverProps> = (props) => {
+
 	const queryProps = {
 		query			: QUERY_REGION,
 		mutation	: MUTATE_DELETE_REGION,
 		update		: QUERY_REGIONS,
+		queryParams: {
+			id: props.match.params.id
+		}
 	}
-	
-	queryProps.queryParams = { 
-		id: props.match.params.id
-	}
-	
+
 	return <DeleteRegionGQL {...props} queryProps={queryProps} />
 }
 
