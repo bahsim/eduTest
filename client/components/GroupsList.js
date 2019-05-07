@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 
-import ViewGraphQL from '../hoc/ViewGraphQL'
-import { QUERY_GROUPS } from '../../../database/queries'
+import ViewGraphQL from '../database/components/ViewGraphQL'
+import { QUERY_GROUPS } from '../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 
@@ -21,17 +21,17 @@ const styles = theme => ({
 	},
 })
 
-const GroupsList = (props) => {  
-	
-	const { 
-		classes, 
-		queryData, 
+const GroupsList = (props) => {
+
+	const {
+		classes,
+		queryData,
 		label,
-		selectedItem, 
-		onClick, 
+		selectedItem,
+		onClick,
 		onDoubleClick,
 	} = props;
-	
+
 	const handleOnClick = (
 		onClick ? onClick : () => {}
 	)
@@ -41,7 +41,7 @@ const GroupsList = (props) => {
 	const currentItem = (
 		selectedItem ? selectedItem : ''
 	)
-	
+
 	return (
 		<Table>
 			<TableHead>
@@ -52,7 +52,7 @@ const GroupsList = (props) => {
 			<TableBody>
 				{queryData.map(item => (
 					<TableRow hover
-						key={item.id} 
+						key={item.id}
 						className={classes.tableRow}
 						selected={selectedItem === item.id}
 						onClick={() => onClick(item.id, item.name)}
@@ -77,15 +77,15 @@ const GroupsListGQL =  (
 )
 
 const GroupsListCover = (props) => {
-	
+
 	const queryProps = {
 		query			: QUERY_GROUPS,
 	}
-	
+
 	queryProps.queryParams = {
 		regionId: props.regionId
 	}
-	
+
 	return <GroupsListGQL {...props} queryProps={queryProps} />
 }
 

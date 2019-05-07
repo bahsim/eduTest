@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { withRouter } from 'react-router-dom'
 
-import EditGraphQL from '../../../common/hoc/EditGraphQL'
-import { MUTATE_EDIT_MEMBER } from '../../../../database/mutations'
-import { QUERY_MEMBER } from '../../../../database/queries'
+import EditGraphQL from '../../../database/components/EditGraphQL'
+import { MUTATE_EDIT_GROUP } from '../../../database/mutations'
+import { QUERY_GROUP } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -21,7 +21,7 @@ const styles = theme => ({
   },
 })
 
-const LABEL_NAME 	= 'Фамилия Имя Отчество'
+const LABEL_NAME 	= 'Наименование'
 const LABEL_SAVE 	= 'Сохранить'
 
 interface ComponentProps {
@@ -31,11 +31,11 @@ interface ComponentProps {
   },
   onSave: (name: string) => any,
   queryData: { name: string },
-  memberId: string,
-  action: (args: { variables: { name: string, id: string }}) => any,
+  groupId   : string,
+  action    : (args: { variables: { name: string, id: string }}) => any,
 }
 
-const EditMember: FunctionComponent<ComponentProps> = (props) => {
+const EditGroup: FunctionComponent<ComponentProps> = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -44,7 +44,7 @@ const EditMember: FunctionComponent<ComponentProps> = (props) => {
 
 		if (name === '') return
 
-		props.action({ variables: { name: name, id: props.memberId } })
+		props.action({ variables: { name: name, id: props.groupId } })
 			.then(() => props.onSave(name))
 	}
 
@@ -78,29 +78,29 @@ const EditMember: FunctionComponent<ComponentProps> = (props) => {
 	)
 }
 
-const EditMemberGQL =  (
+const EditGroupGQL =  (
 	EditGraphQL(
 		withStyles(styles)(
-			EditMember
+			EditGroup
 		)
 	)
 )
 
 interface CoverProps {
-  memberId: string,
+  groupId: string,
 }
 
-const EditMemberCover: FunctionComponent<CoverProps> = (props) => {
+const EditGroupCover: FunctionComponent<CoverProps> = (props) => {
 
 	const queryProps = {
-		query			: QUERY_MEMBER,
-		mutation	: MUTATE_EDIT_MEMBER,
+		query			: QUERY_GROUP,
+		mutation	: MUTATE_EDIT_GROUP,
     queryParams: {
-  		id  : props.memberId,
+  		id  : props.groupId
   	},
 	}
 
-	return <EditMemberGQL {...props} queryProps={queryProps} />
+	return <EditGroupGQL {...props} queryProps={queryProps} />
 }
 
-export default withRouter(EditMemberCover)
+export default withRouter(EditGroupCover)

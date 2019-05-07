@@ -8,20 +8,21 @@ import ListIcon from '@material-ui/icons/List'
 import ScheduleIcon from '@material-ui/icons/Schedule'
 import ArchiveIcon from '@material-ui/icons/Archive'
 
-import Layout from '../../../layouts/AdministratorLayout'
+import Layout 		from '../../layouts/Admin/AdminLayout.tsx'
+import Workspace 	from '../../layouts/Admin/Workspace.tsx'
 
-import Workspace from './Workspace'
+import Regions 			from './regions/Regions'
+import ViewRegion 	from './regions/ViewRegion.tsx'
+import NewRegion 		from './regions/NewRegion.tsx'
+import DeleteRegion from './regions/DeleteRegion.tsx'
 
-import Regions from '../components/regions/Regions'
-import ViewRegion from '../components/regions/ViewRegion.tsx'
-import NewRegion from '../components/regions/NewRegion.tsx'
-import DeleteRegion from '../components/regions/DeleteRegion.tsx'
+import Members from './members/Members'
 
-import Members from '../components/members/Members'
+import Tests from './tests/Tests'
 
-import Tests from '../components/tests/Tests'
-import Events from '../components/events/Events'
-import Results from '../components/results/Results'
+import Events from './events/Events'
+
+import Results from './results/Results'
 
 const APP_TITLE = 'Администратор'
 

@@ -1,9 +1,9 @@
 import React, { Component, FunctionComponent } from 'react';
 import { withRouter } from 'react-router-dom'
 
-import EditGraphQL from '../../../common/hoc/EditGraphQL'
-import { MUTATE_EDIT_REGION } from '../../../../database/mutations'
-import { QUERY_REGION } from '../../../../database/queries'
+import EditGraphQL from '../../../database/components/EditGraphQL'
+import { MUTATE_EDIT_REGION } from '../../../database/mutations'
+import { QUERY_REGION } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -43,7 +43,7 @@ const LABEL_CLOSE 		= 'Закрыть'
 
 interface PanelArray {
   length: number;
-  [item: number]: {type: string, link: any, icon: any, label: any };
+  [item: number]: {type: string, link: string, icon: any, label: string };
 }
 interface BreadcrumbsArray {
   length: number;

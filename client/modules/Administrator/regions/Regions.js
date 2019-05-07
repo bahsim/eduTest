@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom'
+import { withRouter } 			from 'react-router-dom'
 
-import AddIcon from '@material-ui/icons/Add'
+import AddIcon 			from '@material-ui/icons/Add'
 import PageviewIcon from '@material-ui/icons/Pageview'
 
-import RegionsList from '../../../common/components/RegionsList'
+import RegionsList from '../../../components/RegionsList'
 
 const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
 

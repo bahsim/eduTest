@@ -1,24 +1,24 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter } 			from 'react-router-dom'
 
 import { withStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
+import Grid 					from '@material-ui/core/Grid'
 
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import AddIcon from '@material-ui/icons/Add'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import ArrowBackIcon 			from '@material-ui/icons/ArrowBack'
+import AddIcon 						from '@material-ui/icons/Add'
+import EditIcon 					from '@material-ui/icons/Edit'
+import DeleteForeverIcon 	from '@material-ui/icons/DeleteForever'
 
-import RegionsList from '../../../common/components/RegionsList'
-import GroupsList from '../../../common/components/GroupsList'
-import MembersList from '../../../common/components/MembersList'
+import RegionsList 	from '../../../components/RegionsList'
+import GroupsList 	from '../../../components/GroupsList'
+import MembersList 	from '../../../components/MembersList'
 
-import NewGroup from './NewGroup.tsx'
-import EditGroup from './EditGroup.tsx'
-import DeleteGroup from './DeleteGroup.tsx'
+import NewGroup 		from './NewGroup.tsx'
+import EditGroup 		from './EditGroup.tsx'
+import DeleteGroup 	from './DeleteGroup.tsx'
 
-import NewMember from './NewMember.tsx'
-import EditMember from './EditMember.tsx'
+import NewMember 		from './NewMember.tsx'
+import EditMember 	from './EditMember.tsx'
 import DeleteMember from './DeleteMember.tsx'
 
 const styles = theme => ({

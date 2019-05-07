@@ -1,0 +1,22 @@
+edutTest
+  client
+    modules
+      Administrator
+        regions
+        members
+        tests
+        events
+        results
+      Moderator
+        <submodules>
+      Member
+        <submodules>
+    components
+      <common components>
+    layouts
+      Admin
+      User
+    database
+      components
+      queries
+      mutations

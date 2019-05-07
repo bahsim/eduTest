@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Query } from 'react-apollo';
 
-import ViewGraphQL from '../hoc/ViewGraphQL'
-import { QUERY_MEMBERS } from '../../../database/queries'
+import ViewGraphQL from '../database/components/ViewGraphQL'
+import { QUERY_REGIONS } from '../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 
@@ -21,17 +21,17 @@ const styles = theme => ({
 	},
 })
 
-const MembersList = (props) => {  
-	
-	const { 
-		classes, 
-		queryData, 
+const RegionsList = (props) => {
+
+	const {
+		classes,
+		queryData,
 		label,
-		selectedItem, 
-		onClick, 
+		selectedItem,
+		onClick,
 		onDoubleClick,
 	} = props;
-	
+
 	const handleOnClick = (
 		onClick ? onClick : () => {}
 	)
@@ -41,7 +41,7 @@ const MembersList = (props) => {
 	const currentItem = (
 		selectedItem ? selectedItem : ''
 	)
-	
+
 	return (
 		<Table>
 			<TableHead>
@@ -52,11 +52,11 @@ const MembersList = (props) => {
 			<TableBody>
 				{queryData.map(item => (
 					<TableRow hover
-						key={item.id} 
+						key={item.id}
 						className={classes.tableRow}
-						selected={selectedItem === item.id}
-						onClick={() => onClick(item.id, item.name)}
-						onDoubleClick={() => onDoubleClick(item.id, item.name)}
+						selected={currentItem === item.id}
+						onClick={() => handleOnClick(item.id, item.name)}
+						onDoubleClick={() => handleOnDoubleClick(item.id, item.name)}
 					>
 						<TableCell component="th" scope="row" >
 							{item.name}
@@ -68,26 +68,22 @@ const MembersList = (props) => {
 	)
 }
 
-const MembersListGQL =  (
+const RegionsListGQL =  (
 	ViewGraphQL(
 		withStyles(styles)(
-			MembersList
+			RegionsList
 		)
 	)
 )
 
-const MembersListCover = (props) => {
-	
+const RegionsListCover = (props) => {
+
 	const queryProps = {
-		query			: QUERY_MEMBERS,
+		query				: QUERY_REGIONS,
+		queryParams	: {}
 	}
-	
-	queryProps.queryParams = {
-		regionId	: props.regionId,
-		groupId		: props.groupId,
-	}
-	
-	return <MembersListGQL {...props} queryProps={queryProps} />
+
+	return <RegionsListGQL {...props} queryProps={queryProps} />
 }
 
-export default MembersListCover
+export default RegionsListCover

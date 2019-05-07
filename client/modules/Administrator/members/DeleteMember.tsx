@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react'
 import { withRouter } from 'react-router-dom'
 
-import DeleteGraphQL from '../../../common/hoc/DeleteGraphQL'
-import { MUTATE_DELETE_MEMBER } from '../../../../database/mutations'
-import { QUERY_MEMBERS, QUERY_MEMBER } from '../../../../database/queries'
+import DeleteGraphQL from '../../../database/components/DeleteGraphQL'
+import { MUTATE_DELETE_MEMBER } from '../../../database/mutations'
+import { QUERY_MEMBERS, QUERY_MEMBER } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'

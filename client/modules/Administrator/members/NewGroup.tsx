@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react'
 import { withRouter } from 'react-router-dom'
 
-import NewGraphQL from '../../../common/hoc/NewGraphQL'
-import { MUTATE_ADD_GROUP } from '../../../../database/mutations'
-import { QUERY_GROUPS } from '../../../../database/queries'
+import NewGraphQL from '../../../database/components/NewGraphQL'
+import { MUTATE_ADD_GROUP } from '../../../database/mutations'
+import { QUERY_GROUPS } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'

@@ -2,9 +2,9 @@ import React, { Component, FunctionComponent } from 'react';
 import { withRouter } from 'react-router-dom'
 import { Mutation, Query } from "react-apollo";
 
-import DeleteGraphQL from '../../../common/hoc/DeleteGraphQL'
-import { MUTATE_DELETE_REGION } from '../../../../database/mutations'
-import { QUERY_REGIONS, QUERY_REGION } from '../../../../database/queries'
+import DeleteGraphQL from '../../../database/components/DeleteGraphQL'
+import { MUTATE_DELETE_REGION } from '../../../database/mutations'
+import { QUERY_REGIONS, QUERY_REGION } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'

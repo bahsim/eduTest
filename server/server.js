@@ -17,13 +17,13 @@ if (appMode === 'development') {
 	const webpackDevMiddleware = require('webpack-dev-middleware');
 	const webpackConfig = require('../webpack.config');
 	const webpackCompiler = webpack(webpackConfig);
-	
+
 	app.use(
-		webpackDevMiddleware(webpackCompiler, { 
-			noInfo: true,  
-			publicPath: webpackConfig.output.publicPath 
+		webpackDevMiddleware(webpackCompiler, {
+			noInfo: true,
+			publicPath: webpackConfig.output.publicPath
 		})
-	);	
+	);
 }
 
 const dbPath = process.env.MONGO_URI 	|| config.dbPath;
@@ -33,15 +33,15 @@ mongoose.connect(dbPath, {useNewUrlParser: true})
 mongoose.connection
 	.once('open', () => {
 		console.log('Connected to MongoLab instance.')
-		
+
 		app.get("/admin*", (req, res) => {
-			res.sendFile(path.join(__dirname, '..','client/pages/administrator/index.html'))
+			res.sendFile(path.join(__dirname, '..','client/modules/administrator/index.html'))
 		});
-		
-		app.listen(appPort, (error) => { 
-			if (error) 
+
+		app.listen(appPort, (error) => {
+			if (error)
 				return console.error(error);
-			
+
 			console.log("Server started on port", appPort);
 		});
 	})
