@@ -1,11 +1,10 @@
-import React, { FunctionComponent } from 'react';
-import { Query } from 'react-apollo';
+import React from 'react'
+import { Query } from 'react-apollo'
 
 import ViewGraphQL from '../database/components/ViewGraphQL'
 import { QUERY_REGIONS } from '../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
-
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -22,6 +21,18 @@ const styles = theme => ({
 })
 
 const RegionsList = (props) => {
+	const queryProps = {
+		query				: QUERY_REGIONS,
+		queryParams	: {}
+	}
+	return (
+		<ViewGraphQL queryProps={queryProps}>
+			<Component {...props} />
+		</ViewGraphQL>
+	)
+}
+
+const Component = (props) => {
 
 	const {
 		classes,
@@ -68,22 +79,4 @@ const RegionsList = (props) => {
 	)
 }
 
-const RegionsListGQL =  (
-	ViewGraphQL(
-		withStyles(styles)(
-			RegionsList
-		)
-	)
-)
-
-const RegionsListCover = (props) => {
-
-	const queryProps = {
-		query				: QUERY_REGIONS,
-		queryParams	: {}
-	}
-
-	return <RegionsListGQL {...props} queryProps={queryProps} />
-}
-
-export default RegionsListCover
+export default withStyles(styles)(RegionsList)

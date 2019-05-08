@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import { Query } from 'react-apollo';
+import React from 'react'
+import { Query } from 'react-apollo'
 
 import ViewGraphQL from '../database/components/ViewGraphQL'
 import { QUERY_GROUPS } from '../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
-
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -22,6 +21,21 @@ const styles = theme => ({
 })
 
 const GroupsList = (props) => {
+
+	const queryProps = {
+		query				: QUERY_GROUPS,
+		queryParams	: {
+			regionId: props.regionId
+		}
+	}
+	return (
+		<ViewGraphQL queryProps={queryProps}>
+			<Component {...props} />
+		</ViewGraphQL>
+	)
+}
+
+const Component = (props) => {
 
 	const {
 		classes,
@@ -68,25 +82,4 @@ const GroupsList = (props) => {
 	)
 }
 
-const GroupsListGQL =  (
-	ViewGraphQL(
-		withStyles(styles)(
-			GroupsList
-		)
-	)
-)
-
-const GroupsListCover = (props) => {
-
-	const queryProps = {
-		query			: QUERY_GROUPS,
-	}
-
-	queryProps.queryParams = {
-		regionId: props.regionId
-	}
-
-	return <GroupsListGQL {...props} queryProps={queryProps} />
-}
-
-export default GroupsListCover
+export default withStyles(styles)(GroupsList)

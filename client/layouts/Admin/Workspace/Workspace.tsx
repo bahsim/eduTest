@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles'
 import Paper          from '@material-ui/core/Paper'
 
-import Breadcrumbs  from './Breadcrumbs.tsx'
-import Menu         from './Menu.tsx'
+import Breadcrumbs    from './Breadcrumbs.tsx'
+import ComandsPanel   from './ComandsPanel.tsx'
 
 const styles = theme => ({
   panel: {
@@ -81,7 +81,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
           <Breadcrumbs list={breadcrumbsContent} />
 				</Paper>
 				<Paper className={classes.panel}>
-					<Menu
+					<ComandsPanel
             list={panelContent}
             onClick={(action) => {
               this.setState({mainComponentAction: action}, () =>{
@@ -95,7 +95,9 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 						<MainComponent
 							panelAction={mainComponentAction}
 							height={registryHeight}
-							setPanel={panelContent => this.setState({panelContent})}
+							setPanel={panelContent => {
+                this.setState({panelContent})}
+              }
 							setBreadcrumbs={breadcrumbsContent => {
                 this.setState({breadcrumbsContent})}
               }

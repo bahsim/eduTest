@@ -8,8 +8,8 @@ import ListIcon from '@material-ui/icons/List'
 import ScheduleIcon from '@material-ui/icons/Schedule'
 import ArchiveIcon from '@material-ui/icons/Archive'
 
-import Layout 		from '../../layouts/Admin/AdminLayout.tsx'
-import Workspace 	from '../../layouts/Admin/Workspace.tsx'
+import Layout 		from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
+import Workspace 	from '../../layouts/Admin/Workspace/Workspace.tsx'
 
 import Regions 			from './regions/Regions'
 import ViewRegion 	from './regions/ViewRegion.tsx'
@@ -74,7 +74,7 @@ const Main = (props) => {
 						<Workspace MainComponent={DeleteRegion} />
 					)}/>
 					<Route path="/admin/regions/:id" exact component={() => (
-							<Workspace MainComponent={ViewRegion} />
+						<Workspace MainComponent={ViewRegion} />
 					)}/>
 
 					<Route path="/admin/members" exact component={() => (

@@ -1,13 +1,12 @@
-import React, { FunctionComponent } from 'react'
-import { withRouter } from 'react-router-dom'
+import React from 'react'
 
 import DeleteGraphQL from '../../../database/components/DeleteGraphQL'
 import { MUTATE_DELETE_GROUP } from '../../../database/mutations'
 import { QUERY_GROUPS, QUERY_GROUP } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
+import Typography 		from '@material-ui/core/Typography'
+import Button 				from '@material-ui/core/Button'
 
 const styles = theme => ({
 	button: {
@@ -23,16 +22,35 @@ const LABEL_DELETE 	= 'Удалить'
 
 interface ComponentProps {
 	classes: {
-		button	: object,
-		title		: object,
+		button	: object
+		title		: object
 	},
-	onDelete	: () => any,
-	groupId		: string,
-	queryData	: any,
-	action		: (args: { variables: { id: string }}) => any,
+	onDelete	: () => any
+	groupId		: string
+	queryData	: any
+	action		: (args: { variables: { id: string }}) => any
 }
 
-const DeleteGroup: FunctionComponent<ComponentProps> = (props) => {
+const DeleteGroup = (props) => {
+	const queryProps = {
+		query			: QUERY_GROUP,
+		mutation	: MUTATE_DELETE_GROUP,
+		update		: QUERY_GROUPS,
+		queryParams: {
+			id : props.groupId
+		},
+		updateParams: {
+			regionId: props.regionId
+		},
+	}
+	return (
+		<DeleteGraphQL queryProps={queryProps}>
+			<Component {...props} />
+		</DeleteGraphQL>
+	)
+}
+
+const Component = (props: ComponentProps) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -59,34 +77,4 @@ const DeleteGroup: FunctionComponent<ComponentProps> = (props) => {
 	)
 }
 
-const DeleteGroupGQL =  (
-	DeleteGraphQL(
-		withStyles(styles)(
-			DeleteGroup
-		)
-	)
-)
-
-interface CoverProps {
-	regionId: string,
-	groupId	: string,
-}
-
-const DeleteGroupCover: FunctionComponent<CoverProps> = (props) => {
-
-	const queryProps = {
-		query			: QUERY_GROUP,
-		mutation	: MUTATE_DELETE_GROUP,
-		update		: QUERY_GROUPS,
-		queryParams: {
-			id : props.groupId
-		},
-		updateParams: {
-			regionId: props.regionId
-		},
-	}
-
-	return <DeleteGroupGQL {...props} queryProps={queryProps} />
-}
-
-export default withRouter(DeleteGroupCover)
+export default withStyles(styles)(DeleteGroup)

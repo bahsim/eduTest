@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { withRouter }       from 'react-router-dom'
 
 import NewGraphQL from '../../../database/components/NewGraphQL'
 import { MUTATE_ADD_REGION } from '../../../database/mutations'
 import { QUERY_REGIONS } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button';
-
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import TextField      from '@material-ui/core/TextField'
+import Grid           from '@material-ui/core/Grid'
+import Button         from '@material-ui/core/Button';
+import ArrowBackIcon  from '@material-ui/icons/ArrowBack'
 
 const styles = theme => ({
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: '100%',
+    marginLeft  : theme.spacing.unit,
+    marginRight : theme.spacing.unit,
+    width       : '100%',
   },
 	button: {
-    margin: theme.spacing.unit,
+    margin      : theme.spacing.unit,
   },
 })
 
@@ -39,92 +38,79 @@ interface PanelArray {
 }
 interface BreadcrumbsArray {
   length: number;
-  [item: number]: string;
+  [item: number]: string
 }
 
-interface NewRegionProps {
+interface ComponentProps {
   classes: {
-    textField : object,
-    button    : object,
+    textField : object
+    button    : object
   },
-  setPanel      : (PanelArray) => any,
-  setBreadcrumbs: (BreadcrumbsArray) => any,
-  history       : { replace: (url: string) => any },
-  action        : (args: { variables: { name } }) => any,
+  setPanel      : (PanelArray) => any
+  setBreadcrumbs: (BreadcrumbsArray) => any
+  history       : { replace: (url: string) => any }
+  action        : (args: { variables: { name } }) => any
 }
 
-class NewRegion extends Component<NewRegionProps> {
 
-	componentDidMount() {
-		const { setPanel, setBreadcrumbs } = this.props
-
-		const panel = [{...PANEL_BACK}]
-		setPanel(panel)
-
-		setBreadcrumbs([BREADCRUMBS_REGIONS, BREADCRUMBS_NEW_REGION])
-	}
-
-	handleSubmit = (e) => {
-		e.preventDefault()
-
-		const { history, action } = this.props
-		const name = e.target.name.value.trim()
-
-		if (name === '') return
-
-		action({ variables: { name }})
-			.then(() => history.replace('/admin/regions'))
-	}
-
-	render() {
-		const { classes } = this.props
-
-		return (
-			<Grid container >
-				<Grid item xs={6}>
-					<form
-						onSubmit={this.handleSubmit}
-						noValidate
-						autoComplete="off"
-					>
-						<TextField
-							label={LABEL_NAME}
-							name="name"
-							className={classes.textField}
-							margin="normal"
-							autoFocus
-						/>
-						<Button
-							type="submit"
-							variant="contained"
-							className={classes.button}
-							color="primary"
-						>
-							{LABEL_SAVE}
-						</Button>
-					</form>
-				</Grid>
-			</Grid>
-		);
-	}
-}
-
-const NewRegionGQL =  (
-	NewGraphQL(
-		withStyles(styles)(
-			NewRegion
-		)
-	)
-)
-
-const NewRegionCover = (props) => {
-
+const NewRegion = (props) => {
 	const queryProps = {
 		mutation	: MUTATE_ADD_REGION,
 		update		: QUERY_REGIONS,
 	}
-
-	return <NewRegionGQL {...props} queryProps={queryProps} />
+  return (
+    <NewGraphQL queryProps={queryProps}>
+      <Component {...props} />
+    </NewGraphQL>
+  )
 }
 
-export default withRouter(NewRegionCover)
+const Component = (props: ComponentProps) => {
+
+  useEffect(() => {
+		const panel = [{...PANEL_BACK}]
+		props.setPanel(panel)
+
+		props.setBreadcrumbs([ BREADCRUMBS_REGIONS, BREADCRUMBS_NEW_REGION ])
+  })
+
+  const handleSubmit = (e) => {
+		e.preventDefault()
+
+		const name = e.target.name.value.trim()
+		if (name === '') return
+
+		props.action({ variables: { name }})
+			.then(() => props.history.replace('/admin/regions'))
+	}
+
+	return (
+		<Grid container>
+			<Grid item xs={6}>
+				<form
+					onSubmit={handleSubmit}
+					noValidate
+					autoComplete="off"
+				>
+					<TextField
+						label={LABEL_NAME}
+						name="name"
+						className={props.classes.textField}
+						margin="normal"
+						autoFocus
+					/>
+					<Button
+						type="submit"
+						variant="contained"
+						className={props.classes.button}
+						color="primary"
+					>
+						{LABEL_SAVE}
+					</Button>
+				</form>
+			</Grid>
+		</Grid>
+	)
+}
+
+export default withStyles(styles)(withRouter(NewRegion))

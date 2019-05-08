@@ -1,14 +1,13 @@
-import React, { FunctionComponent } from 'react';
-import { withRouter } from 'react-router-dom'
+import React from 'react'
 
 import EditGraphQL from '../../../database/components/EditGraphQL'
 import { MUTATE_EDIT_GROUP } from '../../../database/mutations'
 import { QUERY_GROUP } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button';
+import TextField      from '@material-ui/core/TextField'
+import Grid           from '@material-ui/core/Grid'
+import Button         from '@material-ui/core/Button'
 
 const styles = theme => ({
   textField: {
@@ -26,16 +25,31 @@ const LABEL_SAVE 	= 'Сохранить'
 
 interface ComponentProps {
   classes: {
-    textField : object,
-    button    : object,
+    textField : object
+    button    : object
   },
-  onSave: (name: string) => any,
-  queryData: { name: string },
-  groupId   : string,
-  action    : (args: { variables: { name: string, id: string }}) => any,
+  onSave    : (name: string) => any
+  queryData : { name: string }
+  groupId   : string
+  action    : (args: { variables: { name: string, id: string }}) => any
 }
 
-const EditGroup: FunctionComponent<ComponentProps> = (props) => {
+const EditGroup = (props: any) => {
+  const queryProps = {
+		query			: QUERY_GROUP,
+		mutation	: MUTATE_EDIT_GROUP,
+    queryParams: {
+  		id  : props.groupId
+  	},
+	}
+  return (
+    <EditGraphQL queryProps={queryProps}>
+      <Component {...props} />
+    </EditGraphQL>
+  )
+}
+
+const Component = (props: ComponentProps) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -78,29 +92,4 @@ const EditGroup: FunctionComponent<ComponentProps> = (props) => {
 	)
 }
 
-const EditGroupGQL =  (
-	EditGraphQL(
-		withStyles(styles)(
-			EditGroup
-		)
-	)
-)
-
-interface CoverProps {
-  groupId: string,
-}
-
-const EditGroupCover: FunctionComponent<CoverProps> = (props) => {
-
-	const queryProps = {
-		query			: QUERY_GROUP,
-		mutation	: MUTATE_EDIT_GROUP,
-    queryParams: {
-  		id  : props.groupId
-  	},
-	}
-
-	return <EditGroupGQL {...props} queryProps={queryProps} />
-}
-
-export default withRouter(EditGroupCover)
+export default withStyles(styles)(EditGroup)

@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { withStyles } from '@material-ui/core/styles'
-import Breadcrumbs from '@material-ui/lab/Breadcrumbs'
-import Typography from '@material-ui/core/Typography'
+import Breadcrumbs 		from '@material-ui/lab/Breadcrumbs'
+import Typography 		from '@material-ui/core/Typography'
 
 const styles = theme => ({
 	breadcrumb: {
-		marginTop: theme.spacing.unit,
-		marginBottom: theme.spacing.unit,
-		textTransform: 'uppercase'
+		marginTop: 			theme.spacing.unit,
+		marginBottom: 	theme.spacing.unit,
+		textTransform: 	'uppercase'
 	},
 })
 

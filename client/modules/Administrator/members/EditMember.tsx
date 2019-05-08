@@ -1,23 +1,22 @@
-import React, { FunctionComponent } from 'react';
-import { withRouter } from 'react-router-dom'
+import React from 'react'
 
 import EditGraphQL from '../../../database/components/EditGraphQL'
 import { MUTATE_EDIT_MEMBER } from '../../../database/mutations'
 import { QUERY_MEMBER } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button';
+import TextField      from '@material-ui/core/TextField'
+import Grid           from '@material-ui/core/Grid'
+import Button         from '@material-ui/core/Button'
 
 const styles = theme => ({
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: '100%',
+    marginLeft  : theme.spacing.unit,
+    marginRight : theme.spacing.unit,
+    width       : '100%',
   },
 	button: {
-    margin: theme.spacing.unit,
+    margin      : theme.spacing.unit,
   },
 })
 
@@ -26,16 +25,31 @@ const LABEL_SAVE 	= 'Сохранить'
 
 interface ComponentProps {
   classes: {
-    textField : object,
-    button    : object,
+    textField : object
+    button    : object
   },
-  onSave: (name: string) => any,
-  queryData: { name: string },
-  memberId: string,
-  action: (args: { variables: { name: string, id: string }}) => any,
+  onSave    : (name: string) => any
+  queryData : { name: string }
+  memberId  : string
+  action    : (args: { variables: { name: string, id: string }}) => any
 }
 
-const EditMember: FunctionComponent<ComponentProps> = (props) => {
+const EditMember = (props: any) => {
+	const queryProps = {
+		query			: QUERY_MEMBER,
+		mutation	: MUTATE_EDIT_MEMBER,
+    queryParams: {
+  		id  : props.memberId,
+  	},
+	}
+	return (
+    <EditGraphQL queryProps={queryProps}>
+      <Component {...props} />
+    </EditGraphQL>
+  )
+}
+
+const Component = (props: ComponentProps) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -78,29 +92,4 @@ const EditMember: FunctionComponent<ComponentProps> = (props) => {
 	)
 }
 
-const EditMemberGQL =  (
-	EditGraphQL(
-		withStyles(styles)(
-			EditMember
-		)
-	)
-)
-
-interface CoverProps {
-  memberId: string,
-}
-
-const EditMemberCover: FunctionComponent<CoverProps> = (props) => {
-
-	const queryProps = {
-		query			: QUERY_MEMBER,
-		mutation	: MUTATE_EDIT_MEMBER,
-    queryParams: {
-  		id  : props.memberId,
-  	},
-	}
-
-	return <EditMemberGQL {...props} queryProps={queryProps} />
-}
-
-export default withRouter(EditMemberCover)
+export default withStyles(styles)(EditMember)

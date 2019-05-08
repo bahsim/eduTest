@@ -1,14 +1,13 @@
-import React, { FunctionComponent } from 'react'
-import { withRouter } from 'react-router-dom'
+import React from 'react'
 
 import NewGraphQL from '../../../database/components/NewGraphQL'
 import { MUTATE_ADD_GROUP } from '../../../database/mutations'
 import { QUERY_GROUPS } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
+import TextField      from '@material-ui/core/TextField'
+import Grid           from '@material-ui/core/Grid'
+import Button         from '@material-ui/core/Button'
 
 const styles = theme => ({
   textField: {
@@ -26,19 +25,35 @@ const LABEL_SAVE 	= 'Сохранить'
 
 interface ComponentProps {
   classes: {
-    container : object,
-    textField : object,
-    button    : object,
+    container : object
+    textField : object
+    button    : object
   },
-  onSave  : () => any,
-  regionId: string,
+  onSave  : () => any
+  regionId: string
   action  : (
     args: { variables: {
-      name    : string,
-      regionId: string }}) => any,
+      name    : string
+      regionId: string }}) => any
 }
 
-const NewGroup: FunctionComponent<ComponentProps> = (props) => {
+
+const NewGroup = (props) => {
+	const queryProps = {
+		mutation    : MUTATE_ADD_GROUP,
+		update      : QUERY_GROUPS,
+    updateParams: {
+  		regionId: props.regionId
+  	}
+	}
+  return (
+    <NewGraphQL queryProps={queryProps}>
+      <Component {...props} />
+    </NewGraphQL>
+  )
+}
+
+const Component = (props: ComponentProps) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -78,29 +93,4 @@ const NewGroup: FunctionComponent<ComponentProps> = (props) => {
 	)
 }
 
-const NewGroupGQL =  (
-	NewGraphQL(
-		withStyles(styles)(
-			NewGroup
-		)
-	)
-)
-
-interface CoverProps {
-  regionId: string,
-}
-
-const NewGroupCover: FunctionComponent<CoverProps> = (props) => {
-
-	const queryProps = {
-		mutation    : MUTATE_ADD_GROUP,
-		update      : QUERY_GROUPS,
-    updateParams: {
-  		regionId: props.regionId
-  	}
-	}
-
-	return <NewGroupGQL {...props} queryProps={queryProps} />
-}
-
-export default withRouter(NewGroupCover)
+export default withStyles(styles)(NewGroup)

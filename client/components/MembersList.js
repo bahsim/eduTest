@@ -1,17 +1,15 @@
-import React, { Component } from 'react';
-import { Query } from 'react-apollo';
+import React from 'react'
+import { Query } from 'react-apollo'
 
 import ViewGraphQL from '../database/components/ViewGraphQL'
 import { QUERY_MEMBERS } from '../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
-
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-
 import AddIcon from '@material-ui/icons/Add'
 import PageviewIcon from '@material-ui/icons/Pageview'
 
@@ -22,6 +20,21 @@ const styles = theme => ({
 })
 
 const MembersList = (props) => {
+	const queryProps = {
+		query				: QUERY_MEMBERS,
+		queryParams	: {
+			regionId	: props.regionId,
+			groupId		: props.groupId,
+		}
+	}
+	return (
+		<ViewGraphQL queryProps={queryProps}>
+			<Component {...props} />
+		</ViewGraphQL>
+	)
+}
+
+const Component = (props) => {
 
 	const {
 		classes,
@@ -68,26 +81,4 @@ const MembersList = (props) => {
 	)
 }
 
-const MembersListGQL =  (
-	ViewGraphQL(
-		withStyles(styles)(
-			MembersList
-		)
-	)
-)
-
-const MembersListCover = (props) => {
-
-	const queryProps = {
-		query			: QUERY_MEMBERS,
-	}
-
-	queryProps.queryParams = {
-		regionId	: props.regionId,
-		groupId		: props.groupId,
-	}
-
-	return <MembersListGQL {...props} queryProps={queryProps} />
-}
-
-export default MembersListCover
+export default withStyles(styles)(MembersList)
