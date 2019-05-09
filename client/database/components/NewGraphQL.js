@@ -1,9 +1,19 @@
 import React from 'react'
-import { Mutation } from "react-apollo";
+import { Mutation, Types } from "react-apollo";
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-const NewGraphQL = props => {
+interface ComponentProps {
+	queryProps: {
+		query: { value: string, name: string },
+		mutation: { value: string, name: string },
+		update: { value: string, name: string },
+		updateParams: any
+	},
+	children: any,
+}
+
+const NewGraphQL = (props) => {
 
   const { queryProps, children } = props
 	const { mutation, update, updateParams } = queryProps

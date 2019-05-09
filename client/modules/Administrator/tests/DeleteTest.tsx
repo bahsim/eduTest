@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { withRouter } 			from 'react-router-dom'
 
 import DeleteGraphQL from '../../../database/components/DeleteGraphQL'
-import { MUTATE_DELETE_REGION } from '../../../database/mutations'
-import { QUERY_REGIONS, QUERY_REGION } from '../../../database/queries'
+import { MUTATE_DELETE_TEST } from '../../../database/mutations'
+import { QUERY_TESTS, QUERY_TEST } from '../../../database/queries'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography 		from '@material-ui/core/Typography'
@@ -22,10 +22,10 @@ const styles = theme => ({
 
 const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
 
-const PANEL_BACK 	= panelLink('/admin/regions', ArrowBackIcon, 'Назад')
+const PANEL_BACK 	= panelLink('/admin/tests', ArrowBackIcon, 'Назад')
 
-const BREADCRUMBS_REGIONS	= 'Регионы'
-const BREADCRUMBS_DEL_REGION = 'Удаление'
+const BREADCRUMBS_TESTS	= 'Тесты'
+const BREADCRUMBS_DEL_TEST = 'Удаление'
 
 const LABEL_DELETE 	= 'Удалить'
 
@@ -46,11 +46,11 @@ interface ComponentProps {
   action        : (args: { variables: { id: string }}) => any
 }
 
-const DeleteRegion = (props) => {
+const DeleteTest = (props) => {
 	const queryProps = {
-		query			: QUERY_REGION,
-		mutation	: MUTATE_DELETE_REGION,
-		update		: QUERY_REGIONS,
+		query			: QUERY_TEST,
+		mutation	: MUTATE_DELETE_TEST,
+		update		: QUERY_TESTS,
 		queryParams: {
 			id	: props.match.params.id
 		}
@@ -68,7 +68,7 @@ const Component = (props: ComponentProps) => {
 		e.preventDefault()
 
 		props.action({ variables: { id: props.queryProps.queryParams.id } })
-			.then(() => props.history.replace('/admin/regions'))
+			.then(() => props.history.replace('/admin/tests'))
 	}
 
 	useEffect(() => {
@@ -77,9 +77,9 @@ const Component = (props: ComponentProps) => {
 		props.setPanel(panel)
 
 		props.setBreadcrumbs([
-			BREADCRUMBS_REGIONS,
+			BREADCRUMBS_TESTS,
 			props.queryData.name,
-			BREADCRUMBS_DEL_REGION])
+			BREADCRUMBS_DEL_TEST])
 	}, [])
 
 	return (
@@ -100,4 +100,4 @@ const Component = (props: ComponentProps) => {
 	)
 }
 
-export default withStyles(styles)(withRouter(DeleteRegion))
+export default withStyles(styles)(withRouter(DeleteTest))

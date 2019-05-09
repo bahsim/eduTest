@@ -1,28 +1,28 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { createBrowserHistory } from 'history';
-import { Router, Route, Switch } from 'react-router';
+import React from 'react'
+import { render } from 'react-dom'
+import { createBrowserHistory } from 'history'
+import { Router, Route, Switch } from 'react-router'
 
-import { ApolloClient } from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
-import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client'
+import { ApolloProvider } from 'react-apollo'
+import { HttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 
 import Main from './container'
 
 const cache = new InMemoryCache()
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost/api',
-  headers: {},
+  uri     : 'http://localhost/api',
+  headers : {},
 })
 
 const client = new ApolloClient({
-  link: httpLink,
-  cache,
-});
+  link  : httpLink,
+  cache : cache,
+})
 
-const history = createBrowserHistory();
+const history = createBrowserHistory()
 
 const Root = () => (
 	<ApolloProvider client={client}>
@@ -35,4 +35,4 @@ const Root = () => (
 render(
 	<Root />,
 	document.getElementById('app')
-);
+)

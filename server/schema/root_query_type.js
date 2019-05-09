@@ -11,11 +11,14 @@ const Group = mongoose.model('group')
 const MemberType = require('./member_type')
 const Member = mongoose.model('member')
 
-const { 
-	GraphQLObjectType, 
-	GraphQLList, 
-	GraphQLID, 
-	GraphQLNonNull, 
+const TestType = require('./member_type')
+const Test = mongoose.model('test')
+
+const {
+	GraphQLObjectType,
+	GraphQLList,
+	GraphQLID,
+	GraphQLNonNull,
 } = graphql
 
 const RootQuery = new GraphQLObjectType({
@@ -67,6 +70,19 @@ const RootQuery = new GraphQLObjectType({
 			args: { id: { type: new GraphQLNonNull(GraphQLID) } },
 			resolve(parentValue, { id }) {
 				return Member.findById(id)
+			}
+		},
+		tests: {
+			type: new GraphQLList(TestType),
+			resolve() {
+				return Test.find({}, null, {sort: { name: 1 }})
+			}
+		},
+		test: {
+			type: TestType,
+			args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+			resolve(parentValue, { id }) {
+				return Test.findById(id)
 			}
 		},
 	})

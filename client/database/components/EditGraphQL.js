@@ -4,7 +4,7 @@ import { Mutation, Query } from "react-apollo"
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 
-const EditGraphQL = props => {
+const EditGraphQL = (props) => {
 
 	const { queryProps, children } = props
 	const { query, mutation, queryParams } = queryProps
@@ -48,7 +48,15 @@ const EditGraphQL = props => {
 				}
 
 				return (
-					<Mutation mutation={mutation.value}>
+					<Mutation mutation={mutation.value}
+						update={(cache, { data }) => {
+							cache.writeQuery({
+								query: query.value,
+								variables: {...queryParams},
+								data: { [query.name]: data[mutation.name] },
+							});
+						}}
+					>
 						{(action, { data }) => (
               React.Children.map(children, child => (
                 React.cloneElement(child, { action, queryData, queryProps })

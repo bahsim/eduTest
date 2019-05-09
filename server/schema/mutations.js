@@ -10,11 +10,14 @@ const GroupType = require('./group_type')
 const MemberType = require('./member_type')
 const Member = mongoose.model('member')
 
-const { 
-	GraphQLObjectType, 
-	GraphQLString, 
-	GraphQLNonNull, 
-	GraphQLID 
+const TestType = require('./test_type')
+const Test = mongoose.model('test')
+
+const {
+	GraphQLObjectType,
+	GraphQLString,
+	GraphQLNonNull,
+	GraphQLID
 } = graphql
 
 const mutation = new GraphQLObjectType({
@@ -44,7 +47,7 @@ const mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) }
       },
-      resolve(parentValue, { id }) {				
+      resolve(parentValue, { id }) {
 				return Region.delete(id)
       }
     },
@@ -73,7 +76,7 @@ const mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) }
       },
-      resolve(parentValue, { id }) {				
+      resolve(parentValue, { id }) {
 				return Group.delete(id)
       }
     },
@@ -103,8 +106,36 @@ const mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) }
       },
-      resolve(parentValue, { id }) {				
+      resolve(parentValue, { id }) {
 				return Member.deleteOne({ _id: id })
+      }
+    },
+		addTest: {
+      type: TestType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parentValue, { name }) {
+        return (new Test({ name })).save()
+      }
+    },
+    editTest: {
+      type: TestType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve(parentValue, { id, name }) {
+        return Test.edit(id, name)
+      }
+    },
+    deleteTest: {
+      type: TestType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) }
+      },
+      resolve(parentValue, { id }) {
+				return Test.delete(id)
       }
     },
 	}

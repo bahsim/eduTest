@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 
-const DeleteGraphQL = props => {
+const DeleteGraphQL = (props) => {
 
 	const { queryProps, children } = props
 	const { query, mutation, update, queryParams, updateParams } = queryProps

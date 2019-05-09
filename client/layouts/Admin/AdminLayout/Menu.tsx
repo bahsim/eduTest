@@ -23,13 +23,13 @@ interface ComponentProps {
 const Menu = ({list, history}: ComponentProps) => (
 	<List component="nav">
 		{list.map((el,idx) => (
-			<div key={idx} onClick={() => history.replace(el.link)}>
+			<span key={idx} onClick={() => history.replace(el.link)}>
 				<ListItem button>
 					<ListItemIcon>{el.icon}</ListItemIcon>
 					<ListItemText primary={el.label} />
 				</ListItem>
 				<Divider />
-			</div>
+			</span>
 		))}
 	</List>
 )

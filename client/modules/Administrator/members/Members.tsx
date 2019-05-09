@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
 import { withRouter } 			from 'react-router-dom'
 
-import { withStyles } from '@material-ui/core/styles'
-import Grid 					from '@material-ui/core/Grid'
-
+import { withStyles } 		from '@material-ui/core/styles'
+import Grid 							from '@material-ui/core/Grid'
 import ArrowBackIcon 			from '@material-ui/icons/ArrowBack'
 import AddIcon 						from '@material-ui/icons/Add'
 import EditIcon 					from '@material-ui/icons/Edit'
 import DeleteForeverIcon 	from '@material-ui/icons/DeleteForever'
 
-import RegionsList 	from '../../../components/RegionsList'
-import GroupsList 	from '../../../components/GroupsList'
-import MembersList 	from '../../../components/MembersList'
+import RegionsList 	from '../../../components/RegionsList.tsx'
+import GroupsList 	from '../../../components/GroupsList.tsx'
+import MembersList 	from '../../../components/MembersList.tsx'
 
 import NewGroup 		from './NewGroup.tsx'
 import EditGroup 		from './EditGroup.tsx'
@@ -53,7 +52,40 @@ const LABEL_REGIONS_LIST 	= 'Регионы'
 const LABEL_GROUPS_LIST 	= 'Группы'
 const LABEL_MEMBERS_LIST 	= 'Участники'
 
-class Members extends Component {
+interface PanelArray {
+  length: number;
+  [item: number]: {type: string, action: any, icon: any, label: any };
+}
+
+interface BreadcrumbsArray {
+  length: number;
+  [item: number]: string
+}
+
+interface ComponentProps {
+	classes: {
+		groupsList	: object
+	},
+	setPanel			: (PanelArray) => any,
+	setBreadcrumbs: (BreadcrumbsArray) => any,
+	panelAction		: string,
+	height				: string
+}
+
+interface ComponentState {
+	regionName	: string,
+	regionId		: string,
+	groupName		: string,
+	groupId			: string,
+	memberName	: string,
+	memberId		: string,
+	mode				: string,
+	breadcrumbs	: BreadcrumbsArray,
+	panel				: PanelArray,
+	panelAction	: string,
+}
+
+class Members extends Component< ComponentProps, ComponentState > {
 	state = {
 		regionName	: '',
 		regionId		: '',
@@ -252,7 +284,7 @@ class Members extends Component {
 	}
 
 	render() {
-		const { classes, queryData, height } = this.props
+		const { classes, height } = this.props
 		const { regionId, groupId, memberId, mode } = this.state
 
 		const listStyle = { height, overflow: 'auto' }
