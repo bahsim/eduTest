@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { QUERY_MEMBERS } from '../database/queries'
+import { QUERY_MEMBERS } from '../../database/queries'
 
-import SimpleList from './SimpleList.tsx'
+import SimpleList from '../common/SimpleList.tsx'
 
 const GroupsList = (props) => {
 	const queryProps = {

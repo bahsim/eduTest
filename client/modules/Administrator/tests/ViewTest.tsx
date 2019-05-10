@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { MUTATE_EDIT_TEST } from '../../../database/mutations'
 import { QUERY_TEST } from '../../../database/queries'
 
-import ViewRecord from '../../../components/ViewRecord.tsx'
+import ViewRecord from '../../../layouts/Admin/PrimaryDataset/components/ViewRecord.tsx'
 
 const ViewTest = (props) => {
   const params = {

@@ -3,7 +3,7 @@ import React from 'react'
 import { MUTATE_ADD_TEST } from '../../../database/mutations'
 import { QUERY_TESTS } from '../../../database/queries'
 
-import NewRecord from '../../../components/NewRecord.tsx'
+import NewRecord from '../../../layouts/Admin/PrimaryDataset/components/NewRecord.tsx'
 
 const params = {
   linkBack    : '/admin/tests',

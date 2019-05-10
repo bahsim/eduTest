@@ -8,9 +8,9 @@ import AddIcon 						from '@material-ui/icons/Add'
 import EditIcon 					from '@material-ui/icons/Edit'
 import DeleteForeverIcon 	from '@material-ui/icons/DeleteForever'
 
-import RegionsList 	from '../../../components/RegionsList.tsx'
-import GroupsList 	from '../../../components/GroupsList.tsx'
-import MembersList 	from '../../../components/MembersList.tsx'
+import RegionsList 	from '../../../components/Administrator/RegionsList.tsx'
+import GroupsList 	from '../../../components/Administrator/GroupsList.tsx'
+import MembersList 	from '../../../components/Administrator/MembersList.tsx'
 
 import NewGroup 		from './NewGroup.tsx'
 import EditGroup 		from './EditGroup.tsx'

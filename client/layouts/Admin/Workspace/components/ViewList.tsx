@@ -4,14 +4,12 @@ import { withRouter } 			from 'react-router-dom'
 import AddIcon 			from '@material-ui/icons/Add'
 import PageviewIcon from '@material-ui/icons/Pageview'
 
-import RegionsList from '../../../components/RegionsList.tsx'
+import SimpleList from '../../../../components/common/SimpleList.tsx'
 
 const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
 
-const PANEL_ADD 	= panelLink('/admin/regions/new', AddIcon, 'Добавить')
-const PANEL_OPEN 	= panelLink('/admin/regions', PageviewIcon, 'Открыть')
-
-const BREADCRUMBS_REGIONS	= 'Регионы'
+const PANEL_ADD 	= panelLink('/admin/tests/new', AddIcon, 'Добавить')
+const PANEL_OPEN 	= panelLink('/admin/tests', PageviewIcon, 'Открыть')
 
 const LABEL_NAME = 'Наименование'
 
@@ -26,24 +24,30 @@ interface BreadcrumbsArray {
 }
 
 interface ComponentProps {
-	history: {
+  linkBack      : string,
+  breadcrumbs   : string,
+  history: {
 		replace			: (url: string) => any
 	},
 	setPanel			: (PanelArray) => any,
-	setBreadcrumbs: (BreadcrumbsArray) => any
+	setBreadcrumbs: (BreadcrumbsArray) => any,
+  queryProps    : any,
 }
 
-const Regions = (props: ComponentProps) => {
+const Tests = (props: ComponentProps) => {
 
 	const [ currentItem, setCurrentItem ] = useState('')
 
 	useEffect(() => {
-    props.setPanel([{...PANEL_ADD}])
-		props.setBreadcrumbs([BREADCRUMBS_REGIONS])
+    props.setPanel([panelLink(`${props.linkBack}/new`, AddIcon, 'Добавить')])
+		props.setBreadcrumbs([props.breadcrumbs])
 	}, [])
 
 	const selectItem = (id) => {
-		const panel = [ {...PANEL_ADD}, {...PANEL_OPEN} ]
+		const panel = [
+      panelLink(`${props.linkBack}/new`, AddIcon, 'Добавить'),
+      panelLink(props.linkBack, PageviewIcon, 'Открыть')
+    ]
 		panel[1].link += `/${id}`
 		props.setPanel(panel)
 
@@ -51,12 +55,13 @@ const Regions = (props: ComponentProps) => {
 	}
 
 	const openItem = (id) => {
-		props.history.replace(`/admin/regions/${id}`)
+		props.history.replace(`${props.linkBack}/${id}`)
 	}
 
 	return (
-		<RegionsList
-			label={LABEL_NAME}
+		<SimpleList
+      queryProps={props.queryProps}
+      label={LABEL_NAME}
 			selectedItem={currentItem}
 			onClick={selectItem}
 			onDoubleClick={openItem}
@@ -64,4 +69,4 @@ const Regions = (props: ComponentProps) => {
 	)
 }
 
-export default withRouter(Regions)
+export default withRouter(Tests)

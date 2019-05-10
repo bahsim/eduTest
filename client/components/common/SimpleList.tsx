@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ViewGraphQL from '../database/components/ViewGraphQL'
+import ViewGraphQL from '../../database/components/ViewGraphQL'
 
 import { withStyles } from '@material-ui/core/styles'
 import Table 					from '@material-ui/core/Table'

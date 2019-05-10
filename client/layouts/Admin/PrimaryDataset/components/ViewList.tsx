@@ -4,14 +4,12 @@ import { withRouter } 			from 'react-router-dom'
 import AddIcon 			from '@material-ui/icons/Add'
 import PageviewIcon from '@material-ui/icons/Pageview'
 
-import TestsList from '../../../components/TestsList.tsx'
+import SimpleList from '../../../../components/common/SimpleList.tsx'
 
 const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
 
 const PANEL_ADD 	= panelLink('/admin/tests/new', AddIcon, 'Добавить')
 const PANEL_OPEN 	= panelLink('/admin/tests', PageviewIcon, 'Открыть')
-
-const BREADCRUMBS_TESTS	= 'Тесты'
 
 const LABEL_NAME = 'Наименование'
 
@@ -26,11 +24,14 @@ interface BreadcrumbsArray {
 }
 
 interface ComponentProps {
-	history: {
+  linkBack      : string,
+  breadcrumbs   : string,
+  history: {
 		replace			: (url: string) => any
 	},
 	setPanel			: (PanelArray) => any,
-	setBreadcrumbs: (BreadcrumbsArray) => any
+	setBreadcrumbs: (BreadcrumbsArray) => any,
+  queryProps    : any,
 }
 
 const Tests = (props: ComponentProps) => {
@@ -38,12 +39,15 @@ const Tests = (props: ComponentProps) => {
 	const [ currentItem, setCurrentItem ] = useState('')
 
 	useEffect(() => {
-    props.setPanel([{...PANEL_ADD}])
-		props.setBreadcrumbs([BREADCRUMBS_TESTS])
+    props.setPanel([panelLink(`${props.linkBack}/new`, AddIcon, 'Добавить')])
+		props.setBreadcrumbs([props.breadcrumbs])
 	}, [])
 
 	const selectItem = (id) => {
-		const panel = [ {...PANEL_ADD}, {...PANEL_OPEN} ]
+		const panel = [
+      panelLink(`${props.linkBack}/new`, AddIcon, 'Добавить'),
+      panelLink(props.linkBack, PageviewIcon, 'Открыть')
+    ]
 		panel[1].link += `/${id}`
 		props.setPanel(panel)
 
@@ -51,12 +55,13 @@ const Tests = (props: ComponentProps) => {
 	}
 
 	const openItem = (id) => {
-		props.history.replace(`/admin/tests/${id}`)
+		props.history.replace(`${props.linkBack}/${id}`)
 	}
 
 	return (
-		<TestsList
-			label={LABEL_NAME}
+		<SimpleList
+      queryProps={props.queryProps}
+      label={LABEL_NAME}
 			selectedItem={currentItem}
 			onClick={selectItem}
 			onDoubleClick={openItem}

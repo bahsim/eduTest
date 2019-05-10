@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { withRouter }       from 'react-router-dom'
 
-import NewGraphQL from '../database/components/NewGraphQL'
+import NewGraphQL from '../../../../database/components/NewGraphQL'
 
 import { withStyles } from '@material-ui/core/styles'
 import TextField      from '@material-ui/core/TextField'
