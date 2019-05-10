@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
-import { withRouter } 			from 'react-router-dom'
 
-import DeleteGraphQL from '../../../../database/components/DeleteGraphQL'
+import DeleteGraphQL 	from '../../../../database/components/DeleteGraphQL'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography 		from '@material-ui/core/Typography'
@@ -88,4 +87,4 @@ const Component = (props: ComponentProps) => {
 	)
 }
 
-export default withStyles(styles)(withRouter(DeleteTest))
+export default withStyles(styles)(DeleteTest)

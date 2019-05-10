@@ -43,7 +43,7 @@ interface ComponentProps {
   action        : (args: { variables: { id: string }}) => any
 }
 
-const DeleteTest = (props) => (
+const DeleteRecord = (props) => (
 	<DeleteGraphQL queryProps={props.queryProps}>
 		<Component {...props} />
 	</DeleteGraphQL>
@@ -88,4 +88,4 @@ const Component = (props: ComponentProps) => {
 	)
 }
 
-export default withStyles(styles)(withRouter(DeleteTest))
+export default withStyles(styles)(withRouter(DeleteRecord))

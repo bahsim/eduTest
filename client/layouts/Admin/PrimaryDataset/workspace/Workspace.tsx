@@ -26,7 +26,7 @@ interface WorkspaceProps {
     panel       : object,
     mainspace   : object,
   },
-  MainComponent : any,
+  children      : any,
 }
 
 interface WorkspaceState {
@@ -64,7 +64,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 	}
 
 	render() {
-		const { classes, MainComponent } = this.props
+		const { classes, children } = this.props
 		const {
 			mainspaceTop,
 			panelContent,
@@ -92,16 +92,18 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 				</Paper>
 				<div ref={(el) => this.mainspace = el }>
 					<Paper className={classes.mainspace} style={styleMainspace}>
-						<MainComponent
-							panelAction={mainComponentAction}
-							height={registryHeight}
-							setPanel={panelContent => {
-                this.setState({panelContent})}
-              }
-							setBreadcrumbs={breadcrumbsContent => {
-                this.setState({breadcrumbsContent})}
-              }
-						/>
+            {React.Children.map(children, child => (
+              React.cloneElement(child, {
+                panelAction: mainComponentAction,
+  							height: registryHeight,
+  							setPanel: panelContent => {
+                  this.setState({panelContent})
+                },
+  							setBreadcrumbs: breadcrumbsContent => {
+                  this.setState({breadcrumbsContent})
+                },
+              })
+            ))}
 					</Paper>
 				</div>
 			</div>

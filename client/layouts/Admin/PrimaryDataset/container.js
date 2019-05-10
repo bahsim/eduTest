@@ -1,105 +1,101 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
-import DeviceHubIcon 	from '@material-ui/icons/DeviceHub'
-import PeopleIcon 		from '@material-ui/icons/People'
-import ListIcon 			from '@material-ui/icons/List'
-import ScheduleIcon 	from '@material-ui/icons/Schedule'
-import ArchiveIcon 		from '@material-ui/icons/Archive'
+import Workspace 		from './Workspace/Workspace.tsx'
 
-import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
-import Workspace 			from '../../layouts/Admin/Workspace/Workspace.tsx'
-import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/Workspace.tsx'
+import ViewList			from './components/ViewList.tsx'
+import NewRecord 		from './components/NewRecord.tsx'
+import ViewRecord 	from './components/ViewRecord.tsx'
+import DeleteRecord	from './components/DeleteRecord.tsx'
 
-import ListRegions 			from './regions/ListRegions.tsx'
-import ViewRegion 	from './regions/ViewRegion.tsx'
-import NewRegion 		from './regions/NewRegion.tsx'
-import DeleteRegion from './regions/DeleteRegion.tsx'
+const Main = (props) => {
+	const {
+		baseURL,
+		labelName,
+		labelNew,
+		queryList,
+		queryItem,
+		mutateAdd,
+		mutateEdit,
+		mutateDel,
+	} = props.params
 
-import Members	from './members/Members.tsx'
-
-import ListTests 	from './tests/ListTests.tsx'
-import ViewTest 	from './tests/ViewTest.tsx'
-import NewTest 		from './tests/NewTest.tsx'
-import DeleteTest from './tests/DeleteTest.tsx'
-
-import Events 	from './events/Events'
-import Results 	from './results/Results'
-
-const APP_TITLE = 'Администратор'
-
-const Menu = [
-	{
-		link	: '/admin/regions',
-		icon	: <DeviceHubIcon/>,
-		label	:	'Регионы',
-	},
-	{
-		link	: '/admin/members',
-		icon	: <PeopleIcon/>,
-		label	:	'Участники',
-	},
-	{
-		link	: '/admin/tests',
-		icon	: <ListIcon/>,
-		label	:	'Тесты',
-	},
-	{
-		link	: '/admin/events',
-		icon	: <ScheduleIcon/>,
-		label	:	'Мероприятия',
-	},
-	{
-		link	: '/admin/results',
-		icon	: <ArchiveIcon/>,
-		label	:	'Результаты',
-	},
-]
-
-const Main = () => (
-	<Layout
-		title={APP_TITLE}
-		menu={Menu}
-		workspace={
+	return (
+		<div>
 			<Switch>
-				<Route path="/admin" exact component={null} />
-
-				<Route path="/admin/regions" exact component={() => (
-					<Workspace MainComponent={ListRegions} />
+				<Route path={baseURL} exact component={() => (
+					<Workspace>
+						<ViewList
+							{...props}
+							{...{
+						    linkBack    : baseURL,
+								breadcrumbs : labelName,
+						    queryProps: {
+						      query				: queryList,
+								  queryParams	: {}
+							  },
+							}}
+						/>
+					</Workspace>
 				)}/>
-				<Route path="/admin/regions/new" exact component={() => (
-					<Workspace MainComponent={NewRegion} />
+				<Route path={`${baseURL}/new`} exact component={() => (
+					<Workspace>
+						<NewRecord
+							{...props}
+							{...{
+								linkBack    : baseURL,
+							  breadcrumbs : [ labelName, labelNew ],
+							  queryProps: {
+							    mutation	: mutateAdd,
+							    update		: queryList,
+							  },
+							}}
+						/>
+					</Workspace>
 				)}/>
-				<Route path="/admin/regions/:id/delete" exact component={() => (
-					<Workspace MainComponent={DeleteRegion} />
+				<Route path={`${baseURL}/:id/delete`} exact component={(params) => (
+					<Workspace>
+						<DeleteRecord
+							{...props}
+							{...{
+								linkBack    : baseURL,
+								breadcrumbs : labelName,
+						    queryProps: {
+									query			: queryItem,
+									mutation	: mutateDel,
+									update		: queryList,
+									queryParams: {
+										id	: params.match.params.id
+									}
+						    },
+							}}
+						/>
+					</Workspace>
 				)}/>
-				<Route path="/admin/regions/:id" exact component={() => (
-					<Workspace MainComponent={ViewRegion} />
+				<Route path={`${baseURL}/:id`} exact component={(params) => (
+					<Workspace>
+						<ViewRecord
+							{...props}
+							{...{
+								linkBack    : baseURL,
+						    breadcrumbs : labelName,
+						    queryProps: {
+						      query			: queryItem,
+						  		mutation	: mutateEdit,
+						      queryParams: {
+						        id: params.match.params.id
+						      },
+						    },
+							}}
+						/>
+					</Workspace>
 				)}/>
-
-				<Route path="/admin/members" exact component={() => (
-					<Workspace MainComponent={Members} />
+				<Route path={`${baseURL}*`} exact component={() => (
+					<Redirect to="/admin/regions" />
 				)}/>
-
-				<Route path="/admin/tests" exact component={() => (
-					<PrimaryDataset MainComponent={ListTests} />
-				)}/>
-				<Route path="/admin/tests/new" exact component={() => (
-					<PrimaryDataset MainComponent={NewTest} />
-				)}/>
-				<Route path="/admin/tests/:id/delete" exact component={() => (
-					<PrimaryDataset MainComponent={DeleteTest} />
-				)}/>
-				<Route path="/admin/tests/:id" exact component={() => (
-					<PrimaryDataset MainComponent={ViewTest} />
-				)}/>
-
-				<Route path="/admin/events" component={() => <Events/>} />
-				<Route path="/admin/results" component={() => <Results/>} />
-				<Route path="/*" render={() => <Redirect to="/admin" />}/>
 			</Switch>
-		}
-	/>
-)
+		</div>
+	)
+}
 
 export default Main

@@ -34,7 +34,7 @@ interface ComponentProps {
   queryProps    : any,
 }
 
-const Tests = (props: ComponentProps) => {
+const ViewList = (props: ComponentProps) => {
 
 	const [ currentItem, setCurrentItem ] = useState('')
 
@@ -69,4 +69,4 @@ const Tests = (props: ComponentProps) => {
 	)
 }
 
-export default withRouter(Tests)
+export default ViewList

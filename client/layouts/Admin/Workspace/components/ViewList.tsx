@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter } 			from 'react-router-dom'
 
 import AddIcon 			from '@material-ui/icons/Add'
 import PageviewIcon from '@material-ui/icons/Pageview'
@@ -69,4 +68,4 @@ const Tests = (props: ComponentProps) => {
 	)
 }
 
-export default withRouter(Tests)
+export default Tests

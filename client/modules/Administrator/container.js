@@ -1,28 +1,21 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
+import * as Queries 	from '../../database/queries'
+import * as Mutations	from '../../database/mutations'
+
 import DeviceHubIcon 	from '@material-ui/icons/DeviceHub'
 import PeopleIcon 		from '@material-ui/icons/People'
 import ListIcon 			from '@material-ui/icons/List'
 import ScheduleIcon 	from '@material-ui/icons/Schedule'
 import ArchiveIcon 		from '@material-ui/icons/Archive'
 
+import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/container.js'
+
 import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
 import Workspace 			from '../../layouts/Admin/Workspace/Workspace.tsx'
-import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/Workspace.tsx'
-
-import ListRegions 			from './regions/ListRegions.tsx'
-import ViewRegion 	from './regions/ViewRegion.tsx'
-import NewRegion 		from './regions/NewRegion.tsx'
-import DeleteRegion from './regions/DeleteRegion.tsx'
 
 import Members	from './members/Members.tsx'
-
-import ListTests 	from './tests/ListTests.tsx'
-import ViewTest 	from './tests/ViewTest.tsx'
-import NewTest 		from './tests/NewTest.tsx'
-import DeleteTest from './tests/DeleteTest.tsx'
-
 import Events 	from './events/Events'
 import Results 	from './results/Results'
 
@@ -35,14 +28,14 @@ const Menu = [
 		label	:	'Регионы',
 	},
 	{
-		link	: '/admin/members',
-		icon	: <PeopleIcon/>,
-		label	:	'Участники',
-	},
-	{
 		link	: '/admin/tests',
 		icon	: <ListIcon/>,
 		label	:	'Тесты',
+	},
+	{
+		link	: '/admin/members',
+		icon	: <PeopleIcon/>,
+		label	:	'Участники',
 	},
 	{
 		link	: '/admin/events',
@@ -64,34 +57,38 @@ const Main = () => (
 			<Switch>
 				<Route path="/admin" exact component={null} />
 
-				<Route path="/admin/regions" exact component={() => (
-					<Workspace MainComponent={ListRegions} />
+				<Route path="/admin/regions" component={() => (
+					<PrimaryDataset
+						params={{
+							baseURL			: '/admin/regions',
+							labelName 	: 'Регионы',
+							labelNew		: 'Новый регион',
+							queryList		: Queries.QUERY_REGIONS,
+							queryItem		: Queries.QUERY_REGION,
+							mutateAdd		: Mutations.MUTATE_ADD_REGION,
+							mutateEdit	: Mutations.MUTATE_EDIT_REGION,
+							mutateDel		: Mutations.MUTATE_DELETE_REGION,
+						}}
+					/>
 				)}/>
-				<Route path="/admin/regions/new" exact component={() => (
-					<Workspace MainComponent={NewRegion} />
-				)}/>
-				<Route path="/admin/regions/:id/delete" exact component={() => (
-					<Workspace MainComponent={DeleteRegion} />
-				)}/>
-				<Route path="/admin/regions/:id" exact component={() => (
-					<Workspace MainComponent={ViewRegion} />
+
+				<Route path="/admin/tests" component={() => (
+					<PrimaryDataset
+						params={{
+							baseURL			: '/admin/tests',
+							labelName 	: 'Тесты',
+							labelNew		: 'Новый тест',
+							queryList		: Queries.QUERY_TESTS,
+							queryItem		: Queries.QUERY_TEST,
+							mutateAdd		: Mutations.MUTATE_ADD_TEST,
+							mutateEdit	: Mutations.MUTATE_EDIT_TEST,
+							mutateDel		: Mutations.MUTATE_DELETE_TEST,
+						}}
+					/>
 				)}/>
 
 				<Route path="/admin/members" exact component={() => (
 					<Workspace MainComponent={Members} />
-				)}/>
-
-				<Route path="/admin/tests" exact component={() => (
-					<PrimaryDataset MainComponent={ListTests} />
-				)}/>
-				<Route path="/admin/tests/new" exact component={() => (
-					<PrimaryDataset MainComponent={NewTest} />
-				)}/>
-				<Route path="/admin/tests/:id/delete" exact component={() => (
-					<PrimaryDataset MainComponent={DeleteTest} />
-				)}/>
-				<Route path="/admin/tests/:id" exact component={() => (
-					<PrimaryDataset MainComponent={ViewTest} />
 				)}/>
 
 				<Route path="/admin/events" component={() => <Events/>} />
