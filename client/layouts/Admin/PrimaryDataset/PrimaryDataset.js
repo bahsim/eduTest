@@ -10,8 +10,12 @@ import DeleteRecord	from './components/DeleteRecord.tsx'
 
 const PrimaryDataset = (props) => {
 	const {
+		isDependent,
+		isGrouped,
+		parentParams,
 		baseURL,
 		labelName,
+		labelListName,
 		labelNew,
 		queryList,
 		queryItem,
@@ -25,17 +29,33 @@ const PrimaryDataset = (props) => {
 			<Switch>
 				<Route path={baseURL} exact component={() => (
 					<Workspace>
-						<ViewList
-							{...props}
-							{...{
-						    linkBack    : baseURL,
-								breadcrumbs : labelName,
-						    queryProps: {
-						      query				: queryList,
-								  queryParams	: {}
-							  },
-							}}
-						/>
+						{isDependent ?
+							<ViewList
+								{...props}
+								{...{
+							    linkBack    	: baseURL,
+									breadcrumbs 	: labelName,
+									labelListName	: parentParams.labelListName,
+							    queryProps: {
+							      query				: parentParams.queryList,
+									  queryParams	: {}
+								  },
+								}}
+							/>
+						:
+							<ViewList
+								{...props}
+								{...{
+									linkBack    	: baseURL,
+									breadcrumbs 	: labelName,
+									labelListName	: labelListName,
+									queryProps: {
+										query				: queryList,
+										queryParams	: {}
+									},
+								}}
+							/>
+						}
 					</Workspace>
 				)}/>
 				<Route path={`${baseURL}/new`} exact component={() => (

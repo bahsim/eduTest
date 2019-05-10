@@ -11,8 +11,6 @@ const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
 const PANEL_ADD 	= panelLink('/admin/tests/new', AddIcon, 'Добавить')
 const PANEL_OPEN 	= panelLink('/admin/tests', PageviewIcon, 'Открыть')
 
-const LABEL_NAME = 'Наименование'
-
 interface PanelArray {
   length: number;
   [item: number]: {type: string, link: any, icon: any, label: any };
@@ -26,6 +24,7 @@ interface BreadcrumbsArray {
 interface ComponentProps {
   linkBack      : string,
   breadcrumbs   : string,
+  labelListName : string,
   history: {
 		replace			: (url: string) => any
 	},
@@ -61,7 +60,7 @@ const ViewList = (props: ComponentProps) => {
 	return (
 		<SimpleList
       queryProps={props.queryProps}
-      label={LABEL_NAME}
+      label={props.labelListName}
 			selectedItem={currentItem}
 			onClick={selectItem}
 			onDoubleClick={openItem}
