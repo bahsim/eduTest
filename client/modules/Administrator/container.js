@@ -10,7 +10,7 @@ import ListIcon 			from '@material-ui/icons/List'
 import ScheduleIcon 	from '@material-ui/icons/Schedule'
 import ArchiveIcon 		from '@material-ui/icons/Archive'
 
-import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/container.js'
+import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
 
 import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
 import Workspace 			from '../../layouts/Admin/Workspace/Workspace.tsx'

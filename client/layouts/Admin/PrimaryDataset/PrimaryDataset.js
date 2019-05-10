@@ -8,7 +8,7 @@ import NewRecord 		from './components/NewRecord.tsx'
 import ViewRecord 	from './components/ViewRecord.tsx'
 import DeleteRecord	from './components/DeleteRecord.tsx'
 
-const Main = (props) => {
+const PrimaryDataset = (props) => {
 	const {
 		baseURL,
 		labelName,
@@ -98,4 +98,4 @@ const Main = (props) => {
 	)
 }
 
-export default Main
+export default PrimaryDataset
