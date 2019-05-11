@@ -53,7 +53,7 @@ const ViewList = (props: ComponentProps) => {
     }
 
     if (props.listMode === 'edit') {
-      panel.push(panelLink(`${props.rootLink}/new`, AddIcon, 'Добавить'))
+      panel.push(panelLink(`${props.match.url}/new`, AddIcon, 'Добавить'))
     }
 
     props.setPanel(panel)
@@ -74,7 +74,7 @@ const ViewList = (props: ComponentProps) => {
       }
 
       panel.push(panelLink(`${props.match.url}/new`, AddIcon, 'Добавить'))
-      panel.push(panelLink(`${props.match.url}/${id}`, PageviewIcon, 'Открыть'))
+      panel.push(panelLink(`${props.match.url}/items/${id}`, PageviewIcon, 'Открыть'))
 
       props.setPanel(panel)
       setCurrentItem(id)

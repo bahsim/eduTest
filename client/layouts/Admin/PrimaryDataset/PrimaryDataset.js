@@ -27,6 +27,21 @@ const PrimaryDataset = (props) => {
 
 	const routesList = []
 
+	const GatherRoutes = () => {
+		if (isDependent === true && isGrouped === false) {
+			isDependentIsntGroupedRoutes()
+		}
+		if (isDependent === true && isGrouped === true) {
+			isDependentIsGroupedRoutes()
+		}
+		if (isDependent === false && isGrouped === true) {
+			isntDependentIsGroupedRoutes()
+		}
+		if (isDependent === false && isGrouped === false) {
+			isntDependentIsntGroupedRoutes()
+		}
+	}
+
 	const isDependentIsntGroupedRoutes = () => {
 		routesList.push({
 			component	: ViewList,
@@ -34,6 +49,7 @@ const PrimaryDataset = (props) => {
 			exact			: true,
 			params: {
 				rootLink    	: baseURL,
+				level					: 1,
 				breadcrumbs 	: labelName,
 				labelListName	: parentParams.labelListName,
 				listMode			: 'select',
@@ -49,6 +65,7 @@ const PrimaryDataset = (props) => {
 			exact			: true,
 			params: {
 				rootLink    	: baseURL,
+				level					: 1,
 				breadcrumbs 	: labelName,
 				labelListName	: labelListName,
 				listMode			: 'edit',
@@ -56,6 +73,20 @@ const PrimaryDataset = (props) => {
 					query				: queryList,
 					queryParams	: {}
 				}
+			}
+		})
+		routesList.push({
+			component	: NewRecord,
+			path			: `${baseURL}/parent/:parentId/items/new`,
+			exact			: true,
+			params: {
+				rootLink    : baseURL,
+				level					: 2,
+				breadcrumbs : [ labelName, labelNew ],
+				queryProps: {
+					mutation	: mutateAdd,
+					update		: queryList,
+				},
 			}
 		})
 	}
@@ -109,6 +140,20 @@ const PrimaryDataset = (props) => {
 				}
 			}
 		})
+		routesList.push({
+			component	: NewRecord,
+			path			: `${baseURL}/parent/:parentId/groups/:groupId/items/new`,
+			exact			: true,
+			params: {
+				rootLink    : baseURL,
+				level					: 3,
+				breadcrumbs : [ labelName, labelNew ],
+				queryProps: {
+					mutation	: mutateAdd,
+					update		: queryList,
+				},
+			}
+		})
 	}
 
 	const isntDependentIsGroupedRoutes = () => {
@@ -144,6 +189,20 @@ const PrimaryDataset = (props) => {
 				}
 			}
 		})
+		routesList.push({
+			component	: NewRecord,
+			path			: `${baseURL}/groups/:groupId/items/new`,
+			exact			: true,
+			params: {
+				rootLink    : baseURL,
+				level					: 2,
+				breadcrumbs : [ labelName, labelNew ],
+				queryProps: {
+					mutation	: mutateAdd,
+					update		: queryList,
+				},
+			}
+		})
 	}
 
 	const isntDependentIsntGroupedRoutes = () => {
@@ -163,37 +222,22 @@ const PrimaryDataset = (props) => {
 				}
 			}
 		})
+		routesList.push({
+			component	: NewRecord,
+			path			: `${baseURL}/new`,
+			exact			: true,
+			params: {
+				rootLink    : baseURL,
+				breadcrumbs : [ labelName, labelNew ],
+				queryProps: {
+					mutation	: mutateAdd,
+					update		: queryList,
+				},
+			}
+		})
 	}
 
-	if (isDependent === true && isGrouped === false) {
-		isDependentIsntGroupedRoutes()
-	}
-
-	if (isDependent === true && isGrouped === true) {
-		isDependentIsGroupedRoutes()
-	}
-
-	if (isDependent === false && isGrouped === true) {
-		isntDependentIsGroupedRoutes()
-	}
-
-	if (isDependent === false && isGrouped === false) {
-		isntDependentIsntGroupedRoutes()
-	}
-
-	routesList.push({
-		component	: NewRecord,
-		path			: `${baseURL}/new`,
-		exact			: true,
-		params: {
-			rootLink    : baseURL,
-			breadcrumbs : [ labelName, labelNew ],
-			queryProps: {
-				mutation	: mutateAdd,
-				update		: queryList,
-			},
-		}
-	})
+	GatherRoutes()
 
 	routesList.push({
 		component	: ViewRecord,
