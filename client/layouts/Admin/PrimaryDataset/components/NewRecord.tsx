@@ -36,7 +36,7 @@ interface BreadcrumbsArray {
 }
 
 interface BaseComponentProps {
-  linkBack    : string,
+  rootLink    : string,
   breadcrumbs : {
     length: number;
     [item: number]: string;
@@ -60,7 +60,7 @@ const NewRecord = (props) => (
 const BaseComponent = (props: BaseComponentProps) => {
 
   useEffect(() => {
-		props.setPanel([panelLink(props.linkBack, ArrowBackIcon, LABEL_BACK)])
+		props.setPanel([panelLink(props.rootLink, ArrowBackIcon, LABEL_BACK)])
 		props.setBreadcrumbs(props.breadcrumbs)
   }, [])
 
@@ -71,7 +71,7 @@ const BaseComponent = (props: BaseComponentProps) => {
 		if (name === '') return
 
 		props.action({ variables: { name }})
-			.then(() => props.history.replace(props.linkBack))
+			.then(() => props.history.replace(props.rootLink))
 	}
 
 	return (

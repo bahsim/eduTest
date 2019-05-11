@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } 			from 'react-router-dom'
 
 import EditGraphQL from '../../../../database/components/EditGraphQL'
 
@@ -48,7 +49,7 @@ interface BreadcrumbsArray {
 }
 
 interface ComponentProps {
-  linkBack    : string,
+  rootLink    : string,
   breadcrumbs : BreadcrumbsArray,
   children    : any,
   classes: {
@@ -81,8 +82,8 @@ class BaseComponent extends Component<ComponentProps,{}> {
 
   componentDidMount() {
     const panel = [
-			panelLink(this.props.linkBack, ArrowBackIcon, LABEL_BACK),
-			panelLink(this.props.linkBack, DeleteForeverIcon, LABEL_DELETE)
+			panelLink(this.props.rootLink, ArrowBackIcon, LABEL_BACK),
+			panelLink(this.props.rootLink, DeleteForeverIcon, LABEL_DELETE)
 		]
 		panel[1].link += `/${this.props.queryProps.queryParams.id}/delete`
 		this.props.setPanel(panel)
@@ -173,4 +174,4 @@ class BaseComponent extends Component<ComponentProps,{}> {
   }
 }
 
-export default withStyles(styles)(ViewRecord)
+export default withStyles(styles)(withRouter(ViewRecord))

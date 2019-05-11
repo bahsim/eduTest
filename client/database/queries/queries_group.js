@@ -3,8 +3,8 @@ import gql from 'graphql-tag'
 export const QUERY_GROUPS = {
 	name: 'groups',
 	value: gql`
-		query Groups($regionId: ID!) {
-			groups(regionId: $regionId) {
+		query Groups($parentId: ID!) {
+			groups(regionId: $parentId) {
 				id
 				name
 			}

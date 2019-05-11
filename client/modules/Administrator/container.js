@@ -102,6 +102,10 @@ const Main = () => (
 								labelListName	: 'Выбор региона',
 								queryList			: Queries.QUERY_REGIONS,
 							},
+							groupParams	: {
+								labelListName	: 'Выбор группы',
+								queryList			: Queries.QUERY_GROUPS,
+							},
 							baseURL				: '/admin/members',
 							labelName 		: 'Участники',
 							labelListName	: 'Наименование',

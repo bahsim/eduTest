@@ -25,7 +25,7 @@ const BREADCRUMBS_DEL_TEST = 'Удаление'
 const LABEL_DELETE 	= 'Удалить'
 
 interface ComponentProps {
-	linkBack    	: string,
+	rootLink    	: string,
 	breadcrumbs 	: string,
 	classes: {
     button	: object
@@ -55,11 +55,11 @@ const Component = (props: ComponentProps) => {
 		e.preventDefault()
 
 		props.action({ variables: { id: props.queryProps.queryParams.id } })
-			.then(() => props.history.replace(props.linkBack))
+			.then(() => props.history.replace(props.rootLink))
 	}
 
 	useEffect(() => {
-		const panel = [panelLink(props.linkBack, ArrowBackIcon, 'Назад')]
+		const panel = [panelLink(props.rootLink, ArrowBackIcon, 'Назад')]
 		panel[0].link += `/${props.queryProps.queryParams.id}`
 		props.setPanel(panel)
 

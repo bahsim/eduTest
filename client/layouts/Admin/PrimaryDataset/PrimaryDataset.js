@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
+import { cloneDeep } from 'lodash'
 
 import Workspace 		from './Workspace/Workspace.tsx'
-
 import ViewList			from './components/ViewList.tsx'
 import NewRecord 		from './components/NewRecord.tsx'
 import ViewRecord 	from './components/ViewRecord.tsx'
@@ -13,6 +13,7 @@ const PrimaryDataset = (props) => {
 		isDependent,
 		isGrouped,
 		parentParams,
+		groupParams,
 		baseURL,
 		labelName,
 		labelListName,
@@ -24,97 +25,235 @@ const PrimaryDataset = (props) => {
 		mutateDel,
 	} = props.params
 
+	const routesList = []
+
+	const isDependentIsntGroupedRoutes = () => {
+		routesList.push({
+			component	: ViewList,
+			path			: baseURL,
+			exact			: true,
+			params: {
+				rootLink    	: baseURL,
+				breadcrumbs 	: labelName,
+				labelListName	: parentParams.labelListName,
+				listMode			: 'select',
+				queryProps: {
+					query				: parentParams.queryList,
+					queryParams	: {}
+				}
+			}
+		})
+		routesList.push({
+			component	: ViewList,
+			path			: `${baseURL}/parent/:parentId/items`,
+			exact			: true,
+			params: {
+				rootLink    	: baseURL,
+				breadcrumbs 	: labelName,
+				labelListName	: labelListName,
+				listMode			: 'edit',
+				queryProps: {
+					query				: queryList,
+					queryParams	: {}
+				}
+			}
+		})
+	}
+
+	const isDependentIsGroupedRoutes = () => {
+		routesList.push({
+			component	: ViewList,
+			path			: baseURL,
+			exact			: true,
+			params: {
+				rootLink    	: baseURL,
+				level					: 1,
+				breadcrumbs 	: labelName,
+				labelListName	: parentParams.labelListName,
+				listMode			: 'select',
+				queryProps: {
+					query				: parentParams.queryList,
+					queryParams	: {}
+				}
+			}
+		})
+		routesList.push({
+			component	: ViewList,
+			path			: `${baseURL}/parent/:parentId/groups`,
+			exact			: true,
+			params: {
+				rootLink    	: baseURL,
+				level					: 2,
+				breadcrumbs 	: labelName,
+				labelListName	: groupParams.labelListName,
+				listMode			: 'select',
+				queryProps: {
+					query				: groupParams.queryList,
+					queryParams	: {}
+				}
+			}
+		})
+		routesList.push({
+			component	: ViewList,
+			path			: `${baseURL}/parent/:parentId/groups/:groupId/items`,
+			exact			: true,
+			params: {
+				rootLink    	: baseURL,
+				level					: 3,
+				breadcrumbs 	: labelName,
+				labelListName	: labelListName,
+				listMode			: 'edit',
+				queryProps: {
+					query				: queryList,
+					queryParams	: {}
+				}
+			}
+		})
+	}
+
+	const isntDependentIsGroupedRoutes = () => {
+		routesList.push({
+			component	: ViewList,
+			path			: baseURL,
+			exact			: true,
+			params: {
+				rootLink    	: baseURL,
+				level					: 1,
+				breadcrumbs 	: labelName,
+				listMode			: 'select',
+				labelListName	: groupParams.labelListName,
+				queryProps: {
+					query				: groupParams.queryList,
+					queryParams	: {}
+				}
+			}
+		})
+		routesList.push({
+			component	: ViewList,
+			path			: `${baseURL}/groups/:groupId/items`,
+			exact			: true,
+			params: {
+				rootLink    	: baseURL,
+				level					: 2,
+				breadcrumbs 	: labelName,
+				labelListName	: labelListName,
+				listMode			: 'edit',
+				queryProps: {
+					query				: queryList,
+					queryParams	: {}
+				}
+			}
+		})
+	}
+
+	const isntDependentIsntGroupedRoutes = () => {
+		routesList.push({
+			component	: ViewList,
+			path			: baseURL,
+			exact			: true,
+			params: {
+				rootLink    	: baseURL,
+				level					: 1,
+				breadcrumbs 	: labelName,
+				listMode			: 'edit',
+				labelListName	: labelListName,
+				queryProps: {
+					query				: queryList,
+					queryParams	: {}
+				}
+			}
+		})
+	}
+
+	if (isDependent === true && isGrouped === false) {
+		isDependentIsntGroupedRoutes()
+	}
+
+	if (isDependent === true && isGrouped === true) {
+		isDependentIsGroupedRoutes()
+	}
+
+	if (isDependent === false && isGrouped === true) {
+		isntDependentIsGroupedRoutes()
+	}
+
+	if (isDependent === false && isGrouped === false) {
+		isntDependentIsntGroupedRoutes()
+	}
+
+	routesList.push({
+		component	: NewRecord,
+		path			: `${baseURL}/new`,
+		exact			: true,
+		params: {
+			rootLink    : baseURL,
+			breadcrumbs : [ labelName, labelNew ],
+			queryProps: {
+				mutation	: mutateAdd,
+				update		: queryList,
+			},
+		}
+	})
+
+	routesList.push({
+		component	: ViewRecord,
+		path			: `${baseURL}/items/:id`,
+		exact			: true,
+		params: {
+			rootLink    : baseURL,
+			breadcrumbs : labelName,
+			queryProps: {
+				query			: queryItem,
+				mutation	: mutateEdit,
+			},
+		}
+	})
+
+	routesList.push({
+		component	: DeleteRecord,
+		path			: `${baseURL}/:id/delete`,
+		exact			: true,
+		params: {
+			rootLink    : baseURL,
+			breadcrumbs : labelName,
+			queryProps: {
+				query			: queryItem,
+				mutation	: mutateDel,
+				update		: queryList,
+			},
+		}
+	})
+
+	const RouteItem = ({route, index}) => (
+		<Route path={route.path} exact={route.exact} component={(extra) => {
+			const params = cloneDeep(route.params)
+			params.queryProps.queryParams = {
+				...params.queryProps.queryParams,
+				...extra.match.params,
+			}
+			return(
+				<Workspace>
+					<route.component {...props} {...params} />
+				</Workspace>
+			)
+		}}/>
+	)
+
 	return (
-		<div>
+		<Fragment>
 			<Switch>
-				<Route path={baseURL} exact component={() => (
-					<Workspace>
-						{isDependent ?
-							<ViewList
-								{...props}
-								{...{
-							    linkBack    	: baseURL,
-									breadcrumbs 	: labelName,
-									labelListName	: parentParams.labelListName,
-							    queryProps: {
-							      query				: parentParams.queryList,
-									  queryParams	: {}
-								  },
-								}}
-							/>
-						:
-							<ViewList
-								{...props}
-								{...{
-									linkBack    	: baseURL,
-									breadcrumbs 	: labelName,
-									labelListName	: labelListName,
-									queryProps: {
-										query				: queryList,
-										queryParams	: {}
-									},
-								}}
-							/>
-						}
-					</Workspace>
-				)}/>
-				<Route path={`${baseURL}/new`} exact component={() => (
-					<Workspace>
-						<NewRecord
-							{...props}
-							{...{
-								linkBack    : baseURL,
-							  breadcrumbs : [ labelName, labelNew ],
-							  queryProps: {
-							    mutation	: mutateAdd,
-							    update		: queryList,
-							  },
-							}}
-						/>
-					</Workspace>
-				)}/>
-				<Route path={`${baseURL}/:id/delete`} exact component={(params) => (
-					<Workspace>
-						<DeleteRecord
-							{...props}
-							{...{
-								linkBack    : baseURL,
-								breadcrumbs : labelName,
-						    queryProps: {
-									query			: queryItem,
-									mutation	: mutateDel,
-									update		: queryList,
-									queryParams: {
-										id	: params.match.params.id
-									}
-						    },
-							}}
-						/>
-					</Workspace>
-				)}/>
-				<Route path={`${baseURL}/:id`} exact component={(params) => (
-					<Workspace>
-						<ViewRecord
-							{...props}
-							{...{
-								linkBack    : baseURL,
-						    breadcrumbs : labelName,
-						    queryProps: {
-						      query			: queryItem,
-						  		mutation	: mutateEdit,
-						      queryParams: {
-						        id: params.match.params.id
-						      },
-						    },
-							}}
-						/>
-					</Workspace>
-				)}/>
+				<Fragment>
+					{routesList.map((route, index) => (
+						<Fragment key={index}>
+							<RouteItem route={route} index={index} />
+						</Fragment>
+					))}
+				</Fragment>
 				<Route path={`${baseURL}*`} exact component={() => (
 					<Redirect to="/admin/regions" />
 				)}/>
 			</Switch>
-		</div>
+		</Fragment>
 	)
 }
 
