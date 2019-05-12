@@ -95,7 +95,6 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
             {React.Children.map(children, child => (
               React.cloneElement(child, {
                 panelAction: mainComponentAction,
-  							height: registryHeight,
   							setPanel: panelContent => {
                   this.setState({panelContent})
                 },

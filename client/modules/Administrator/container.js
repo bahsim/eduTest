@@ -33,6 +33,11 @@ const Menu = [
 		label	:	'Тесты',
 	},
 	{
+		link	: '/admin/groups',
+		icon	: <ListIcon/>,
+		label	:	'Группы',
+	},
+	{
 		link	: '/admin/members',
 		icon	: <PeopleIcon/>,
 		label	:	'Участники',
@@ -60,8 +65,6 @@ const Main = () => (
 				<Route path="/admin/regions" component={() => (
 					<PrimaryDataset
 						params={{
-							isDependent		: false,
-							isGrouped			: false,
 							baseURL				: '/admin/regions',
 							labelName 		: 'Регионы',
 							labelListName	: 'Наименование',
@@ -78,8 +81,6 @@ const Main = () => (
 				<Route path="/admin/tests" component={() => (
 					<PrimaryDataset
 						params={{
-							isDependent		: false,
-							isGrouped			: false,
 							baseURL				: '/admin/tests',
 							labelName 		: 'Тесты',
 							labelListName	: 'Наименование',
@@ -93,28 +94,22 @@ const Main = () => (
 					/>
 				)}/>
 
-				<Route path="/admin/members" component={() => (
+				<Route path="/admin/groups" component={() => (
 					<PrimaryDataset
 						params={{
-							isDependent		: true,
-							isGrouped			: true,
-							parentParams	: {
-								labelListName	: 'Выбор региона',
-								queryList			: Queries.QUERY_REGIONS,
-							},
 							groupParams	: {
-								labelListName	: 'Выбор группы',
+								labelListName	: 'Группы',
 								queryList			: Queries.QUERY_GROUPS,
 							},
-							baseURL				: '/admin/members',
-							labelName 		: 'Участники',
+							baseURL				: '/admin/groups',
+							labelName 		: 'Группы',
 							labelListName	: 'Наименование',
-							labelNew			: 'Новый участник',
-							queryList			: Queries.QUERY_MEMBERS,
-							queryItem			: Queries.QUERY_MEMBER,
-							mutateAdd			: Mutations.MUTATE_ADD_MEMBER,
-							mutateEdit		: Mutations.MUTATE_EDIT_MEMBER,
-							mutateDel			: Mutations.MUTATE_DELETE_MEMBER,
+							labelNew			: 'Новая группа',
+							queryList			: Queries.QUERY_GROUPS,
+							queryItem			: Queries.QUERY_GROUP,
+							mutateAdd			: Mutations.MUTATE_ADD_GROUP,
+							mutateEdit		: Mutations.MUTATE_EDIT_GROUP,
+							mutateDel			: Mutations.MUTATE_DELETE_GROUP,
 						}}
 					/>
 				)}/>
@@ -126,8 +121,29 @@ const Main = () => (
 		}
 	/>
 )
-// <Route path="/admin/members" exact component={() => (
-// 	<Workspace MainComponent={Members} />
+
+// <Route path="/admin/members" component={() => (
+// 	<PrimaryDataset
+// 		params={{
+// 			parentParams	: {
+// 				labelListName	: 'Выбор региона',
+// 				queryList			: Queries.QUERY_REGIONS,
+// 			},
+// 			groupParams	: {
+// 				labelListName	: 'Выбор группы',
+// 				queryList			: Queries.QUERY_GROUPS,
+// 			},
+// 			baseURL				: '/admin/members',
+// 			labelName 		: 'Участники',
+// 			labelListName	: 'Наименование',
+// 			labelNew			: 'Новый участник',
+// 			queryList			: Queries.QUERY_MEMBERS,
+// 			queryItem			: Queries.QUERY_MEMBER,
+// 			mutateAdd			: Mutations.MUTATE_ADD_MEMBER,
+// 			mutateEdit		: Mutations.MUTATE_EDIT_MEMBER,
+// 			mutateDel			: Mutations.MUTATE_DELETE_MEMBER,
+// 		}}
+// 	/>
 // )}/>
 
 export default Main

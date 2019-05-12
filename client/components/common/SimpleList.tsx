@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import ViewGraphQL from '../../database/components/ViewGraphQL'
 
@@ -23,12 +23,11 @@ interface ComponentProps {
 	},
 	queryData			: { map: (list: any) => any },
 	label					: string,
-	selectedItem	: (id: string) => any,
 	onClick				: (id: string, name: string) => any,
 	onDoubleClick	: (id: string, name: string) => any,
 }
 
-const GroupsList = (props) => (
+const SimpleList = (props) => (
 	<ViewGraphQL queryProps={props.queryProps}>
 		<Component {...props} />
 	</ViewGraphQL>
@@ -36,24 +35,25 @@ const GroupsList = (props) => (
 
 const Component = (props: ComponentProps) => {
 
+	const [ currentItem, setCurrentItem ] = useState('')
+
 	const {
 		classes,
 		queryData,
 		label,
-		selectedItem,
 		onClick,
 		onDoubleClick,
 	} = props;
 
-	const handleOnClick = (
-		onClick ? onClick : () => {}
-	)
-	const handleOnDoubleClick = (
-		onDoubleClick? onDoubleClick : () => {}
-	)
-	const currentItem = (
-		selectedItem ? selectedItem : ''
-	)
+	const handleOnClick = (id, name) => {
+		setCurrentItem(id)
+		onClick && onClick(id, name)
+	}
+
+	const handleOnDoubleClick = (id, name) => {
+		setCurrentItem(id)
+		onDoubleClick && onDoubleClick(id, name)
+	}
 
 	return (
 		<Table>
@@ -67,9 +67,9 @@ const Component = (props: ComponentProps) => {
 					<TableRow hover
 						key={item.id}
 						className={classes.tableRow}
-						selected={selectedItem === item.id}
-						onClick={() => onClick(item.id, item.name)}
-						onDoubleClick={() => onDoubleClick(item.id, item.name)}
+						selected={currentItem === item.id}
+						onClick={() => handleOnClick(item.id, item.name)}
+						onDoubleClick={() => handleOnDoubleClick(item.id, item.name)}
 					>
 						<TableCell component="th" scope="row" >
 							{item.name}
@@ -81,4 +81,4 @@ const Component = (props: ComponentProps) => {
 	)
 }
 
-export default withStyles(styles)(GroupsList)
+export default withStyles(styles)(SimpleList)

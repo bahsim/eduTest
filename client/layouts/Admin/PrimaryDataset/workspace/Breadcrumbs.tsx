@@ -20,7 +20,7 @@ interface ComponentProps {
 }
 
 const Component = ({ list, classes }: ComponentProps) => {
-  const content = (
+	const content = (
     list.map((item, index) => (
   		<Typography
         key={index}

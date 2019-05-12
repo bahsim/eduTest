@@ -46,11 +46,17 @@ const RootQuery = new GraphQLObjectType({
 		},
 		groups: {
 			type: new GraphQLList(GroupType),
-			args: { regionId: { type: new GraphQLNonNull(GraphQLID) } },
-			resolve(parentValue, { regionId }) {
-				return Group.find({ regionId: regionId }, null, {sort: { name: 1 }})
+			resolve(parentValue, args) {
+				return Group.find({ }, null, {sort: { name: 1 }})
 			}
 		},
+		// groups: {
+		// 	type: new GraphQLList(GroupType),
+		// 	args: { regionId: { type: new GraphQLNonNull(GraphQLID) } },
+		// 	resolve(parentValue, { regionId }) {
+		// 		return Group.find({ regionId: regionId }, null, {sort: { name: 1 }})
+		// 	}
+		// },
 		group: {
 			type: GroupType,
 			args: { id: { type: new GraphQLNonNull(GraphQLID) } },
