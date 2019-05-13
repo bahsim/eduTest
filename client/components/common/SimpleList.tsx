@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { Component, useState, useEffect } from 'react'
+import RootRef from '@material-ui/core/RootRef';
 
 import ViewGraphQL from '../../database/components/ViewGraphQL'
 
@@ -21,64 +22,101 @@ interface ComponentProps {
 	classes: {
 		tableRow		: object
 	},
-	queryData			: { map: (list: any) => any },
+	queryData			: {
+		map			: (list: any) => any,
+		forEach	: (list: any) => any,
+	},
 	label					: string,
+	current				: string,
 	onClick				: (id: string, name: string) => any,
 	onDoubleClick	: (id: string, name: string) => any,
 }
 
+interface ComponentState {
+	currentItem		: string,
+}
+
 const SimpleList = (props) => (
 	<ViewGraphQL queryProps={props.queryProps}>
-		<Component {...props} />
+		<BaseComponent {...props} />
 	</ViewGraphQL>
 )
 
-const Component = (props: ComponentProps) => {
+class BaseComponent extends Component<ComponentProps,{}> {
 
-	const [ currentItem, setCurrentItem ] = useState('')
-
-	const {
-		classes,
-		queryData,
-		label,
-		onClick,
-		onDoubleClick,
-	} = props;
-
-	const handleOnClick = (id, name) => {
-		setCurrentItem(id)
-		onClick && onClick(id, name)
+	state = {
+		currentItem: ''
 	}
 
-	const handleOnDoubleClick = (id, name) => {
-		setCurrentItem(id)
-		onDoubleClick && onDoubleClick(id, name)
+	domRefs 	= {}
+	firstLoad	= true
+
+	componentDidMount() {
+		console.log(this.props.extraData)
+		if (this.props.current) {
+			this.props.queryData.forEach((item) => {
+				if (this.props.current !== item.id) return
+				this.setState({currentItem: this.props.current}, () => {
+					this.scrollToCurrent(this.props.current)
+				})
+			})
+		}
 	}
 
-	return (
-		<Table>
-			<TableHead>
-				<TableRow>
-					<TableCell>{label}</TableCell>
-				</TableRow>
-			</TableHead>
-			<TableBody>
-				{queryData.map(item => (
-					<TableRow hover
-						key={item.id}
-						className={classes.tableRow}
-						selected={currentItem === item.id}
-						onClick={() => handleOnClick(item.id, item.name)}
-						onDoubleClick={() => handleOnDoubleClick(item.id, item.name)}
-					>
-						<TableCell component="th" scope="row" >
-							{item.name}
-						</TableCell>
+	scrollToCurrent = (id) => {
+		setTimeout(() => {
+			this.domRefs[id].current.scrollIntoView(
+				{ block: 'center', behavior: 'instant' }
+			)
+		}, 50)
+	}
+
+	handleOnClick = (id, name) => {
+		this.setState({currentItem: id})
+		this.props.onClick && this.props.onClick(id, name)
+	}
+
+	handleOnDoubleClick = (id, name) => {
+		this.setState({currentItem: id})
+		this.props.onDoubleClick && this.props.onDoubleClick(id, name)
+	}
+
+	render() {
+
+		console.log(this.props.queryData)
+		if (this.firstLoad) {
+			this.props.queryData.forEach((item) => {
+				this.domRefs[item.id] = React.createRef()
+			})
+			this.firstLoad = false
+		}
+
+		return (
+			<Table>
+				<TableHead>
+					<TableRow>
+						<TableCell>{this.props.label}</TableCell>
 					</TableRow>
-				))}
-			</TableBody>
-		</Table>
-	)
+				</TableHead>
+				<TableBody>
+					{this.props.queryData.map(item => (
+						<RootRef key={item.id} rootRef={this.domRefs[item.id]}>
+							<TableRow hover
+								className={this.props.classes.tableRow}
+								selected={this.state.currentItem === item.id}
+								onClick={() => this.handleOnClick(item.id, item.name)}
+								onDoubleClick={() => this.handleOnDoubleClick(item.id, item.name)}
+							>
+								<TableCell component="th" scope="row" >
+									{item.name}
+								</TableCell>
+							</TableRow>
+						</RootRef>
+					))}
+				</TableBody>
+			</Table>
+		)
+	}
 }
 
 export default withStyles(styles)(SimpleList)

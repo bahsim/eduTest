@@ -11,9 +11,10 @@ export default (props) => {
 		case !parentParams && !groupParams:
 			return <DatasetOneLevel {...props.params} />
 		case !parentParams && !!groupParams:
-			return <DatasetWithGroup {...props.params} />
 		case !!parentParams && !groupParams:
+			return <DatasetWithGroup {...props.params} />
 		case !!parentParams && !!groupParams:
+			//
 		default:
 			return null
 	}

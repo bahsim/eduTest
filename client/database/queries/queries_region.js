@@ -31,7 +31,7 @@ export const QUERY_REGION_GROUPS = {
 			regionGroups(id: $id) {
 				id
 				name
-				groups {
+				list {
 					id
 					name
 				}

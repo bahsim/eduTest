@@ -8,7 +8,8 @@ import Typography from '@material-ui/core/Typography'
 const DeleteGraphQL = (props) => {
 
 	const { queryProps, children } = props
-	const { query, mutation, update, queryParams, updateParams } = queryProps
+	const { query, mutation, update,
+					queryParams, updateParams, middleWare } = queryProps
 
 	const { id } = queryParams
 
@@ -41,7 +42,7 @@ const DeleteGraphQL = (props) => {
 					)
 				}
 
-				const queryData = data[query.name]
+        let queryData = data[query.name]
 
 				if (loading || !queryData) {
 					return (
@@ -51,25 +52,31 @@ const DeleteGraphQL = (props) => {
 					)
 				}
 
+				if (middleWare) {
+					queryData = middleWare(queryData)
+				}
+
 				return (
 					<Mutation
 						mutation={mutation.value}
 						update={(cache, { data }) => {
+							try {
 
-							const fullData = cache.readQuery({
-								query: update.value,
-								variables: {...updateParams}
-							});
+								const fullData = cache.readQuery({
+									query: update.value,
+									variables: {...updateParams}
+								});
 
-							const result = fullData[update.name].filter(item => (
-                item.id !== id
-              ))
+								const result = fullData[update.name].filter(item => (
+	                item.id !== id
+	              ))
 
-							cache.writeQuery({
-								query: update.value,
-								variables: {...updateParams},
-								data: { [update.name]: result },
-							});
+								cache.writeQuery({
+									query: update.value,
+									variables: {...updateParams},
+									data: { [update.name]: result },
+								});
+							} catch(e) {}
 						}}
 					>
 						{(action, { data }) => (

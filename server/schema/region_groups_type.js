@@ -19,7 +19,7 @@ const RegionGroupsType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
-    groups: {
+    list: {
 			type: new GraphQLList(GroupType),
 			resolve(parentValue, args) {
 				return Group.find({ regionId: parentValue.id })

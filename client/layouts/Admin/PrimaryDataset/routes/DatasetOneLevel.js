@@ -8,11 +8,6 @@ import NewRecord    from '../../../../components/common/NewRecord.tsx'
 import ViewRecord   from '../../../../components/common/ViewRecord.tsx'
 import DeleteRecord from '../../../../components/common/DeleteRecord.tsx'
 
-import ViewList	  from './DatasetOneLevel/ViewList.tsx'
-import NewItem 		from './DatasetOneLevel/NewItem.tsx'
-import ViewItem 	from './DatasetOneLevel/ViewItem.tsx'
-import DeleteItem	from './DatasetOneLevel/DeleteItem.tsx'
-
 const DatasetOneLevel = (props) => {
 	const {
 		baseURL,
@@ -27,59 +22,51 @@ const DatasetOneLevel = (props) => {
 	return (
 		<Switch>
       <Route path={baseURL} exact component={() => (
-        <Workspace>
-          <ViewList {...props}>
-            <SimpleList
-              queryProps={{
-                query       : props.queryList,
-                queryParams : {}
-              }}
-              label={props.labelListName}
-            />
-          </ViewList>
+        <Workspace datasetType="oneLevel" componentType="viewList" {...props}>
+          <SimpleList
+            queryProps={{
+              query       : props.queryList,
+              queryParams : {}
+            }}
+            label={props.labelListName}
+          />
         </Workspace>
       )}/>
       <Route path={`${baseURL}/new`} exact component={() => (
-        <Workspace>
-          <NewItem {...props}>
-            <NewRecord
-              queryProps = {{
-                mutation    : props.mutateAdd,
-                update      : props.queryList,
-                updateParams: {},
-              }}
-            />
-          </NewItem>
+        <Workspace datasetType="oneLevel" componentType="newItem" {...props}>
+          <NewRecord
+            queryProps = {{
+              mutation    : props.mutateAdd,
+              update      : props.queryList,
+              updateParams: {},
+            }}
+          />
         </Workspace>
       )}/>
       <Route path={`${baseURL}/items/:id`} exact component={(extra) => (
-        <Workspace>
-          <ViewItem {...props} itemId={extra.match.params.id}>
-            <ViewRecord
-              queryProps = {{
-        				query			    : queryItem,
-        				mutation      : mutateEdit,
-                queryParams   : { id: extra.match.params.id },
-        				update        : queryList,
-                updateParams  : {}
-              }}
-            />
-          </ViewItem>
+        <Workspace datasetType="oneLevel" componentType="viewItem" {...props}>
+          <ViewRecord
+            queryProps = {{
+      				query			    : queryItem,
+      				mutation      : mutateEdit,
+              queryParams   : { id: extra.match.params.id },
+      				update        : queryList,
+              updateParams  : {}
+            }}
+          />
         </Workspace>
       )}/>
       <Route path={`${baseURL}/items/:id/delete`} exact component={(extra) => (
-        <Workspace>
-          <DeleteItem {...props} itemId={extra.match.params.id}>
-            <DeleteRecord
-              queryProps = {{
-        				query			    : queryItem,
-        				mutation      : mutateDel,
-                queryParams   : { id: extra.match.params.id },
-        				update		    : queryList,
-                updateParams  : {}
-              }}
-            />
-          </DeleteItem>
+        <Workspace datasetType="oneLevel" componentType="deleteItem" {...props}>
+          <DeleteRecord
+            queryProps = {{
+      				query			    : queryItem,
+      				mutation      : mutateDel,
+              queryParams   : { id: extra.match.params.id },
+      				update		    : queryList,
+              updateParams  : {}
+            }}
+          />
         </Workspace>
       )}/>
 			<Route path={`${baseURL}*`} exact component={() => (

@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 const ViewGraphQL = (props) => {
 
 	const { queryProps, children } = props
-	const { query, queryParams } = queryProps
+	const { query, queryParams, middleWare } = queryProps
 
 	const fullHeight = {
 		position: 'relative',
@@ -38,9 +38,7 @@ const ViewGraphQL = (props) => {
 					)
 				}
 
-        const queryData = data[query.name]
-
-				if (loading || !queryData) {
+				if (loading || !data[query.name]) {
 					return (
 						<div style={fullHeight}>
 							<CircularProgress style={central} color="primary" />
@@ -48,9 +46,15 @@ const ViewGraphQL = (props) => {
 					)
 				}
 
+				let result = (middleWare ?
+					middleWare(data[query.name])
+				:
+					{ queryData: data[query.name], extraData: {} }
+				)
+				console.log(result)
 				return (
           React.Children.map(children, child => (
-            React.cloneElement(child, { queryData })
+            React.cloneElement(child, { ...result })
           ))
 				)
 			}}

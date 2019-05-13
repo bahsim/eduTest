@@ -24,8 +24,8 @@ interface ComponentProps {
     button		: object
     title   	: object
   },
-	onDelete		: () => any,
-  takeUpName	: (name: string) => any,
+	onClick			: () => any,
+  extraAction	: (id: string, name: string) => any,
   queryData		: any,
   action   		: (args: { variables: { id: string }}) => any
 }
@@ -40,10 +40,12 @@ const Component = (props: ComponentProps) => {
 
 	const handleSubmit = (e) => {
 		props.action({ variables: { id: props.queryData.id } })
-			.then(() => props.onDelete())
+			.then(() => props.onClick()	)
 	}
 
-	useEffect(() => props.takeUpName(props.queryData.name), [])
+	useEffect(() => {
+    props.extraAction(props.queryData.id, props.queryData.name)
+  }, [])
 
 	return (
 		<Fragment>

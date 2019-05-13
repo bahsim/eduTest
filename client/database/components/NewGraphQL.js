@@ -34,19 +34,20 @@ const NewGraphQL = (props) => {
     <Mutation
       mutation={mutation.value}
       update={(cache, { data }) => {
+				try {
+					const fullData = cache.readQuery({
+	          query: update.value,
+	          variables: {...updateParams}
+	        });
 
-        const fullData = cache.readQuery({
-          query: update.value,
-          variables: {...updateParams}
-        });
-
-        cache.writeQuery({
-          query: update.value,
-          variables: {...updateParams},
-          data: {
-            [update.name]: [ data[mutation.name], ...fullData[update.name] ]
-          },
-        });
+	        cache.writeQuery({
+	          query: update.value,
+	          variables: {...updateParams},
+	          data: {
+	            [update.name]: [ data[mutation.name], ...fullData[update.name] ]
+	          },
+	        });
+				} catch(e) {}
       }}
     >
       {(action, { data }) => (

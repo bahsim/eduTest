@@ -34,8 +34,8 @@ const LABEL_CLOSE 		= 'Закрыть'
 
 interface ComponentProps {
   children    : any,
-  onSave      : (id: string, name: string) => any,
-  takeUpName  : (name: string) => any,
+  onClick     : (id: string, name: string) => any,
+  extraAction : (id: string, name: string) => any,
   classes: {
     textField : object
     button    : object
@@ -72,11 +72,13 @@ const BaseComponent = (props: ComponentProps) => {
 		props.action({ variables: { id, name }})
 			.then(() => {
 				setEditState(false)
-        props.onSave(id, name)
+        props.onClick(id, name)
 			})
 	}
 
-  useEffect(() => props.takeUpName(props.queryData.name), [])
+  useEffect(() => {
+    props.extraAction(props.queryData.id, props.queryData.name)
+  }, [])
 
   return (
     <Fragment>

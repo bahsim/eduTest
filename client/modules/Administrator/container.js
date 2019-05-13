@@ -6,6 +6,7 @@ import * as Mutations	from '../../database/mutations'
 
 import DeviceHubIcon 	from '@material-ui/icons/DeviceHub'
 import PeopleIcon 		from '@material-ui/icons/People'
+import GroupIcon 		from '@material-ui/icons/GroupWork'
 import ListIcon 			from '@material-ui/icons/List'
 import ScheduleIcon 	from '@material-ui/icons/Schedule'
 import ArchiveIcon 		from '@material-ui/icons/Archive'
@@ -13,7 +14,7 @@ import ArchiveIcon 		from '@material-ui/icons/Archive'
 import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
 
 import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
-import Workspace 			from '../../layouts/Admin/Workspace/Workspace.tsx'
+// import Workspace 			from '../../layouts/Admin/Workspace/Workspace.tsx'
 
 // import Members	from './members/Members.tsx'
 import Events 	from './events/Events'
@@ -28,19 +29,19 @@ const Menu = [
 		label	:	'Регионы',
 	},
 	{
-		link	: '/admin/tests',
-		icon	: <ListIcon/>,
-		label	:	'Тесты',
-	},
-	{
 		link	: '/admin/groups',
-		icon	: <ListIcon/>,
+		icon	: <GroupIcon/>,
 		label	:	'Группы',
 	},
 	{
 		link	: '/admin/members',
 		icon	: <PeopleIcon/>,
 		label	:	'Участники',
+	},
+	{
+		link	: '/admin/tests',
+		icon	: <ListIcon/>,
+		label	:	'Тесты',
 	},
 	{
 		link	: '/admin/events',
@@ -98,14 +99,14 @@ const Main = () => (
 					<PrimaryDataset
 						params={{
 							groupParams	: {
-								labelListName	: 'Группы',
-								queryList			: Queries.QUERY_GROUPS,
+								labelListName	: 'Регионы',
+								queryList			: Queries.QUERY_REGIONS,
 							},
 							baseURL				: '/admin/groups',
 							labelName 		: 'Группы',
 							labelListName	: 'Наименование',
 							labelNew			: 'Новая группа',
-							queryList			: Queries.QUERY_GROUPS,
+							queryList			: Queries.QUERY_REGION_GROUPS,
 							queryItem			: Queries.QUERY_GROUP,
 							mutateAdd			: Mutations.MUTATE_ADD_GROUP,
 							mutateEdit		: Mutations.MUTATE_EDIT_GROUP,

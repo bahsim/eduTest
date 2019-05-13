@@ -27,7 +27,7 @@ interface BaseComponentProps {
     button    : object
   },
   action  : (args: { variables: { name } }) => any,
-  onSave: () => any,
+  onClick: () => any,
 }
 
 const NewRecord = (props) => (
@@ -45,7 +45,7 @@ const BaseComponent = (props: BaseComponentProps) => {
 		if (name === '') return
 
 		props.action({ variables: { name }})
-			.then(() => props.onSave())
+			.then(() => props.onClick())
 	}
 
 	return (

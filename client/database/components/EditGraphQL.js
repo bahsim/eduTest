@@ -7,7 +7,8 @@ import Typography from '@material-ui/core/Typography'
 const EditGraphQL = (props) => {
 
 	const { queryProps, children } = props
-	const { query, mutation, queryParams, update, updateParams } = queryProps
+	const { query, mutation, queryParams,
+					update, updateParams, middleWare } = queryProps
 
 	const fullHeight = {
 		position: 'relative',
@@ -37,7 +38,7 @@ const EditGraphQL = (props) => {
 					)
 				}
 
-				const queryData = data[query.name]
+        let queryData = data[query.name]
 
 				if (loading || !queryData) {
 					return (
@@ -47,31 +48,36 @@ const EditGraphQL = (props) => {
 					)
 				}
 
+				if (middleWare) {
+					queryData = middleWare(queryData)
+				}
+
 				return (
 					<Mutation mutation={mutation.value}
 						update={(cache, { data }) => {
+							try {
+								const newItem = data[mutation.name]
 
-							const newItem = data[mutation.name]
+								cache.writeQuery({
+									query: query.value,
+									variables: {...queryParams},
+									data: { [query.name]: newItem },
+								});
 
-							cache.writeQuery({
-								query: query.value,
-								variables: {...queryParams},
-								data: { [query.name]: newItem },
-							});
-
-							const fullData = cache.readQuery({
-			          query: update.value,
-			          variables: {...updateParams}
-			        });
-							const result = fullData[update.name].map(item => {
-								if (item.id !== newItem.id) return item
-								return newItem
-              })
-							cache.writeQuery({
-								query: update.value,
-								variables: {...updateParams},
-								data: { [update.name]: result },
-							});
+								const fullData = cache.readQuery({
+				          query: update.value,
+				          variables: {...updateParams}
+				        });
+								const result = fullData[update.name].map(item => {
+									if (item.id !== newItem.id) return item
+									return newItem
+	              })
+								cache.writeQuery({
+									query: update.value,
+									variables: {...updateParams},
+									data: { [update.name]: result },
+								});
+							} catch(e) {}
 						}}
 					>
 						{(action, { data }) => (
