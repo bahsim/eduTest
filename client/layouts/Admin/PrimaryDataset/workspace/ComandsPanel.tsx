@@ -36,28 +36,14 @@ const ComandsPanel = (props: ComandsPanelProps) => (
 	props.list.length === 0 ?
 		<div className={props.classes.emptyMenu}><br/></div>
 	:
-		props.list.map((el,idx) => {
-			switch (el.type) {
-				case 'action':
-					return (
-						<Button key={idx} className={props.classes.button}
-              onClick={() => props.onClick(el.action)}
-						>
-							<el.icon className={props.classes.icon}/>
-							{el.label}
-						</Button>
-					)
-				case 'link':
-					return (
-						<Button key={idx} className={props.classes.button}
-							onClick={() => props.history.replace(el.link)}
-						>
-							<el.icon className={props.classes.icon}/>
-							{el.label}
-						</Button>
-					)
-			}
-		})
+		props.list.map((el,idx) => (
+			<Button key={idx} className={props.classes.button}
+				onClick={() => props.history.replace(el.link)}
+			>
+				<el.icon className={props.classes.icon}/>
+				{el.label}
+			</Button>
+		))
 )
 
 export default withStyles(styles)(withRouter(ComandsPanel))

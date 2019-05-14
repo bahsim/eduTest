@@ -13,6 +13,9 @@ import DeleteIcon     from '@material-ui/icons/DeleteForever'
 import Breadcrumbs    from './Breadcrumbs.tsx'
 import ComandsPanel   from './ComandsPanel.tsx'
 
+import DatasetOneLevel  from '../actions/DatasetOneLevel.js'
+import DatasetWithGroup from '../actions/DatasetWithGroup.js'
+
 const styles = theme => ({
   panel: {
     marginBottom  : theme.spacing.unit,
@@ -27,7 +30,7 @@ const styles = theme => ({
   },
 })
 
-const panelLink = (link, icon, label) => ({ type: 'link', link, icon, label })
+const panelLink = (link, icon, label) => ({ link, icon, label })
 
 const BREADCRUMBS_DEL_TEST  = 'Удаление'
 const LABEL_BACK            = 'Назад'
@@ -45,12 +48,14 @@ interface WorkspaceProps {
     search      : object,
   },
   children      : any,
-  datasetType   : any,
-  componentType : any,
-  baseURL       : any,
-  labelName     : any,
-  labelNew      : any,
+  datasetType   : string,
+  componentType : string,
+  role          : string,
+  baseURL       : string,
+  labelName     : string,
+  labelNew      : string,
   history       : { replace: (url: string) => any },
+  match         : { params: { groupId: string } },
 }
 
 interface WorkspaceState {
@@ -60,7 +65,7 @@ interface WorkspaceState {
   mainspaceTop				: number,
   panelContent				: any,
   breadcrumbsContent	: any,
-  mainComponentAction	: string,
+  groupName	          : string,
 }
 
 class Workspace extends Component<WorkspaceProps, WorkspaceState> {
@@ -70,13 +75,29 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 		mainspaceTop				: 0,
 		panelContent				: [],
 		breadcrumbsContent	: [],
-		mainComponentAction	: '',
+		groupName	          : '',
 	}
 
   mainspace
 
-	componentDidMount() {
-    this.putPanelContentDefault()
+  followLink = (link)   => this.props.history.replace(link)
+
+  defineDataset = () => {
+    const params = {
+      followLink  : (link) => this.props.history.replace(link),
+      setState    : (state) => this.setState(state),
+      getState    : (state) => this.state[state],
+      props       : this.props,
+    }
+    switch (this.props.datasetType) {
+      case 'oneLevel'   : return new DatasetOneLevel(params)
+      case 'withGroup'  : return new DatasetWithGroup(params)
+    }
+  }
+  dataset: any  = this.defineDataset()
+
+  componentDidMount() {
+    this.dataset.putPanelContentDefault()
     this.getRegistryTop()
 	}
 
@@ -92,120 +113,12 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 		}
 	}
 
-  putPanelContentDefault = () => {
-    const { datasetType, componentType, role,
-            baseURL, labelName, labelNew } = this.props
-
-    let panelContent = [], breadcrumbsContent = []
-
-    if (datasetType === 'oneLevel') {
-      switch (`${datasetType}-${componentType}`) {
-        case 'oneLevel-viewList':
-          breadcrumbsContent.push(labelName)
-          panelContent.push(panelLink(`${baseURL}/new`, AddIcon, LABEL_ADD))
-          break
-        case 'oneLevel-newItem':
-          breadcrumbsContent.push(labelName, labelNew)
-          panelContent.push(panelLink(baseURL, ArrowBackIcon, LABEL_BACK))
-          break
-        case 'oneLevel-viewItem':
-          break
-        case 'oneLevel-deleteItem':
-          break
-      }
-    }
-    if (datasetType === 'withGroup') {
-      switch (`${datasetType}-${componentType}-${role}`) {
-        case 'withGroup-viewList-groups':
-          breadcrumbsContent.push(labelName)
-          break
-        case 'withGroup-viewList-items':
-          const { groupId } = this.props.match.params
-          breadcrumbsContent.push(labelName)
-          panelContent.push(
-            panelLink(`${baseURL}?current=${groupId}`, ArrowBackIcon, LABEL_BACK),
-            panelLink(`${baseURL}/groups/${groupId}/new`, AddIcon, LABEL_ADD)
-          )
-          break
-      }
-    }
-
-    this.setState({panelContent, breadcrumbsContent})
-  }
-
-  handleMainAction = (...args) => {
-    const { datasetType, componentType, role, history,
-            baseURL, labelName } = this.props
-
-    if (datasetType === 'oneLevel') {
-      switch (`${datasetType}-${componentType}`) {
-        case 'oneLevel-viewList': {
-          const breadcrumbsContent = [labelName, args[1]]
-          const panelContent = [
-            panelLink(`${baseURL}/new`, AddIcon, LABEL_ADD),
-            panelLink(`${baseURL}/items/${args[0]}`, PageviewIcon, LABEL_OPEN)
-          ]
-          this.setState({panelContent, breadcrumbsContent})
-          break
-        }
-        case 'oneLevel-newItem':
-        case 'oneLevel-deleteItem':
-          history.replace(`${baseURL}?current=${args[0]}`)
-          break
-        case 'oneLevel-viewItem': {
-          const breadcrumbsContent = [labelName, args[1]]
-          const panelContent = this.state.panelContent
-          this.setState({panelContent, breadcrumbsContent})
-          break
-        }
-      }
-    }
-    if (datasetType === 'withGroup') {
-      switch (`${datasetType}-${componentType}-${role}`) {
-        case 'withGroup-viewList-groups':
-          history.replace(`${baseURL}/groups/${args[0]}`)
-          break
-      }
-    }
-  }
-
-  handleExtraAction = (...args) => {
-    const { datasetType, componentType, history,
-            baseURL, labelName } = this.props
-
-    switch (`${datasetType}-${componentType}`) {
-      case 'oneLevel-viewList':
-        this.props.history.replace(`${baseURL}/items/${args[0]}`)
-        break
-      case 'oneLevel-newItem':
-        break
-      case 'oneLevel-viewItem': {
-        const breadcrumbsContent = [ labelName, args[1] ]
-        const panelContent = [
-    			panelLink(`${baseURL}?current=${args[0]}`, ArrowBackIcon, LABEL_BACK),
-    			panelLink(`${baseURL}/items/${args[0]}/delete`, DeleteIcon, LABEL_DELETE)
-    		]
-        this.setState({ panelContent, breadcrumbsContent})
-        break
-      }
-      case 'oneLevel-deleteItem': {
-        const breadcrumbsContent = [ labelName, args[1], BREADCRUMBS_DEL_TEST ]
-        const panelContent = [
-          panelLink(`${baseURL}/items/${args[0]}`, ArrowBackIcon, LABEL_BACK)
-        ]
-        this.setState({ panelContent, breadcrumbsContent})
-        break
-      }
-    }
-  }
-
 	render() {
 		const { classes, children, datasetType, componentType } = this.props
 		const {
 			mainspaceTop,
 			panelContent,
 			breadcrumbsContent,
-			mainComponentAction
 		} = this.state
 
 		const registryHeight = ((window.innerHeight - mainspaceTop) - 45 ) + 'px'
@@ -217,29 +130,16 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
           <Breadcrumbs list={breadcrumbsContent} />
 				</Paper>
 				<Paper className={classes.panel}>
-					<ComandsPanel
-            list={panelContent}
-            onClick={(action) => {
-              this.setState({mainComponentAction: action}, () =>{
-                this.setState({mainComponentAction: ''})
-              })
-            }}
-          />
+					<ComandsPanel list={panelContent} />
 				</Paper>
 				<div ref={(el) => this.mainspace = el }>
 					<Paper className={classes.mainspace} style={styleMainspace}>
             {componentType === "viewList" &&
               React.Children.map(children, child => (
                 React.cloneElement(child, {
-                  onClick       : this.handleMainAction,
-                  onDoubleClick : this.handleExtraAction,
-                  panelAction   : mainComponentAction,
-    							setPanel      : panelContent => {
-                    this.setState({panelContent})
-                  },
-    							setBreadcrumbs: breadcrumbsContent => {
-                    this.setState({breadcrumbsContent})
-                  },
+                  onClick       : this.dataset.handleMainAction,
+                  onDoubleClick : this.dataset.handleSecondAction,
+                  extraAction   : this.dataset.handleExtraAction,
                   current: this.state.routeQueryParams.current,
                 })
               ))
@@ -249,15 +149,8 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
           			<Grid item xs={6}>
                   {React.Children.map(children, child => (
                     React.cloneElement(child, {
-                      onClick: this.handleMainAction,
-                      extraAction: this.handleExtraAction,
-                      panelAction: mainComponentAction,
-                      setPanel: panelContent => {
-                        this.setState({panelContent})
-                      },
-                      setBreadcrumbs: breadcrumbsContent => {
-                        this.setState({breadcrumbsContent})
-                      },
+                      onClick     : this.dataset.handleMainAction,
+                      extraAction : this.dataset.handleExtraAction,
                     })
                   ))}
                 </Grid>

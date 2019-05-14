@@ -49,9 +49,9 @@ const ViewGraphQL = (props) => {
 				let result = (middleWare ?
 					middleWare(data[query.name])
 				:
-					{ queryData: data[query.name], extraData: {} }
+					{ queryData: data[query.name], extraData: null }
 				)
-				console.log(result)
+
 				return (
           React.Children.map(children, child => (
             React.cloneElement(child, { ...result })

@@ -23,13 +23,15 @@ interface ComponentProps {
 		tableRow		: object
 	},
 	queryData			: {
-		map			: (list: any) => any,
-		forEach	: (list: any) => any,
+		map					: (list: any) => any,
+		forEach			: (list: any) => any,
 	},
+	extraData			: any,
 	label					: string,
 	current				: string,
 	onClick				: (id: string, name: string) => any,
 	onDoubleClick	: (id: string, name: string) => any,
+	extraAction		: (data: any) => any,
 }
 
 interface ComponentState {
@@ -52,7 +54,9 @@ class BaseComponent extends Component<ComponentProps,{}> {
 	firstLoad	= true
 
 	componentDidMount() {
-		console.log(this.props.extraData)
+		if (this.props.extraData) {
+			this.pullExtraData(this.props.extraData)
+		}
 		if (this.props.current) {
 			this.props.queryData.forEach((item) => {
 				if (this.props.current !== item.id) return
@@ -71,6 +75,10 @@ class BaseComponent extends Component<ComponentProps,{}> {
 		}, 50)
 	}
 
+	pullExtraData = (data) => {
+		setTimeout(() => this.props.extraAction(data), 50)
+	}
+
 	handleOnClick = (id, name) => {
 		this.setState({currentItem: id})
 		this.props.onClick && this.props.onClick(id, name)
@@ -83,7 +91,6 @@ class BaseComponent extends Component<ComponentProps,{}> {
 
 	render() {
 
-		console.log(this.props.queryData)
 		if (this.firstLoad) {
 			this.props.queryData.forEach((item) => {
 				this.domRefs[item.id] = React.createRef()
