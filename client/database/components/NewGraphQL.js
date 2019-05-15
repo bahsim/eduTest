@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mutation, Types } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -16,47 +16,95 @@ interface ComponentProps {
 const NewGraphQL = (props) => {
 
   const { queryProps, children } = props
-	const { mutation, update, updateParams } = queryProps
+	const { query, mutation, update, middleWare,
+					queryParams, updateParams, updateWare } = queryProps
 
 	const fullHeight = {
-		position: 'relative',
-		height: '100%',
-		width: '100%',
+		position	: 'relative',
+		height		: '100%',
+		width			: '100%',
 	}
 	const central = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
+		position	: 'absolute',
+		top				: '50%',
+		left			: '50%',
+		transform	: 'translate(-50%, -50%)',
 	}
 
-	return (
-    <Mutation
-      mutation={mutation.value}
-      update={(cache, { data }) => {
-				try {
-					const fullData = cache.readQuery({
-	          query: update.value,
-	          variables: {...updateParams}
-	        });
+	const MutationInject = (queryData) => {
+		return (
+			<Mutation
+				mutation={mutation.value}
+				update={(cache, { data }) => {
+					try {
+						let fullData = cache.readQuery({
+							query: update.value,
+							variables: {...updateParams}
+						});
 
-	        cache.writeQuery({
-	          query: update.value,
-	          variables: {...updateParams},
-	          data: {
-	            [update.name]: [ data[mutation.name], ...fullData[update.name] ]
-	          },
-	        });
-				} catch(e) {}
-      }}
-    >
-      {(action, { data }) => (
-        React.Children.map(children, child => (
-          React.cloneElement(child, { action, queryProps })
-        ))
-      )}
-    </Mutation>
-	)
+						if (updateWare) {
+							fullData = updateWare(fullData, update.name)
+						}
+
+						cache.writeQuery({
+							query: update.value,
+							variables: {...updateParams},
+							data: {
+								[update.name]: [ data[mutation.name], ...fullData[update.name] ]
+							},
+						})
+					} catch(e) {
+						console.log(e)
+					}
+				}}
+			>
+				{(action, { data }) => (
+					React.Children.map(children, child => (
+						React.cloneElement(child, { action, queryProps, queryData })
+					))
+				)}
+			</Mutation>
+		)
+	}
+	if (query) {
+		return (
+			<Query query={query.value} variables={{ ...queryParams }}>
+				{({ data, error, loading }) => {
+
+					if (error) {
+						return (
+							<div style={fullHeight}>
+								<div style={central}>
+									<Typography  variant="h6" color="inherit">
+										{`${error.message}`}
+									</Typography>
+								</div>
+							</div>
+						)
+					}
+
+	        let queryData = data[query.name]
+
+					if (loading || !queryData) {
+						return (
+							<div style={fullHeight}>
+								<CircularProgress style={central} color="primary" />
+							</div>
+						)
+					}
+
+					if (middleWare) {
+						queryData = middleWare(queryData)
+					}
+
+					return MutationInject(queryData)
+				}}
+			</Query>
+		)
+	} else {
+		return MutationInject({})
+	}
+
 }
 
 export default NewGraphQL

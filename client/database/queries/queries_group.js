@@ -19,6 +19,10 @@ export const QUERY_GROUP = {
 			group(id: $id) {
 				id
 				name
+				parent {
+					id
+					name
+				}
 			}
 		}
 	`

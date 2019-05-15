@@ -77,7 +77,9 @@ const EditGraphQL = (props) => {
 									variables: {...updateParams},
 									data: { [update.name]: result },
 								});
-							} catch(e) {}
+							} catch(e) {
+								console.log(e)
+							}
 						}}
 					>
 						{(action, { data }) => (

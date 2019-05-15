@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const graphql = require('graphql')
 
+const Region = mongoose.model('region')
+const RegionType = require('./region_type')
+
 const {
 	GraphQLObjectType,
 	GraphQLString,
@@ -12,6 +15,12 @@ const GroupType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
+		parent: {
+			type: RegionType,
+			resolve(parentValue) {
+				return Region.findById(parentValue.regionId)
+			}
+    }
   })
 })
 

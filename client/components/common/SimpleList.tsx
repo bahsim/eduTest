@@ -29,9 +29,9 @@ interface ComponentProps {
 	extraData			: any,
 	label					: string,
 	current				: string,
-	onClick				: (id: string, name: string) => any,
-	onDoubleClick	: (id: string, name: string) => any,
-	extraAction		: (data: any) => any,
+	onClick				: (data: any) => any,
+	onDoubleClick	: (data: any) => any,
+	extraAction		: (data: any, extra: any) => any,
 }
 
 interface ComponentState {
@@ -54,14 +54,15 @@ class BaseComponent extends Component<ComponentProps,{}> {
 	firstLoad	= true
 
 	componentDidMount() {
-		if (this.props.extraData) {
-			this.pullExtraData(this.props.extraData)
-		}
-		if (this.props.current) {
-			this.props.queryData.forEach((item) => {
-				if (this.props.current !== item.id) return
-				this.setState({currentItem: this.props.current}, () => {
-					this.scrollToCurrent(this.props.current)
+		const { extraAction, queryData, extraData, current } = this.props
+
+		setTimeout(() => extraAction(extraData, queryData), 50)
+
+		if (current) {
+			queryData.forEach((item) => {
+				if (current !== item.id) return
+				this.setState({currentItem: current}, () => {
+					this.scrollToCurrent(current)
 				})
 			})
 		}
@@ -75,18 +76,14 @@ class BaseComponent extends Component<ComponentProps,{}> {
 		}, 50)
 	}
 
-	pullExtraData = (data) => {
-		setTimeout(() => this.props.extraAction(data), 50)
+	handleOnClick = (item) => {
+		this.setState({currentItem: item.id})
+		this.props.onClick && this.props.onClick(item)
 	}
 
-	handleOnClick = (id, name) => {
-		this.setState({currentItem: id})
-		this.props.onClick && this.props.onClick(id, name)
-	}
-
-	handleOnDoubleClick = (id, name) => {
-		this.setState({currentItem: id})
-		this.props.onDoubleClick && this.props.onDoubleClick(id, name)
+	handleOnDoubleClick = (item) => {
+		this.setState({currentItem: item.id})
+		this.props.onDoubleClick && this.props.onDoubleClick(item)
 	}
 
 	render() {
@@ -111,8 +108,8 @@ class BaseComponent extends Component<ComponentProps,{}> {
 							<TableRow hover
 								className={this.props.classes.tableRow}
 								selected={this.state.currentItem === item.id}
-								onClick={() => this.handleOnClick(item.id, item.name)}
-								onDoubleClick={() => this.handleOnDoubleClick(item.id, item.name)}
+								onClick={() => this.handleOnClick(item)}
+								onDoubleClick={() => this.handleOnDoubleClick(item)}
 							>
 								<TableCell component="th" scope="row" >
 									{item.name}

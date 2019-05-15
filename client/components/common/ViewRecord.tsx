@@ -34,8 +34,8 @@ const LABEL_CLOSE 		= 'Закрыть'
 
 interface ComponentProps {
   children    : any,
-  onClick     : (id: string, name: string) => any,
-  extraAction : (id: string, name: string) => any,
+  onClick     : (data: any) => any,
+  extraAction : (data: any) => any,
   classes: {
     textField : object
     button    : object
@@ -72,12 +72,12 @@ const BaseComponent = (props: ComponentProps) => {
 		props.action({ variables: { id, name }})
 			.then(() => {
 				setEditState(false)
-        props.onClick(id, name)
+        props.onClick({...props.queryData, name})
 			})
 	}
 
   useEffect(() => {
-    props.extraAction(props.queryData.id, props.queryData.name)
+    props.extraAction(props.queryData)
   }, [])
 
   return (

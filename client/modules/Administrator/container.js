@@ -6,7 +6,6 @@ import * as Mutations	from '../../database/mutations'
 
 import DeviceHubIcon 	from '@material-ui/icons/DeviceHub'
 import PeopleIcon 		from '@material-ui/icons/People'
-import GroupIcon 		from '@material-ui/icons/GroupWork'
 import ListIcon 			from '@material-ui/icons/List'
 import ScheduleIcon 	from '@material-ui/icons/Schedule'
 import ArchiveIcon 		from '@material-ui/icons/Archive'
@@ -14,9 +13,7 @@ import ArchiveIcon 		from '@material-ui/icons/Archive'
 import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
 
 import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
-// import Workspace 			from '../../layouts/Admin/Workspace/Workspace.tsx'
 
-// import Members	from './members/Members.tsx'
 import Events 	from './events/Events'
 import Results 	from './results/Results'
 
@@ -27,11 +24,6 @@ const Menu = [
 		link	: '/admin/regions',
 		icon	: <DeviceHubIcon/>,
 		label	:	'Регионы',
-	},
-	{
-		link	: '/admin/groups',
-		icon	: <GroupIcon/>,
-		label	:	'Группы',
 	},
 	{
 		link	: '/admin/members',
@@ -95,16 +87,16 @@ const Main = () => (
 					/>
 				)}/>
 
-				<Route path="/admin/groups" component={() => (
+				<Route path="/admin/members" component={() => (
 					<PrimaryDataset
 						params={{
 							groupParams	: {
 								labelListName	: 'Регионы',
 								queryList			: Queries.QUERY_REGIONS,
 							},
-							baseURL				: '/admin/groups',
-							labelName 		: 'Группы',
-							labelListName	: 'Наименование',
+							baseURL				: '/admin/members',
+							labelName 		: 'Участники',
+							labelListName	: 'Группы',
 							labelNew			: 'Новая группа',
 							queryList			: Queries.QUERY_REGION_GROUPS,
 							queryItem			: Queries.QUERY_GROUP,

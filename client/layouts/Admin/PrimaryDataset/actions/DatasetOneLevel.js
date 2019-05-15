@@ -44,10 +44,10 @@ export default class DatasetOneLevel {
 
     switch (componentType) {
       case 'viewList': {
-        const breadcrumbsContent = [labelName, args[1]]
+        const breadcrumbsContent = [labelName, args[0].name]
         const panelContent = [
           button(AddIcon, LABEL_ADD, `${baseURL}/new`),
-          button(PageviewIcon, LABEL_OPEN, `${baseURL}/items/${args[0]}`),
+          button(PageviewIcon, LABEL_OPEN, `${baseURL}/items/${args[0].id}`),
         ]
         this.setState({panelContent, breadcrumbsContent})
         break
@@ -57,7 +57,7 @@ export default class DatasetOneLevel {
         this.followLink(baseURL)
         break
       case 'viewItem': {
-        const breadcrumbsContent = [labelName, args[1]]
+        const breadcrumbsContent = [labelName, args[0].name]
         const panelContent = this.getState('panelContent')
         this.setState({panelContent, breadcrumbsContent})
         break
@@ -70,7 +70,7 @@ export default class DatasetOneLevel {
 
     switch (componentType) {
       case 'viewList':
-        this.followLink(button(`${baseURL}/items/${args[0]}`))
+        this.followLink(button(`${baseURL}/items/${args[0].id}`))
         break
     }
   }
@@ -79,19 +79,34 @@ export default class DatasetOneLevel {
     const { componentType, baseURL, labelName } = this.props
 
     switch (componentType) {
+      case 'viewList': {
+        const { current } = this.getState('routeQueryParams')
+        if (current) {
+          const item = args[1].find((item) => item.id === current)
+          if (item) {
+            const breadcrumbsContent = [labelName, item.name]
+            const panelContent = [
+              button(AddIcon, LABEL_ADD, `${baseURL}/new`),
+              button(PageviewIcon, LABEL_OPEN, `${baseURL}/items/${item.id}`),
+            ]
+            this.setState({ panelContent, breadcrumbsContent})
+          }
+        }
+        break
+      }
       case 'viewItem': {
-        const breadcrumbsContent = [ labelName, args[1] ]
+        const breadcrumbsContent = [ labelName, args[0].name ]
         const panelContent = [
-          button(ArrowBackIcon, LABEL_BACK, `${baseURL}?current=${args[0]}`),
-          button(DeleteIcon, LABEL_DELETE, `${baseURL}/items/${args[0]}/delete`),
+          button(ArrowBackIcon, LABEL_BACK, `${baseURL}?current=${args[0].id}`),
+          button(DeleteIcon, LABEL_DELETE, `${baseURL}/items/${args[0].id}/delete`),
     		]
         this.setState({ panelContent, breadcrumbsContent})
         break
       }
       case 'deleteItem': {
-        const breadcrumbsContent = [ labelName, args[1], BREADCRUMBS_DEL_TEST ]
+        const breadcrumbsContent = [ labelName, args[0].name, BREADCRUMBS_DEL_TEST ]
         const panelContent = [
-          button(ArrowBackIcon, LABEL_BACK, `${baseURL}/items/${args[0]}`)
+          button(ArrowBackIcon, LABEL_BACK, `${baseURL}/items/${args[0].id}`)
         ]
         this.setState({ panelContent, breadcrumbsContent})
         break

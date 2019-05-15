@@ -42,29 +42,36 @@ const DatasetWithGroup = (props) => {
             queryProps={{
               query       : props.queryList,
 							queryParams : { id: extra.match.params.groupId },
-							middleWare	:	function(data) {
-								return {
-									queryData: data.list,
-									extraData: {id: data.id, name: data.name}
-								}
-							}
+							middleWare	:	(data) => ({
+								queryData: data.list.map(item => ({
+									...item, parentId: data.id, parentName: data.name
+								})),
+								extraData: {id: data.id, name: data.name}
+							})
             }}
             label={props.labelListName}
           />
         </Workspace>
       )}/>
-      <Route path={`${baseURL}/new`} exact component={() => (
+      <Route path={`${baseURL}/groups/:groupId/new`} exact component={(extra) => (
         <Workspace datasetType="withGroup" componentType="newItem" {...props}>
           <NewRecord
             queryProps = {{
-              mutation    : props.mutateAdd,
-              update      : props.queryList,
-              updateParams: {},
+							query			    	: queryList,
+							queryParams 		: { id: extra.match.params.groupId },
+							middleWare			:	(data) => ({id: data.id, name: data.name}),
+              mutation    		: props.mutateAdd,
+							mutationParams	: {
+								regionId			: extra.match.params.groupId
+							},
+              update      		: props.queryList,
+              updateParams		: { id: extra.match.params.groupId },
+							updateWare			:	(data, name)  => ({ [name] : data[name].list })
             }}
           />
         </Workspace>
       )}/>
-      <Route path={`${baseURL}/items/:id`} exact component={(extra) => (
+      <Route path={`${baseURL}/groups/:groupId/items/:id`} exact component={(extra) => (
         <Workspace datasetType="withGroup" componentType="viewItem" {...props}>
           <ViewRecord
             queryProps = {{
@@ -77,7 +84,7 @@ const DatasetWithGroup = (props) => {
           />
         </Workspace>
       )}/>
-      <Route path={`${baseURL}/items/:id/delete`} exact component={(extra) => (
+      <Route path={`${baseURL}/groups/:groupId/items/:id/delete`} exact component={(extra) => (
         <Workspace datasetType="withGroup" componentType="deleteItem" {...props}>
           <DeleteRecord
             queryProps = {{
@@ -85,7 +92,8 @@ const DatasetWithGroup = (props) => {
       				mutation      : mutateDel,
               queryParams   : { id: extra.match.params.id },
       				update		    : queryList,
-              updateParams  : {}
+              updateParams  : { id: extra.match.params.groupId },
+							updateWare		:	(data, name)  => ({ [name] : data[name].list })
             }}
           />
         </Workspace>

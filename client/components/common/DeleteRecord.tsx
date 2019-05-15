@@ -25,7 +25,7 @@ interface ComponentProps {
     title   	: object
   },
 	onClick			: () => any,
-  extraAction	: (id: string, name: string) => any,
+  extraAction	: (data: any) => any,
   queryData		: any,
   action   		: (args: { variables: { id: string }}) => any
 }
@@ -44,7 +44,7 @@ const Component = (props: ComponentProps) => {
 	}
 
 	useEffect(() => {
-    props.extraAction(props.queryData.id, props.queryData.name)
+    props.extraAction(props.queryData)
   }, [])
 
 	return (

@@ -65,7 +65,6 @@ interface WorkspaceState {
   mainspaceTop				: number,
   panelContent				: any,
   breadcrumbsContent	: any,
-  groupName	          : string,
 }
 
 class Workspace extends Component<WorkspaceProps, WorkspaceState> {
@@ -75,14 +74,13 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 		mainspaceTop				: 0,
 		panelContent				: [],
 		breadcrumbsContent	: [],
-		groupName	          : '',
 	}
 
   mainspace
 
   followLink = (link)   => this.props.history.replace(link)
 
-  defineDataset = () => {
+  defineActions = () => {
     const params = {
       followLink  : (link) => this.props.history.replace(link),
       setState    : (state) => this.setState(state),
@@ -94,10 +92,10 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
       case 'withGroup'  : return new DatasetWithGroup(params)
     }
   }
-  dataset: any  = this.defineDataset()
+  actions: any  = this.defineActions()
 
   componentDidMount() {
-    this.dataset.putPanelContentDefault()
+    this.actions.putPanelContentDefault()
     this.getRegistryTop()
 	}
 
@@ -137,9 +135,9 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
             {componentType === "viewList" &&
               React.Children.map(children, child => (
                 React.cloneElement(child, {
-                  onClick       : this.dataset.handleMainAction,
-                  onDoubleClick : this.dataset.handleSecondAction,
-                  extraAction   : this.dataset.handleExtraAction,
+                  onClick       : this.actions.handleMainAction,
+                  onDoubleClick : this.actions.handleSecondAction,
+                  extraAction   : this.actions.handleExtraAction,
                   current: this.state.routeQueryParams.current,
                 })
               ))
@@ -149,8 +147,8 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
           			<Grid item xs={6}>
                   {React.Children.map(children, child => (
                     React.cloneElement(child, {
-                      onClick     : this.dataset.handleMainAction,
-                      extraAction : this.dataset.handleExtraAction,
+                      onClick     : this.actions.handleMainAction,
+                      extraAction : this.actions.handleExtraAction,
                     })
                   ))}
                 </Grid>

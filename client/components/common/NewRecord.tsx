@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import NewGraphQL from '../../database/components/NewGraphQL'
 
@@ -26,8 +26,14 @@ interface BaseComponentProps {
     textField : object
     button    : object
   },
-  action  : (args: { variables: { name } }) => any,
-  onClick: () => any,
+  action      : (args: { variables: { name } }) => any,
+  onClick     : (data: any) => any,
+  extraAction : (data: any) => any,
+  queryProps  : {
+    mutation      : any,
+    mutationParams: any,
+  },
+  queryData   : any,
 }
 
 const NewRecord = (props) => (
@@ -44,9 +50,13 @@ const BaseComponent = (props: BaseComponentProps) => {
 		const name = e.target.name.value.trim()
 		if (name === '') return
 
-		props.action({ variables: { name }})
-			.then(() => props.onClick())
+		props.action({ variables: { name, ...props.queryProps.mutationParams }})
+			.then(({ data }) => props.onClick(data[props.queryProps.mutation.name]))
 	}
+
+  useEffect(() => {
+    props.extraAction(props.queryData)
+  }, [])
 
 	return (
   	<form onSubmit={handleSubmit} noValidate autoComplete="off">
