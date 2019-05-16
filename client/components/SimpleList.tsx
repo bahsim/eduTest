@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react'
 import RootRef from '@material-ui/core/RootRef';
 
-import ViewGraphQL from '../../database/components/ViewGraphQL'
+import ViewGraphQL from '../database/components/ViewGraphQL'
 
 import { withStyles } from '@material-ui/core/styles'
 import Table 					from '@material-ui/core/Table'

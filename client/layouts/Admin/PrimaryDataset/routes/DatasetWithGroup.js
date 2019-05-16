@@ -3,10 +3,10 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 
 import Workspace  from '../Workspace/Workspace.tsx'
 
-import SimpleList   from '../../../../components/common/SimpleList.tsx'
-import NewRecord    from '../../../../components/common/NewRecord.tsx'
-import ViewRecord   from '../../../../components/common/ViewRecord.tsx'
-import DeleteRecord from '../../../../components/common/DeleteRecord.tsx'
+import SimpleList   from '../../../../components/SimpleList.tsx'
+import NewRecord    from '../../../../components/NewRecord.tsx'
+import ViewRecord   from '../../../../components/ViewRecord.tsx'
+import DeleteRecord from '../../../../components/DeleteRecord.tsx'
 
 const DatasetWithGroup = (props) => {
 	const {
@@ -106,31 +106,3 @@ const DatasetWithGroup = (props) => {
 }
 
 export default DatasetWithGroup
-
-// <Switch>
-// 	<Route path={baseURL} exact component={() => (
-// 		<Workspace>
-// 			<ViewList {...props}>
-// 				<SimpleList
-// 					type='groups'
-// 					queryProps={{
-// 						query       : props.groupParams.queryList,
-// 						queryParams : {}
-// 					}}
-// 					label={props.groupParams.labelListName}
-// 				/>
-// 				<SimpleList
-// 					type='items'
-// 					queryProps={{
-// 						query       : props.queryList,
-// 						queryParams : {}
-// 					}}
-// 					label={props.labelListName}
-// 				/>
-// 			</ViewList>
-// 		</Workspace>
-// 	)}/>
-// 	<Route path={`${baseURL}*`} exact component={() => (
-// 		<Redirect to={baseURL} />
-// 	)}/>
-// </Switch>

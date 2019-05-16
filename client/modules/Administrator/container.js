@@ -10,9 +10,8 @@ import ListIcon 			from '@material-ui/icons/List'
 import ScheduleIcon 	from '@material-ui/icons/Schedule'
 import ArchiveIcon 		from '@material-ui/icons/Archive'
 
-import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
-
 import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
+import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
 
 import Events 	from './events/Events'
 import Results 	from './results/Results'
@@ -114,29 +113,5 @@ const Main = () => (
 		}
 	/>
 )
-
-// <Route path="/admin/members" component={() => (
-// 	<PrimaryDataset
-// 		params={{
-// 			parentParams	: {
-// 				labelListName	: 'Выбор региона',
-// 				queryList			: Queries.QUERY_REGIONS,
-// 			},
-// 			groupParams	: {
-// 				labelListName	: 'Выбор группы',
-// 				queryList			: Queries.QUERY_GROUPS,
-// 			},
-// 			baseURL				: '/admin/members',
-// 			labelName 		: 'Участники',
-// 			labelListName	: 'Наименование',
-// 			labelNew			: 'Новый участник',
-// 			queryList			: Queries.QUERY_MEMBERS,
-// 			queryItem			: Queries.QUERY_MEMBER,
-// 			mutateAdd			: Mutations.MUTATE_ADD_MEMBER,
-// 			mutateEdit		: Mutations.MUTATE_EDIT_MEMBER,
-// 			mutateDel			: Mutations.MUTATE_DELETE_MEMBER,
-// 		}}
-// 	/>
-// )}/>
 
 export default Main

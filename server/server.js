@@ -32,7 +32,7 @@ mongoose.Promise = global.Promise
 mongoose.connect(dbPath, {useNewUrlParser: true})
 mongoose.connection
 	.once('open', () => {
-		console.log('Connected to MongoLab instance.')
+		console.log('Connected to Mongo DB.')
 
 		app.get("/admin*", (req, res) => {
 			res.sendFile(path.join(__dirname, '..','client/modules/administrator/index.html'))
