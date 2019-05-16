@@ -1,2 +1,2 @@
 # eduTest
-react-express-mongo
+react-typescript-graphql-express-mongo
