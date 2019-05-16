@@ -20,6 +20,8 @@ export default class DatasetOneLevel {
     this.followLink = followLink
   }
 
+  contentData = { ownerId: 'ownerId'}
+
   putPanelContentDefault = () => {
     const { componentType, role, labelName } = this.props
 

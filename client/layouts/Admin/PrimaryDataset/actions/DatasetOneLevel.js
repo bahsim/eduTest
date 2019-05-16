@@ -70,7 +70,7 @@ export default class DatasetOneLevel {
 
     switch (componentType) {
       case 'viewList':
-        this.followLink(button(`${baseURL}/items/${args[0].id}`))
+        this.followLink(`${baseURL}/items/${args[0].id}`)
         break
     }
   }

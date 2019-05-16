@@ -28,6 +28,9 @@ const styles = theme => ({
     paddingLeft   : theme.spacing.unit,
     paddingRight  : theme.spacing.unit,
   },
+  content: {
+    marginTop     : theme.spacing.unit*2,
+  },
 })
 
 const panelLink = (link, icon, label) => ({ link, icon, label })
@@ -122,6 +125,8 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 		const registryHeight = ((window.innerHeight - mainspaceTop) - 45 ) + 'px'
 		const styleMainspace = {height: registryHeight, overflow: 'auto'}
 
+    const Content = this.props.content[componentType]
+
 		return (
 			<Fragment>
 				<Paper className={classes.breadcrumbs}>
@@ -138,21 +143,28 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
                   onClick       : this.actions.handleMainAction,
                   onDoubleClick : this.actions.handleSecondAction,
                   extraAction   : this.actions.handleExtraAction,
-                  current: this.state.routeQueryParams.current,
+                  current       : this.state.routeQueryParams.current,
                 })
               ))
             }
             {componentType !== "viewList" &&
-              <Grid container >
-          			<Grid item xs={6}>
-                  {React.Children.map(children, child => (
-                    React.cloneElement(child, {
-                      onClick     : this.actions.handleMainAction,
-                      extraAction : this.actions.handleExtraAction,
-                    })
-                  ))}
-                </Grid>
-          		</Grid>
+              <Fragment>
+                <Grid container >
+            			<Grid item xs={6}>
+                    {React.Children.map(children, child => (
+                      React.cloneElement(child, {
+                        onClick     : this.actions.handleMainAction,
+                        extraAction : this.actions.handleExtraAction,
+                      })
+                    ))}
+                  </Grid>
+            		</Grid>
+                <div className={classes.content}>
+                  <Content
+                    data={this.actions.contentData}
+                  />
+                </div>
+              </Fragment>
             }
 					</Paper>
 				</div>
