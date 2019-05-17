@@ -20,7 +20,7 @@ export default class DatasetOneLevel {
     this.followLink = followLink
   }
 
-  contentData = { ownerId: 'ownerId'}
+  contentData = {}
 
   putPanelContentDefault = () => {
     const { componentType, role, labelName } = this.props
@@ -32,7 +32,6 @@ export default class DatasetOneLevel {
         break
       }
     }
-
   }
 
   handleMainAction = (...args) => {
@@ -141,7 +140,13 @@ export default class DatasetOneLevel {
           button(ArrowBackIcon, LABEL_BACK, linkBack),
           button(DeleteIcon, LABEL_DELETE, linkDelete),
         ]
-        this.setState({ panelContent, breadcrumbsContent })
+
+        const contentData = {
+          ownerId : args[0].id,
+          regionId: args[0].parent.id,
+        }
+
+        this.setState({ panelContent, breadcrumbsContent, contentData })
         break
       }
       case 'deleteItem': {

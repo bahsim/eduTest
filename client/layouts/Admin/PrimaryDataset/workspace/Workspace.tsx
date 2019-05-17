@@ -79,6 +79,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 		mainspaceTop				: 0,
 		panelContent				: [],
 		breadcrumbsContent	: [],
+    contentData         : {}
 	}
 
   mainspace
@@ -117,17 +118,27 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 	}
 
 	render() {
-		const { classes, children, datasetType, componentType } = this.props
+		const {
+      classes,
+      children,
+      datasetType,
+      componentType,
+      content,
+    } = this.props
+
 		const {
 			mainspaceTop,
 			panelContent,
 			breadcrumbsContent,
+      contentData,
 		} = this.state
 
 		const registryHeight = ((window.innerHeight - mainspaceTop) - 45 ) + 'px'
 		const styleMainspace = {height: registryHeight, overflow: 'auto'}
 
-    const Content = this.props.content[componentType]
+    const Content = (
+      content && content[componentType] &&  content[componentType].component
+    )
 
 		return (
 			<Fragment>
@@ -164,7 +175,8 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
                 {Content &&
                   <div className={classes.content}>
                     <Content
-                      data={this.actions.contentData}
+                      data={contentData}
+                      {...content[componentType].params}
                     />
                   </div>
                 }

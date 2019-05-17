@@ -13,6 +13,8 @@ import ArchiveIcon 		from '@material-ui/icons/Archive'
 import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
 import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
 
+import MembersList 		from './content/MembersList.js'
+
 import Events 	from './events/Events'
 import Results 	from './results/Results'
 
@@ -45,12 +47,6 @@ const Menu = [
 		label	:	'Результаты',
 	},
 ]
-
-const ContentElement = (props) => (
-	<div>
-		{props.data.ownerId} <br/><br/>
-	</div>
-)
 
 const Main = () => (
 	<Layout
@@ -112,7 +108,14 @@ const Main = () => (
 							mutateDel			: Mutations.MUTATE_DELETE_GROUP,
 						}}
 						content={{
-							viewItem: ContentElement,
+							viewItem: {
+								component	: MembersList,
+								params: {
+									queryList			: Queries.QUERY_MEMBERS,
+									labelListName	: 'Фамилия Имя Отчество',
+									mutateAdd			: Mutations.MUTATE_ADD_MEMBER
+								}
+							},
 						}}
 					/>
 				)}/>
