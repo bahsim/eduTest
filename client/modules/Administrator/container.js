@@ -49,19 +49,6 @@ const Menu = [
 const ContentElement = (props) => (
 	<div>
 		{props.data.ownerId} <br/><br/>
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		k;aksdf;lkajsd;flkja;sldkfj;alsdk asdfkja;lkdfj;kladjf;lkjdf;lkjdf;lkjadf;lkj;dfklakldf;lkajdf;ljaf ad ;ja;dskf j;akdjf asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja asdfkja
-		{props.ownerId}
 	</div>
 )
 
@@ -86,6 +73,7 @@ const Main = () => (
 							mutateEdit		: Mutations.MUTATE_EDIT_REGION,
 							mutateDel			: Mutations.MUTATE_DELETE_REGION,
 						}}
+						content={{}}
 					/>
 				)}/>
 
@@ -102,6 +90,7 @@ const Main = () => (
 							mutateEdit		: Mutations.MUTATE_EDIT_TEST,
 							mutateDel			: Mutations.MUTATE_DELETE_TEST,
 						}}
+						content={{}}
 					/>
 				)}/>
 

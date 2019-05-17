@@ -46,11 +46,13 @@ interface WorkspaceProps {
     breadcrumbs : object,
     panel       : object,
     mainspace   : object,
+    content     : string,
   },
   location      : {
     search      : object,
   },
   children      : any,
+  content       : any,
   datasetType   : string,
   componentType : string,
   role          : string,
@@ -159,11 +161,13 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
                     ))}
                   </Grid>
             		</Grid>
-                <div className={classes.content}>
-                  <Content
-                    data={this.actions.contentData}
-                  />
-                </div>
+                {Content &&
+                  <div className={classes.content}>
+                    <Content
+                      data={this.actions.contentData}
+                    />
+                  </div>
+                }
               </Fragment>
             }
 					</Paper>
