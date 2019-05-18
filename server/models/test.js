@@ -6,9 +6,9 @@ const TestSchema = new Schema({
 })
 
 TestSchema.statics.edit = function(id, name) {
-  const Model = mongoose.model('test');
+  const Test = mongoose.model('test');
 
-  return Model.findById(id)
+  return Test.findById(id)
     .then(item => {
       item.name = name
       return item.save()
@@ -16,9 +16,13 @@ TestSchema.statics.edit = function(id, name) {
 }
 
 TestSchema.statics.delete = function(id) {
-  const Modal = mongoose.model('test');
+  const Test = mongoose.model('test');
+  const TestItem = mongoose.model('testItem');
 
-	return Modal.deleteOne({ _id: id })
+	return Test.deleteOne({ _id: id })
+    .then(() => {
+      return TestItem.deleteMany({testId: id})
+    })
 }
 
 mongoose.model('test', TestSchema)

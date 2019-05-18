@@ -5,7 +5,6 @@ import DeleteGraphQL 	from '../database/components/DeleteGraphQL'
 import { withStyles } from '@material-ui/core/styles'
 import Typography 		from '@material-ui/core/Typography'
 import Button 				from '@material-ui/core/Button'
-import ArrowBackIcon 	from '@material-ui/icons/ArrowBack'
 
 const styles = theme => ({
 	button: {

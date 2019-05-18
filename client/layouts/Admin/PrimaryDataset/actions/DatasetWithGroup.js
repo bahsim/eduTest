@@ -20,8 +20,6 @@ export default class DatasetOneLevel {
     this.followLink = followLink
   }
 
-  contentData = {}
-
   putPanelContentDefault = () => {
     const { componentType, role, labelName } = this.props
 

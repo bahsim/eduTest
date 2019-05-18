@@ -9,8 +9,6 @@ import TableBody 			from '@material-ui/core/TableBody'
 import TableCell 			from '@material-ui/core/TableCell'
 import TableHead 			from '@material-ui/core/TableHead'
 import TableRow 			from '@material-ui/core/TableRow'
-import AddIcon 				from '@material-ui/icons/Add'
-import PageviewIcon 	from '@material-ui/icons/Pageview'
 
 const styles = theme => ({
 	tableRow: {
@@ -32,6 +30,7 @@ interface ComponentProps {
 	onClick				: (data: any) => any,
 	onDoubleClick	: (data: any) => any,
 	extraAction		: (data: any, extra: any) => any,
+	formatListRow	: (item: object) => any,
 }
 
 interface ComponentState {
@@ -112,7 +111,9 @@ class BaseComponent extends Component<ComponentProps,{}> {
 								onDoubleClick={() => this.handleOnDoubleClick(item)}
 							>
 								<TableCell component="th" scope="row" >
-									{item.name}
+									{this.props.formatListRow ?
+										this.props.formatListRow(item) : item.name
+									}
 								</TableCell>
 							</TableRow>
 						</RootRef>

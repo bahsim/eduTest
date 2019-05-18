@@ -14,9 +14,7 @@ import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
 import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
 
 import MembersList 		from './content/MembersList.js'
-
-import Events 	from './events/Events'
-import Results 	from './results/Results'
+import TestItems 			from './content/TestItems.js'
 
 const APP_TITLE = 'Администратор'
 
@@ -86,7 +84,19 @@ const Main = () => (
 							mutateEdit		: Mutations.MUTATE_EDIT_TEST,
 							mutateDel			: Mutations.MUTATE_DELETE_TEST,
 						}}
-						content={{}}
+						content={{
+							viewItem: {
+								component	: TestItems,
+								params: {
+									queryList			: Queries.QUERY_TESTITEMS,
+									queryItem			: Queries.QUERY_TESTITEM,
+									labelListName	: 'Вопросы',
+									mutateAdd			: Mutations.MUTATE_ADD_TESTITEM,
+									mutateEdit		: Mutations.MUTATE_EDIT_TESTITEM,
+									mutateDelete	: Mutations.MUTATE_DELETE_TESTITEM,
+								}
+							},
+						}}
 					/>
 				)}/>
 
@@ -112,16 +122,19 @@ const Main = () => (
 								component	: MembersList,
 								params: {
 									queryList			: Queries.QUERY_MEMBERS,
+									queryItem			: Queries.QUERY_MEMBER,
 									labelListName	: 'Фамилия Имя Отчество',
-									mutateAdd			: Mutations.MUTATE_ADD_MEMBER
+									mutateAdd			: Mutations.MUTATE_ADD_MEMBER,
+									mutateEdit		: Mutations.MUTATE_EDIT_MEMBER,
+									mutateDelete	: Mutations.MUTATE_DELETE_MEMBER,
 								}
 							},
 						}}
 					/>
 				)}/>
 
-				<Route path="/admin/events" component={() => <Events/>} />
-				<Route path="/admin/results" component={() => <Results/>} />
+				<Route path="/admin/events" component={() => null} />
+				<Route path="/admin/results" component={() => null} />
 				<Route path="/*" render={() => <Redirect to="/admin" />}/>
 			</Switch>
 		}

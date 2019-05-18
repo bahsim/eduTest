@@ -5,6 +5,7 @@ import NewGraphQL from '../database/components/NewGraphQL'
 import { withStyles } from '@material-ui/core/styles'
 import TextField      from '@material-ui/core/TextField'
 import Button         from '@material-ui/core/Button'
+import Checkbox       from '@material-ui/core/Checkbox'
 
 const styles = theme => ({
   textField: {
@@ -60,11 +61,27 @@ const BaseComponent = (props: BaseComponentProps) => {
 	return (
   	<form onSubmit={handleSubmit} noValidate autoComplete="off">
   		<TextField
-  			label={LABEL_NAME}
+  			label={'Вопрос'}
   			name="name"
   			className={props.classes.textField}
   			margin="normal"
   			autoFocus
+  		/>
+  		<TextField
+  			label={'Ответ A'}
+  			name="name"
+  			className={props.classes.textField}
+  			margin="normal"
+  			autoFocus
+        InputProps={{
+          startAdornment: (
+            <Checkbox
+              checked={true}
+              value=""
+              color="primary"
+            />
+          ),
+        }}
   		/>
   		<Button
   			type="submit"

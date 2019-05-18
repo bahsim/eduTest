@@ -12,7 +12,7 @@ import EditIcon       from '@material-ui/icons/Edit'
 import DeleteIcon     from '@material-ui/icons/DeleteForever'
 
 import SimpleList 	from '../../../components/SimpleList.tsx'
-import NewRecord		from '../../../components/NewRecord.tsx'
+import NewRecord		from '../../../components/NewTestItem.tsx'
 import EditRecord		from '../../../components/EditRecord.tsx'
 import DeleteRecord	from '../../../components/DeleteRecord.tsx'
 
@@ -36,10 +36,31 @@ class MembersList extends Component {
 		itemId	: '',
 	}
 
+
+
 	render() {
 		if (!this.props.data.ownerId) return null
 
 		const { mode, itemId } = this.state
+
+		const formatListRow = (item) => (
+			<Fragment>
+				{item.value}<br/>
+				<span style={{ fontStyle: 'italic' }}>
+					{item.variants.map((variant, index) => (
+							(variant.mark === true ?
+								<span key={index} style={{fontWeight: 'bold'}}>
+									{variant.value}&nbsp;&nbsp;&nbsp;
+								</span>
+							:
+								<span key={index}>
+									{variant.value}&nbsp;&nbsp;&nbsp;
+								</span>
+							)
+					))}
+				</span>
+			</Fragment>
+		)
 
 		return (
 			<Fragment>
@@ -75,13 +96,14 @@ class MembersList extends Component {
 						<SimpleList
 							queryProps = {{
 								query       : this.props.queryList,
-								queryParams : { groupId	: this.props.data.ownerId },
+								queryParams : { testId	: this.props.data.ownerId },
 							}}
 							onClick				= {(item)	=> this.setState({ itemId: item.id})}
 							onDoubleClick = {() 		=> this.setState({ mode: 'editItem'})}
 							extraAction 	= {() 		=> {}}
 							current 			= {itemId}
 							label 				= {this.props.labelListName}
+							formatListRow	= {(item) => formatListRow(item)}
 						/>
 					</Fragment>
 				}
@@ -102,28 +124,24 @@ class MembersList extends Component {
 						>
 			  			{'Новая запись'}
 			  		</Typography>
-						<Grid container >
-							<Grid item xs={6}>
-								<NewRecord
-									queryProps = {{
-										mutation    		: this.props.mutateAdd,
-										mutationParams	: {
-											regionId			: this.props.data.regionId,
-											groupId				: this.props.data.ownerId,
-										},
-										update      		: this.props.queryList,
-										updateParams		: { groupId : this.props.data.ownerId },
-									}}
-									onClick = {(item) => {
-										this.setState({
-											mode	: 'registry',
-											itemId: item.id,
-										})
-									}}
-									extraAction = {() => {}}
-								/>
-							</Grid>
-						</Grid>
+						<NewRecord
+							queryProps = {{
+								mutation    		: this.props.mutateAdd,
+								mutationParams	: {
+									regionId			: this.props.data.regionId,
+									groupId				: this.props.data.ownerId,
+								},
+								update      		: this.props.queryList,
+								updateParams		: { testId : this.props.data.ownerId },
+							}}
+							onClick = {(item) => {
+								this.setState({
+									mode	: 'registry',
+									itemId: item.id,
+								})
+							}}
+							extraAction = {() => {}}
+						/>
 					</Fragment>
 				}
 				{mode === 'editItem' &&

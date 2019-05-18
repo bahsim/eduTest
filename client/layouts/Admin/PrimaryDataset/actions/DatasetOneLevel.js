@@ -100,7 +100,8 @@ export default class DatasetOneLevel {
           button(ArrowBackIcon, LABEL_BACK, `${baseURL}?current=${args[0].id}`),
           button(DeleteIcon, LABEL_DELETE, `${baseURL}/items/${args[0].id}/delete`),
     		]
-        this.setState({ panelContent, breadcrumbsContent})
+        const contentData = { ownerId : args[0].id }
+        this.setState({ panelContent, breadcrumbsContent, contentData })
         break
       }
       case 'deleteItem': {

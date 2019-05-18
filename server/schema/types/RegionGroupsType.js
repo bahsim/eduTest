@@ -3,7 +3,7 @@ const graphql = require('graphql')
 
 const Region = mongoose.model('region')
 
-const GroupType = require('./group_type')
+const GroupType = require('./GroupType')
 const Group = mongoose.model('group')
 
 const {

@@ -1,13 +1,10 @@
-import React, { Component, Fragment, useState, useEffect } from 'react'
+import React, { Component, useEffect } from 'react'
 
 import EditGraphQL  from '../database/components/EditGraphQL'
 
 import { withStyles } from '@material-ui/core/styles'
-import Typography     from '@material-ui/core/Typography'
 import TextField      from '@material-ui/core/TextField'
 import Button         from '@material-ui/core/Button';
-import IconButton     from '@material-ui/core/IconButton'
-import EditIcon       from '@material-ui/icons/Edit'
 
 const styles = theme => ({
   textField: {
@@ -26,7 +23,7 @@ const styles = theme => ({
   }
 })
 
-const LABEL_NEW_NAME 	= 'Новое наименование'
+const LABEL_NEW_NAME 	= 'Новое значение'
 const LABEL_SAVE 			= 'Сохранить'
 const LABEL_CLOSE 		= 'Закрыть'
 
@@ -49,15 +46,13 @@ interface ComponentProps {
   action        : (args: { variables: { id: string, name: string }}) => any
 }
 
-const ViewRecord = (props) => (
+const EditRecord = (props) => (
   <EditGraphQL queryProps={props.queryProps}>
     <BaseComponent {...props} />
   </EditGraphQL>
 )
 
 const BaseComponent = (props: ComponentProps) => {
-
-  const [ editState, setEditState ] = useState(false)
 
 	const handleSubmit = e => {
 		e.preventDefault()
@@ -69,7 +64,6 @@ const BaseComponent = (props: ComponentProps) => {
 
 		props.action({ variables: { id, name }})
 			.then(() => {
-				setEditState(false)
         props.onClick({...props.queryData, name})
 			})
 	}
@@ -79,44 +73,25 @@ const BaseComponent = (props: ComponentProps) => {
   }, [])
 
   return (
-    <Fragment>
-  		<Typography variant="h6" color="inherit" className={props.classes.margin}>
-  			{props.queryData.name}
-  			{!editState &&
-  				<IconButton aria-label="Delete" onClick={() => setEditState(true)}>
-  					<EditIcon fontSize="small" />
-  				</IconButton>
-  			}
-  		</Typography>
-  		{editState &&
-  			<form onSubmit={handleSubmit} noValidate autoComplete="off">
-  				<TextField
-  					label={LABEL_NEW_NAME}
-  					name="name"
-  					defaultValue={props.queryData.name}
-  					className={props.classes.textField}
-  					margin="normal"
-  					autoFocus
-  				/>
-  				<Button
-  					type="submit"
-  					variant="contained"
-  					className={props.classes.button}
-  					color="primary"
-  				>
-  					{LABEL_SAVE}
-  				</Button>
-  				<Button
-  					variant="contained"
-  					className={props.classes.button}
-  					onClick={() => setEditState(false)}
-  				>
-  					{LABEL_CLOSE}
-  				</Button>
-  			</form>
-  		}
-    </Fragment>
+		<form onSubmit={handleSubmit} noValidate autoComplete="off">
+			<TextField
+				label={LABEL_NEW_NAME}
+				name="name"
+				defaultValue={props.queryData.name}
+				className={props.classes.textField}
+				margin="normal"
+				autoFocus
+			/>
+			<Button
+				type="submit"
+				variant="contained"
+				className={props.classes.button}
+				color="primary"
+			>
+				{LABEL_SAVE}
+			</Button>
+		</form>
 	)
 }
 
-export default withStyles(styles)(ViewRecord)
+export default withStyles(styles)(EditRecord)
