@@ -49,7 +49,9 @@ const Component = (props: ComponentProps) => {
 	return (
 		<Fragment>
 			<Typography  variant="h6" color="inherit" className={props.classes.title}>
-				{props.queryData.name}
+				{props.formatItem ?
+					props.formatItem(props.queryData) : props.queryData.name
+				}
 			</Typography>
 			<Button
 				type="submit"

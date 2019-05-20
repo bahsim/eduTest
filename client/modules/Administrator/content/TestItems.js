@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 
 import { withStyles } from '@material-ui/core/styles'
-import Grid        		from '@material-ui/core/Grid'
 import Divider      	from '@material-ui/core/Divider'
 import Typography     from '@material-ui/core/Typography'
 
@@ -12,9 +11,10 @@ import EditIcon       from '@material-ui/icons/Edit'
 import DeleteIcon     from '@material-ui/icons/DeleteForever'
 
 import SimpleList 	from '../../../components/SimpleList.tsx'
-import NewRecord		from '../../../components/NewTestItem.tsx'
-import EditRecord		from '../../../components/EditRecord.tsx'
 import DeleteRecord	from '../../../components/DeleteRecord.tsx'
+
+import NewTestItem	from './NewTestItem.tsx'
+import EditTestItem	from './EditTestItem.tsx'
 
 const styles = theme => ({
 	title: {
@@ -124,12 +124,11 @@ class MembersList extends Component {
 						>
 			  			{'Новая запись'}
 			  		</Typography>
-						<NewRecord
+						<NewTestItem
 							queryProps = {{
 								mutation    		: this.props.mutateAdd,
 								mutationParams	: {
-									regionId			: this.props.data.regionId,
-									groupId				: this.props.data.ownerId,
+									testId 				: this.props.data.ownerId,
 								},
 								update      		: this.props.queryList,
 								updateParams		: { testId : this.props.data.ownerId },
@@ -140,7 +139,6 @@ class MembersList extends Component {
 									itemId: item.id,
 								})
 							}}
-							extraAction = {() => {}}
 						/>
 					</Fragment>
 				}
@@ -161,26 +159,22 @@ class MembersList extends Component {
 						>
 			  			{'Изменение записи'}
 			  		</Typography>
-						<Grid container >
-							<Grid item xs={6}>
-								<EditRecord
-									queryProps = {{
-										query			    : this.props.queryItem,
-			      				mutation      : this.props.mutateEdit,
-			              queryParams   : { id: this.state.itemId },
-			      				update        : this.props.queryList,
-										updateParams	: { groupId : this.props.data.ownerId },
-									}}
-									onClick = {(item) => {
-										this.setState({
-											mode	: 'registry',
-											itemId: item.id,
-										})
-									}}
-									extraAction = {() => {}}
-								/>
-							</Grid>
-						</Grid>
+						<EditTestItem
+							queryProps = {{
+								query			    : this.props.queryItem,
+	      				mutation      : this.props.mutateEdit,
+								mutationParams: { id: this.state.itemId },
+	              queryParams   : { id: this.state.itemId },
+	      				update        : this.props.queryList,
+								updateParams	: { testId : this.props.data.ownerId },
+							}}
+							onClick = {(item) => {
+								this.setState({
+									mode	: 'registry',
+									itemId: item.id,
+								})
+							}}
+						/>
 					</Fragment>
 				}
 				{mode === 'deleteItem' &&
@@ -193,26 +187,23 @@ class MembersList extends Component {
 							{'Отмена'}
 						</Button>
 						<Divider />
-						<Grid container >
-							<Grid item xs={6}>
-								<DeleteRecord
-			            queryProps = {{
-			      				query			    : this.props.queryItem,
-			      				mutation      : this.props.mutateDelete,
-										queryParams   : { id: this.state.itemId },
-			      				update		    : this.props.queryList,
-										updateParams	: { groupId : this.props.data.ownerId },
-			            }}
-									onClick = {(item) => {
-										this.setState({
-											mode	: 'registry',
-											itemId: '',
-										})
-									}}
-									extraAction = {() => {}}
-			          />
-							</Grid>
-						</Grid>
+						<DeleteRecord
+	            queryProps = {{
+	      				query			    : this.props.queryItem,
+	      				mutation      : this.props.mutateDelete,
+								queryParams   : { id: this.state.itemId },
+	      				update		    : this.props.queryList,
+								updateParams	: { testId : this.props.data.ownerId },
+	            }}
+							onClick = {(item) => {
+								this.setState({
+									mode	: 'registry',
+									itemId: '',
+								})
+							}}
+							formatItem	= {(item) => formatListRow(item)}
+							extraAction = {() => {}}
+	          />
 					</Fragment>
 				}
 			</Fragment>

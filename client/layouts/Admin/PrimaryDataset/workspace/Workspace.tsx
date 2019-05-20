@@ -162,16 +162,12 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
             }
             {componentType !== "viewList" &&
               <Fragment>
-                <Grid container >
-            			<Grid item xs={6}>
-                    {React.Children.map(children, child => (
-                      React.cloneElement(child, {
-                        onClick     : this.actions.handleMainAction,
-                        extraAction : this.actions.handleExtraAction,
-                      })
-                    ))}
-                  </Grid>
-            		</Grid>
+                {React.Children.map(children, child => (
+                  React.cloneElement(child, {
+                    onClick     : this.actions.handleMainAction,
+                    extraAction : this.actions.handleExtraAction,
+                  })
+                ))}
                 {Content &&
                   <div className={classes.content}>
                     <Content
