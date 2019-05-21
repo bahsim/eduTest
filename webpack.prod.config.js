@@ -1,10 +1,9 @@
-
 module.exports = {
 
   mode: 'production',
 
 	entry: {
-		administrator: __dirname + '/client/pages/administrator'
+    administrator: [ __dirname + '/client/modules/administrator/index.js' ]
 	},
 
   output: {
