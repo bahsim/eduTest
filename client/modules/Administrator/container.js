@@ -14,10 +14,8 @@ import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
 import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
 
 import RegionDetails	from './content/RegionDetails.js'
-import MembersList 		from './content/MembersList.js'
+import MembersList 		from './content/MembersList.tsx'
 import TestItems 			from './content/TestItems.js'
-
-const APP_TITLE = 'Администратор'
 
 const Menu = [
 	{
@@ -49,7 +47,7 @@ const Menu = [
 
 const Main = () => (
 	<Layout
-		title={APP_TITLE}
+		title='Администратор'
 		menu={Menu}
 		workspace={
 			<Switch>

@@ -50,11 +50,11 @@ class MembersList extends Component {
 					{item.variants.map((variant, index) => (
 							(variant.mark === true ?
 								<span key={index} style={{fontWeight: 'bold'}}>
-									{variant.value}&nbsp;&nbsp;&nbsp;
+									{`${index+1}) ${variant.value}`}&nbsp;&nbsp;&nbsp;
 								</span>
 							:
 								<span key={index}>
-									{variant.value}&nbsp;&nbsp;&nbsp;
+									{`${index+1}) ${variant.value}`}&nbsp;&nbsp;&nbsp;
 								</span>
 							)
 					))}

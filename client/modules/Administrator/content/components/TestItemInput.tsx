@@ -27,7 +27,10 @@ const styles = theme => ({
   }
 })
 
-const LABEL_SAVE 	= 'Сохранить'
+const LABEL_SAVE 	    = 'Сохранить'
+const LABEL_QUESTION 	= 'Вопрос'
+const LABEL_ANSWER 	  = 'Ответ'
+const LABEL_VARIANT	  = 'Вариант ответа'
 
 interface BaseComponentProps {
   classes: {
@@ -91,7 +94,7 @@ const TestItemInput = (props: BaseComponentProps) => {
 	return (
   	<form onSubmit={handleSubmit} noValidate autoComplete="off">
   		<TextField
-  			label={'Вопрос'}
+  			label={LABEL_QUESTION}
   			name="question"
   			className={props.classes.textField}
         defaultValue={props.question}
@@ -101,7 +104,7 @@ const TestItemInput = (props: BaseComponentProps) => {
       {variants.map((item, index) => (
         <TextField
           key={index}
-          label={`Ответ ${index + 1}`}
+          label={`${LABEL_ANSWER} ${index + 1}`}
     			name={`variant${index + 1}`}
           value={item.value}
           onChange={(e) => setVariantValue(e, index)}
@@ -129,7 +132,7 @@ const TestItemInput = (props: BaseComponentProps) => {
       ))}
       <Button className	= {props.classes.button} onClick={addVariant}>
         <AddIcon className={props.classes.icon} />
-        {'Вариант ответа'}
+        {LABEL_VARIANT}
       </Button>
       <Divider className={props.classes.divider} />
   		<Button
