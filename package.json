@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "system of testing",
   "author": "bahsim",
+  "main": "server/server.js",
   "scripts": {
     "dev": "nodemon server --ignore client",
-    "start": "node server",
+    "start": "node server/server.js",
     "build": "webpack --mode production --config webpack.prod.config"
   },
   "dependencies": {

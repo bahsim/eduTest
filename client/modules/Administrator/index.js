@@ -13,7 +13,7 @@ import Main from './container'
 const cache = new InMemoryCache()
 
 const httpLink = new HttpLink({
-  uri     : 'http://localhost/api',
+  uri     : `http://${window.location.hostname}/api`,
   headers : {},
 })
 

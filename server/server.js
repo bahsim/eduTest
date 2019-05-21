@@ -35,7 +35,7 @@ mongoose.connection
 		console.log('Connected to Mongo DB.')
 
 		app.get("/admin*", (req, res) => {
-			res.sendFile(path.join(__dirname, '..','client/modules/administrator/index.html'))
+			res.sendFile(path.join(__dirname, '..','client/modules/Administrator/index.html'))
 		});
 
 		app.listen(appPort, (error) => {
