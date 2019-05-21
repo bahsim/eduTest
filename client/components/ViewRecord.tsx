@@ -21,9 +21,6 @@ const styles = theme => ({
 	margin: {
     margin      : theme.spacing.unit,
   },
-  content: {
-    margin      : theme.spacing.unit
-  }
 })
 
 const LABEL_NEW_NAME 	= 'Новое наименование'
@@ -38,7 +35,6 @@ interface ComponentProps {
     textField : object
     button    : object
     margin    : object
-    content   : string
   },
   queryProps    : {
     queryParams : {

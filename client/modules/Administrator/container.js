@@ -13,6 +13,7 @@ import ArchiveIcon 		from '@material-ui/icons/Archive'
 import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
 import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
 
+import RegionDetails	from './content/RegionDetails.js'
 import MembersList 		from './content/MembersList.js'
 import TestItems 			from './content/TestItems.js'
 
@@ -67,7 +68,15 @@ const Main = () => (
 							mutateEdit		: Mutations.MUTATE_EDIT_REGION,
 							mutateDel			: Mutations.MUTATE_DELETE_REGION,
 						}}
-						content={{}}
+						content={{
+							viewItem: {
+								component	: RegionDetails,
+								params: {
+									queryItem			: Queries.QUERY_REGION,
+									mutateEdit		: Mutations.MUTATE_EDIT_MODERATOR,
+								}
+							},
+						}}
 					/>
 				)}/>
 

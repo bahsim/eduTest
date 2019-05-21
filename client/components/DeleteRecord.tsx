@@ -25,6 +25,7 @@ interface ComponentProps {
   },
 	onClick			: () => any,
   extraAction	: (data: any) => any,
+  formatItem	: (data: any) => any,
   queryData		: any,
   action   		: (args: { variables: { id: string }}) => any
 }

@@ -1,5 +1,6 @@
 const graphql = require('graphql')
 const mongoose = require('mongoose')
+const uuidv4 = require('uuid/v4')
 
 const Region = mongoose.model('region')
 
@@ -18,7 +19,11 @@ module.exports = {
 			name: { type: new GraphQLNonNull(GraphQLString) }
 		},
 		resolve(parentValue, { name }) {
-			return (new Region({ name })).save()
+			return (new Region({
+				name			: name,
+				moderator	: uuidv4(),
+				password	: uuidv4().substr(0, 8)
+			})).save()
 		}
 	},
 	editRegion: {
@@ -29,6 +34,17 @@ module.exports = {
 		},
 		resolve(parentValue, { id, name }) {
 			return Region.edit(id, name)
+		}
+	},
+	editModerator: {
+		type: RegionType,
+		args: {
+			id				: { type: new GraphQLNonNull(GraphQLID) },
+			moderator	: { type: new GraphQLNonNull(GraphQLString) },
+			password	: { type: new GraphQLNonNull(GraphQLString) },
+		},
+		resolve(parentValue, { id, moderator, password }) {
+			return Region.editModerator(id, moderator, password)
 		}
 	},
 	deleteRegion: {

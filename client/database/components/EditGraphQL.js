@@ -64,19 +64,21 @@ const EditGraphQL = (props) => {
 									data: { [query.name]: newItem },
 								});
 
-								const fullData = cache.readQuery({
-				          query: update.value,
-				          variables: {...updateParams}
-				        });
-								const result = fullData[update.name].map(item => {
-									if (item.id !== newItem.id) return item
-									return newItem
-	              })
-								cache.writeQuery({
-									query: update.value,
-									variables: {...updateParams},
-									data: { [update.name]: result },
-								});
+								if (!!update) {
+									const fullData = cache.readQuery({
+					          query: update.value,
+					          variables: {...updateParams}
+					        });
+									const result = fullData[update.name].map(item => {
+										if (item.id !== newItem.id) return item
+										return newItem
+		              })
+									cache.writeQuery({
+										query: update.value,
+										variables: {...updateParams},
+										data: { [update.name]: result },
+									});
+								}
 							} catch(e) {
 								console.log(e)
 							}

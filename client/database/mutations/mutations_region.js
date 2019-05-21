@@ -7,6 +7,8 @@ export const MUTATE_ADD_REGION = {
 			addRegion(name: $name) {
 				id
 				name
+				moderator
+				password
 			}
 		}
 	`
@@ -19,6 +21,22 @@ export const MUTATE_EDIT_REGION = {
 			editRegion(id: $id, name: $name) {
 				id
 				name
+				moderator
+				password
+			}
+		}
+	`
+}
+
+export const MUTATE_EDIT_MODERATOR = {
+	name: 'editModerator',
+	value: gql`
+		mutation EditModerator($id: ID!, $moderator: String!, $password: String!) {
+			editModerator(id: $id, moderator: $moderator, password: $password) {
+				id
+				name
+				moderator
+				password
 			}
 		}
 	`
@@ -35,4 +53,3 @@ export const MUTATE_DELETE_REGION = {
 		}
 	`
 }
-

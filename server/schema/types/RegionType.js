@@ -10,8 +10,10 @@ const {
 const RegionType = new GraphQLObjectType({
   name:  'RegionType',
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
+    id				: { type: GraphQLID },
+    name			: { type: GraphQLString },
+    moderator	: { type: GraphQLString },
+    password	: { type: GraphQLString },
   })
 })
 

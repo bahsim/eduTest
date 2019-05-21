@@ -7,6 +7,8 @@ export const QUERY_REGIONS = {
 			regions {
 				id
 				name
+				moderator
+				password
 			}
 		}
 	`
@@ -19,6 +21,8 @@ export const QUERY_REGION = {
 			region(id: $id) {
 				id
 				name
+				moderator
+				password
 			}
 		}
 	`
