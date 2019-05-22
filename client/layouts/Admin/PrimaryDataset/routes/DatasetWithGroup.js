@@ -43,10 +43,10 @@ const DatasetWithGroup = (props) => {
               query       : props.queryList,
 							queryParams : { id: extra.match.params.groupId },
 							middleWare	:	(data) => ({
-								queryData: data.list.map(item => ({
+								queryData	: data.list.map(item => ({
 									...item, parentId: data.id, parentName: data.name
 								})),
-								extraData: {id: data.id, name: data.name}
+								extraData	: {id: data.id, name: data.name}
 							})
             }}
             label={props.labelListName}

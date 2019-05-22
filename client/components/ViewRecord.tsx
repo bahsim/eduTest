@@ -36,13 +36,13 @@ interface ComponentProps {
     button    : object
     margin    : object
   },
-  queryProps    : {
-    queryParams : {
-      id  : string
+  queryProps: {
+    queryParams: {
+      id      : string
     }
   },
-  queryData     : any
-  action        : (args: { variables: { id: string, name: string }}) => any
+  queryData   : any
+  action      : (args: { variables: { id: string, name: string }}) => any
 }
 
 const ViewRecord = (props) => (

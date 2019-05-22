@@ -12,14 +12,14 @@ const EditGraphQL = (props) => {
 
 	const fullHeight = {
 		position: 'relative',
-		height: '100%',
-		width: '100%',
+		height	: '100%',
+		width		: '100%',
 	}
 	const central = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
+		position	: 'absolute',
+		top				: '50%',
+		left			: '50%',
+		transform	: 'translate(-50%, -50%)',
 	}
 
 	return (
@@ -53,30 +53,31 @@ const EditGraphQL = (props) => {
 				}
 
 				return (
-					<Mutation mutation={mutation.value}
-						update={(cache, { data }) => {
+					<Mutation
+						mutation	= {mutation.value}
+						update		= {(cache, { data }) => {
 							try {
 								const newItem = data[mutation.name]
 
 								cache.writeQuery({
-									query: query.value,
-									variables: {...queryParams},
-									data: { [query.name]: newItem },
+									query			: query.value,
+									variables	: {...queryParams},
+									data			: { [query.name]: newItem },
 								});
 
 								if (!!update) {
 									const fullData = cache.readQuery({
-					          query: update.value,
-					          variables: {...updateParams}
+					          query			: update.value,
+					          variables	: {...updateParams}
 					        });
 									const result = fullData[update.name].map(item => {
 										if (item.id !== newItem.id) return item
 										return newItem
 		              })
 									cache.writeQuery({
-										query: update.value,
-										variables: {...updateParams},
-										data: { [update.name]: result },
+										query			: update.value,
+										variables	: {...updateParams},
+										data			: { [update.name]: result },
 									});
 								}
 							} catch(e) {

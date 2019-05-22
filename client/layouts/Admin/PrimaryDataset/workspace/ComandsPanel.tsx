@@ -20,14 +20,14 @@ const styles = theme => ({
 })
 
 interface ComandsPanelProps {
-  onClick : (action: string) => void,
-  list    : any,
-  classes : {
+  onClick 		: (action: string) => void,
+  list    		: any,
+  classes: {
 		button		: object,
 		emptyMenu	: string,
 		icon			: object,
 	},
-  history : {
+  history: {
 	  replace 	: (url: string) => any
 	},
 }

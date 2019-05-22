@@ -22,17 +22,17 @@ const LABEL_SAVE 	= 'Сохранить'
 
 interface BaseComponentProps {
   classes: {
-    textField : object
-    button    : object
+    textField     : object
+    button        : object
   },
-  action      : (args: { variables: { name } }) => any,
-  onClick     : (data: any) => any,
-  extraAction : (data: any) => any,
-  queryProps  : {
+  action          : (args: { variables: { name } }) => any,
+  onClick         : (data: any) => any,
+  extraAction     : (data: any) => any,
+  queryProps: {
     mutation      : any,
     mutationParams: any,
   },
-  queryData   : any,
+  queryData       : any,
 }
 
 const NewRecord = (props) => (

@@ -14,8 +14,8 @@ interface MenuItem {
 }
 
 interface ComponentProps {
-  list : {
-    map : ( method: (item: MenuItem, index: number) => any ) => any,
+  list: {
+    map   : ( method: (item: MenuItem, index: number) => any ) => any,
   },
   history : {replace : (url: string) => any},
 }

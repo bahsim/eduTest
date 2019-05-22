@@ -48,7 +48,7 @@ interface WorkspaceProps {
     mainspace   : object,
     content     : string,
   },
-  location      : {
+  location: {
     search      : object,
   },
   children      : any,

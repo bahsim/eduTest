@@ -3,16 +3,6 @@ import { Query, Mutation } from "react-apollo";
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-interface ComponentProps {
-	queryProps: {
-		query: { value: string, name: string },
-		mutation: { value: string, name: string },
-		update: { value: string, name: string },
-		updateParams: any
-	},
-	children: any,
-}
-
 const NewGraphQL = (props) => {
 
   const { queryProps, children } = props
@@ -34,8 +24,8 @@ const NewGraphQL = (props) => {
 	const MutationInject = (queryData) => {
 		return (
 			<Mutation
-				mutation={mutation.value}
-				update={(cache, { data }) => {
+				mutation	= {mutation.value}
+				update		= {(cache, { data }) => {
 					try {
 						let fullData = cache.readQuery({
 							query			: update.value,

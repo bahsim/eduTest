@@ -2,11 +2,11 @@ import React, { Component, useEffect } from 'react'
 
 import EditGraphQL  from '../../../database/components/EditGraphQL'
 
-import TestItemInput from './components/TestItemInput.tsx'
+import TestItemInput from './TestItemInput.tsx'
 
 interface ComponentProps {
-  onClick     : (data: any) => any,
-  queryProps    : {
+  onClick       : (data: any) => any,
+  queryProps: {
     mutation    : { name: string }
     queryParams : { id: string },
     mutationParams : { id: string },

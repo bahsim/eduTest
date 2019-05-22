@@ -3,7 +3,7 @@ import { Mutation, Query } from "react-apollo";
 import { withRouter } from 'react-router-dom'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Typography from '@material-ui/core/Typography'
+import Typography 			from '@material-ui/core/Typography'
 
 const DeleteGraphQL = (props) => {
 
@@ -15,14 +15,14 @@ const DeleteGraphQL = (props) => {
 
 	const fullHeight = {
 		position: 'relative',
-		height: '100%',
-		width: '100%',
+		height	: '100%',
+		width		: '100%',
 	}
 	const central = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
+		position	: 'absolute',
+		top				: '50%',
+		left			: '50%',
+		transform	: 'translate(-50%, -50%)',
 	}
 
 	return (
@@ -58,13 +58,13 @@ const DeleteGraphQL = (props) => {
 
 				return (
 					<Mutation
-						mutation={mutation.value}
-						update={(cache, { data }) => {
+						mutation	= {mutation.value}
+						update		= {(cache, { data }) => {
 							try {
 
 								let fullData = cache.readQuery({
-									query: update.value,
-									variables: {...updateParams}
+									query			: update.value,
+									variables	: {...updateParams}
 								});
 
 								if (updateWare) {
@@ -76,9 +76,9 @@ const DeleteGraphQL = (props) => {
 	              ))
 
 								cache.writeQuery({
-									query: update.value,
-									variables: {...updateParams},
-									data: { [update.name]: result },
+									query			: update.value,
+									variables	: {...updateParams},
+									data			: { [update.name]: result },
 								})
 							} catch(e) {
 								console.log(e)

@@ -7,7 +7,7 @@ import Typography     from '@material-ui/core/Typography'
 
 const styles = theme => ({
 	margin: {
-    margin      : theme.spacing.unit,
+    margin: theme.spacing.unit,
   },
 })
 
@@ -16,7 +16,7 @@ const LABEL_PASSWORD  = 'Пароль'
 
 interface ComponentProps {
   classes: {
-    margin    : object
+    margin    	: object
   },
   queryProps    : any,
   queryData     : {
@@ -33,7 +33,7 @@ const ViewRegionDetails = (props) => (
 
 const BaseComponent = (props: ComponentProps) => {
 
-  const { protocol, hostname } = window.location
+  const { protocol, hostname } 	= window.location
   const { moderator, password } = props.queryData
 
   return (

@@ -11,10 +11,10 @@ import Menu from './Menu.tsx'
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow    : 1,
   },
   grow: {
-    flexGrow: 1,
+    flexGrow    : 1,
   },
   appbar: {
     marginBottom: theme.spacing.unit,

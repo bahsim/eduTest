@@ -13,9 +13,9 @@ import ArchiveIcon 		from '@material-ui/icons/Archive'
 import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
 import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
 
-import RegionDetails	from './content/RegionDetails.js'
-import MembersList 		from './content/MembersList.tsx'
-import TestItems 			from './content/TestItems.js'
+import RegionDetails	from './contentRegions/RegionDetails.tsx'
+import MembersList 		from './contentMembers/MembersList.tsx'
+import TestItems 			from './contentTests/TestItems.tsx'
 
 const Menu = [
 	{
@@ -68,7 +68,7 @@ const Main = () => (
 						}}
 						content={{
 							viewItem: {
-								component	: RegionDetails,
+								component				: RegionDetails,
 								params: {
 									queryItem			: Queries.QUERY_REGION,
 									mutateEdit		: Mutations.MUTATE_EDIT_MODERATOR,
@@ -93,7 +93,7 @@ const Main = () => (
 						}}
 						content={{
 							viewItem: {
-								component	: TestItems,
+								component				: TestItems,
 								params: {
 									queryList			: Queries.QUERY_TESTITEMS,
 									queryItem			: Queries.QUERY_TESTITEM,
@@ -126,7 +126,7 @@ const Main = () => (
 						}}
 						content={{
 							viewItem: {
-								component	: MembersList,
+								component				: MembersList,
 								params: {
 									queryList			: Queries.QUERY_MEMBERS,
 									queryItem			: Queries.QUERY_MEMBER,

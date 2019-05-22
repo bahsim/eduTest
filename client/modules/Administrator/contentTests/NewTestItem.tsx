@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 
 import NewGraphQL from '../../../database/components/NewGraphQL'
 
-import TestItemInput from './components/TestItemInput.tsx'
+import TestItemInput from './TestItemInput.tsx'
 
 interface BaseComponentProps {
-  action      : (args: { variables: { name } }) => any,
-  onClick     : (data: any) => any,
-  queryProps  : {
+  action          : (args: { variables: { name } }) => any,
+  onClick         : (data: any) => any,
+  queryProps: {
     mutation      : any,
     mutationParams: any,
   },

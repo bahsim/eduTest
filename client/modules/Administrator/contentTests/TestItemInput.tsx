@@ -114,7 +114,6 @@ const TestItemInput = (props: BaseComponentProps) => {
             startAdornment: (
               <Checkbox
                 checked={item.mark}
-                value=""
                 color="primary"
                 onClick={(e) => setVariantMark(e, index)}
               />

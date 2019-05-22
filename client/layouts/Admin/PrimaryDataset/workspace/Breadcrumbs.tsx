@@ -6,17 +6,17 @@ import Typography 		from '@material-ui/core/Typography'
 
 const styles = theme => ({
 	breadcrumb: {
-		marginTop: 			theme.spacing.unit,
-		marginBottom: 	theme.spacing.unit,
-		textTransform: 	'uppercase'
+		marginTop			: theme.spacing.unit,
+		marginBottom	: theme.spacing.unit,
+		textTransform	: 'uppercase'
 	},
 })
 
 interface ComponentProps {
   list: {
-    map : ( method: (item: string, index: number) => any ) => any,
+    map 	: ( method: (item: string, index: number) => any ) => any,
   },
-  classes: any,
+  classes	: any,
 }
 
 const Component = ({ list, classes }: ComponentProps) => {

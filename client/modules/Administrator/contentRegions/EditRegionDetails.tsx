@@ -34,16 +34,16 @@ interface ComponentProps {
   extraAction : (data: any) => any,
   classes: {
     textField : object
-    icon    : object
+    icon      : object
     margin    : object
   },
-  queryProps    : {
-    queryParams : {
-      id  : string
+  queryProps: {
+    queryParams: {
+      id      : string
     }
   },
-  queryData     : any
-  action        : (
+  queryData   : any
+  action: (
     args: { variables: { id: string, moderator: string, password: string }}
   ) => any,
 }
