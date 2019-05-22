@@ -95,15 +95,18 @@ class MembersList extends Component<ComponentProps,ComponentState> {
 			</Fragment>
 		)
 
-		const panelButton = (Icon, label, mode) => (
-			<Button
-				className	= {classes.button}
-				onClick		= {() => this.setState({ mode })}
-			>
-				<Icon className={classes.icon}/>
-				{label}
-			</Button>
-		)
+		const panelButton = (Icon, label, mode) => {
+			console.log(label, mode, this.props.scrollTop)
+			return (
+				<Button
+					className	= {classes.button}
+					onClick		= {() => this.setState({ mode })}
+				>
+					<Icon className={classes.icon}/>
+					{label}
+				</Button>
+			)
+		}
 
 		const compoentRegistry = (
 			<SimpleList

@@ -45,7 +45,7 @@ interface WorkspaceProps {
   classes: {
     breadcrumbs : object,
     panel       : object,
-    mainspace   : object,
+    mainspace   : string,
     content     : string,
   },
   location: {
@@ -70,6 +70,8 @@ interface WorkspaceState {
   mainspaceTop				: number,
   panelContent				: any,
   breadcrumbsContent	: any,
+  contentData	        : any,
+  scrollTop	          : number,
 }
 
 class Workspace extends Component<WorkspaceProps, WorkspaceState> {
@@ -79,10 +81,12 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 		mainspaceTop				: 0,
 		panelContent				: [],
 		breadcrumbsContent	: [],
-    contentData         : {}
+    contentData         : {},
+    scrollTop           : 0,
 	}
 
   mainspace
+  mainpaper
 
   followLink = (link)   => this.props.history.replace(link)
 
@@ -133,8 +137,8 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
       contentData,
 		} = this.state
 
-		const registryHeight = ((window.innerHeight - mainspaceTop) - 45 ) + 'px'
-		const styleMainspace = {height: registryHeight, overflow: 'auto'}
+		const registryHeight = ((window.innerHeight - mainspaceTop) - 12 ) + 'px'
+		const styleMainspace = { height: registryHeight, overflow: 'auto' }
 
     const Content = (
       content && content[componentType] &&  content[componentType].component
@@ -149,35 +153,46 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 					<ComandsPanel list={panelContent} />
 				</Paper>
 				<div ref={(el) => this.mainspace = el }>
-					<Paper className={classes.mainspace} style={styleMainspace}>
-            {componentType === "viewList" &&
-              React.Children.map(children, child => (
-                React.cloneElement(child, {
-                  onClick       : this.actions.handleMainAction,
-                  onDoubleClick : this.actions.handleSecondAction,
-                  extraAction   : this.actions.handleExtraAction,
-                  current       : this.state.routeQueryParams.current,
-                })
-              ))
-            }
-            {componentType !== "viewList" &&
-              <Fragment>
-                {React.Children.map(children, child => (
-                  React.cloneElement(child, {
-                    onClick     : this.actions.handleMainAction,
-                    extraAction : this.actions.handleExtraAction,
-                  })
-                ))}
-                {Content &&
-                  <div className={classes.content}>
-                    <Content
-                      data={contentData}
-                      {...content[componentType].params}
-                    />
-                  </div>
+					<Paper>
+            <div
+              style={styleMainspace}
+              ref={(el) => this.mainpaper = el }
+              onScroll={() => {
+                this.setState({scrollTop: this.mainpaper.scrollTop})
+              }}
+            >
+              <div className={classes.mainspace}>
+                {componentType === "viewList" &&
+                  React.Children.map(children, child => (
+                    React.cloneElement(child, {
+                      onClick       : this.actions.handleMainAction,
+                      onDoubleClick : this.actions.handleSecondAction,
+                      extraAction   : this.actions.handleExtraAction,
+                      current       : this.state.routeQueryParams.current,
+                    })
+                  ))
                 }
-              </Fragment>
-            }
+                {componentType !== "viewList" &&
+                  <Fragment>
+                    {React.Children.map(children, child => (
+                      React.cloneElement(child, {
+                        onClick     : this.actions.handleMainAction,
+                        extraAction : this.actions.handleExtraAction,
+                      })
+                    ))}
+                    {Content &&
+                      <div className={classes.content}>
+                        <Content
+                          data={contentData}
+                          scrollTop={this.state.scrollTop}
+                          {...content[componentType].params}
+                        />
+                      </div>
+                    }
+                  </Fragment>
+                }
+              </div>
+            </div>
 					</Paper>
 				</div>
 			</Fragment>
