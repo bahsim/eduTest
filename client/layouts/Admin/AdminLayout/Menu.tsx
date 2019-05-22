@@ -21,17 +21,19 @@ interface ComponentProps {
 }
 
 const Menu = ({list, history}: ComponentProps) => (
-	<List component="nav">
-		{list.map((el,idx) => (
-			<span key={idx} onClick={() => history.replace(el.link)}>
-				<ListItem button>
-					<ListItemIcon>{el.icon}</ListItemIcon>
-					<ListItemText primary={el.label} />
-				</ListItem>
-				<Divider />
-			</span>
-		))}
-	</List>
+  <div>
+    <List component="nav">
+  		{list.map((el,idx) => (
+  			<span key={idx} onClick={() => history.replace(el.link)}>
+  				<ListItem button>
+  					<ListItemIcon>{el.icon}</ListItemIcon>
+  					<ListItemText primary={el.label} />
+  				</ListItem>
+  				<Divider />
+  			</span>
+  		))}
+  	</List>
+  </div>
 )
 
 export default withRouter(Menu)
