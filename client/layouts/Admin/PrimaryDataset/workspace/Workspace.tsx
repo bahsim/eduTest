@@ -72,6 +72,7 @@ interface WorkspaceState {
   breadcrumbsContent	: any,
   contentData	        : any,
   scrollTop	          : number,
+  roofTop	            : number,
 }
 
 class Workspace extends Component<WorkspaceProps, WorkspaceState> {
@@ -83,6 +84,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 		breadcrumbsContent	: [],
     contentData         : {},
     scrollTop           : 0,
+    roofTop             : 0,
 	}
 
   mainspace
@@ -121,6 +123,13 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 		}
 	}
 
+  setScrollParams() {
+    this.setState({
+      scrollTop : this.mainpaper.scrollTop,
+      roofTop   : this.mainspace.getBoundingClientRect().top
+    })
+  }
+
 	render() {
 		const {
       classes,
@@ -157,9 +166,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
             <div
               style={styleMainspace}
               ref={(el) => this.mainpaper = el }
-              onScroll={() => {
-                this.setState({scrollTop: this.mainpaper.scrollTop})
-              }}
+              onScroll={() => this.setScrollParams()}
             >
               <div className={classes.mainspace}>
                 {componentType === "viewList" &&
@@ -185,6 +192,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
                         <Content
                           data={contentData}
                           scrollTop={this.state.scrollTop}
+                          roofTop={this.state.roofTop}
                           {...content[componentType].params}
                         />
                       </div>

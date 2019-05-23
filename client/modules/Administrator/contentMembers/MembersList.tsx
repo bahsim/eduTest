@@ -52,10 +52,12 @@ interface ComponentProps {
 	},
 	queryList			: any,
 	queryItem			: any,
-	labelListName	: any,
 	mutateAdd			: any,
 	mutateEdit		: any,
 	mutateDelete	: any,
+	labelListName	: any,
+	scrollTop			: number,
+	roofTop				: number,
 }
 
 interface ComponentState {
@@ -70,21 +72,14 @@ class MembersList extends Component<ComponentProps,ComponentState> {
 		itemId	: '',
 	}
 
+	buttonsRef
+
 	render() {
 
 		if (!this.props.data.ownerId) return null
 
 		const { mode, itemId } = this.state
 		const { classes } = this.props
-
-		const panelButton = (Icon, label, mode) => (
-			<Button className = {classes.button}
-				onClick={() => this.setState({ mode })}
-			>
-				<Icon className={classes.icon}/>
-				{label}
-			</Button>
-		)
 
 		const componentRegistry = (
 			<SimpleList
@@ -150,26 +145,72 @@ class MembersList extends Component<ComponentProps,ComponentState> {
 			/>
 		)
 
-		return (
+		const isVisible = () => {
+			if (!this.buttonsRef) return true
+
+			const { scrollTop, roofTop } = this.props
+			const { top } = this.buttonsRef.getBoundingClientRect()
+
+			return top - roofTop >= 0 ? true : false
+		}
+
+		const panelButton = (Icon, label, mode, props) => (
+			<Button {...props}
+				className	= {classes.button}
+				onClick		= {() => this.setState({ mode })}
+			>
+				<Icon className={classes.icon}/>
+				{label}
+			</Button>
+		)
+
+		const panelButtonsSet = (props) => (
 			<Fragment>
-				<Divider />
-				{mode === MODE_REGISTRY &&
+				{mode === MODE_REGISTRY ?
 					<Fragment>
-						{panelButton(AddIcon, LABEL_ADD, MODE_NEW_ITEM)}
+						{panelButton(AddIcon, LABEL_ADD, MODE_NEW_ITEM, props)}
 						{itemId !== '' &&
 							<Fragment>
-								{panelButton(EditIcon, LABEL_EDIT, MODE_EDIT_ITEM)}
-								{panelButton(DeleteIcon, LABEL_DELETE, MODE_DELETE_ITEM)}
+								{panelButton(EditIcon, LABEL_EDIT, MODE_EDIT_ITEM, props)}
+								{panelButton(DeleteIcon, LABEL_DELETE, MODE_DELETE_ITEM, props)}
 							</Fragment>
 						}
-						<Divider />
+					</Fragment>
+				:
+					panelButton(ArrowBackIcon, LABEL_CANCEL, MODE_REGISTRY, props)
+				}
+			</Fragment>
+		)
+
+		const panelStyle = {
+			margin: 0,
+	    top: this.props.roofTop,
+	    right: 'auto',
+	    bottom: 'auto',
+	    left: 20,
+	    position: 'fixed',
+		}
+
+		return (
+			<Fragment>
+				<Divider/>
+				<div ref={(el) => this.buttonsRef = el}>
+					{panelButtonsSet({})}
+				</div>
+				{!isVisible() &&
+					<div style={panelStyle}>
+						{panelButtonsSet({variant:'contained', color:'primary'})}
+					</div>
+				}
+				{mode === MODE_REGISTRY &&
+					<Fragment>
+						<Divider/>
 						{componentRegistry}
 					</Fragment>
 				}
 				{mode === MODE_NEW_ITEM &&
 					<Fragment>
-						{panelButton(ArrowBackIcon, LABEL_CANCEL, MODE_REGISTRY)}
-						<Divider />
+						<Divider/>
 						<Typography variant="h6" color="inherit" className={classes.title}>
 							{LABEL_NEW_RECORD}
 						</Typography>
@@ -178,8 +219,7 @@ class MembersList extends Component<ComponentProps,ComponentState> {
 				}
 				{mode === MODE_EDIT_ITEM &&
 					<Fragment>
-						{panelButton(ArrowBackIcon, LABEL_CANCEL, MODE_REGISTRY)}
-						<Divider />
+						<Divider/>
 						<Typography variant="h6" color="inherit" className={classes.title}>
 							{LABEL_EDIT_RECORD}
 						</Typography>
@@ -188,8 +228,7 @@ class MembersList extends Component<ComponentProps,ComponentState> {
 				}
 				{mode === MODE_DELETE_ITEM &&
 					<Fragment>
-						{panelButton(ArrowBackIcon, LABEL_CANCEL, MODE_REGISTRY)}
-						<Divider />
+						<Divider/>
 						{componentDeleteRecord}
 					</Fragment>
 				}
