@@ -1,18 +1,11 @@
 const graphql = require('graphql')
 const mongoose = require('mongoose')
 
-const TestItem = mongoose.model('testItem')
+const TestItem 			= mongoose.model('testItem')
+const TestItemType 	= require('../types/TestItemType')
 
-const TestItemType = require('../types/TestItemType')
-
-const {
-	GraphQLInputObjectType,
-	GraphQLString,
-	GraphQLNonNull,
-	GraphQLID,
-	GraphQLList,
-	GraphQLBoolean,
-} = graphql
+const { GraphQLInputObjectType, GraphQLString, GraphQLNonNull, GraphQLID,
+				GraphQLList, GraphQLBoolean } = graphql
 
 const TestItemVariantType = new GraphQLInputObjectType({
 	name: 'TestItemVariantType',
@@ -30,8 +23,8 @@ module.exports = {
 			value		: { type: new GraphQLNonNull(GraphQLString) },
 			variants: { type: new GraphQLList(TestItemVariantType) },
 		},
-		resolve(parentValue, { testId, value, variants }) {
-			return (new TestItem({ testId, value, variants })).save()
+		resolve(parentValue, args) {
+			return TestItem.add(args)
 		}
 	},
 	editTestItem: {
@@ -41,8 +34,8 @@ module.exports = {
 			value		: { type: new GraphQLNonNull(GraphQLString) },
 			variants: { type: new GraphQLList(TestItemVariantType) },
 		},
-		resolve(parentValue, { id, value, variants }) {
-			return TestItem.edit(id, value, variants)
+		resolve(parentValue, args) {
+			return TestItem.edit(args)
 		}
 	},
 	deleteTestItem: {
@@ -50,8 +43,8 @@ module.exports = {
 		args: {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, { id }) {
-			return TestItem.deleteOne({ _id: id })
+		resolve(parentValue, args) {
+			return TestItem.delete(args)
 		}
 	},
 }

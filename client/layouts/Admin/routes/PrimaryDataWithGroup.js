@@ -8,7 +8,7 @@ import NewRecord    from '../components/NewRecord.tsx'
 import ViewRecord   from '../components/ViewRecord.tsx'
 import DeleteRecord from '../components/DeleteRecord.tsx'
 
-const PrimaryDataWithGroup = (props) => {
+export default (props) => {
 	const {
 		baseURL,
 		labelListName,
@@ -43,9 +43,9 @@ const PrimaryDataWithGroup = (props) => {
               query       : props.queryList,
 							queryParams : { id: extra.match.params.groupId },
 							middleWare	:	(data) => ({
-								queryData	: data.list.map(item => ({
+								queryData	: data.list ? data.list.map(item => ({
 									...item, parentId: data.id, parentName: data.name
-								})),
+								})) : [],
 								extraData	: {id: data.id, name: data.name}
 							})
             }}
@@ -104,5 +104,3 @@ const PrimaryDataWithGroup = (props) => {
 		</Switch>
 	)
 }
-
-export default PrimaryDataWithGroup

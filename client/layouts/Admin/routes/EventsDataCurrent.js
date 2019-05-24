@@ -8,7 +8,7 @@ import NewRecord    from '../components/NewRecord.tsx'
 import ViewRecord   from '../components/ViewRecord.tsx'
 import DeleteRecord from '../components/DeleteRecord.tsx'
 
-const PrimaryDataSimple = (props) => {
+export default (props) => {
 	const {
 		baseURL,
 		labelListName,
@@ -75,5 +75,3 @@ const PrimaryDataSimple = (props) => {
 		</Switch>
 	)
 }
-
-export default PrimaryDataSimple

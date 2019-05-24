@@ -1,29 +1,28 @@
 const mongoose = require('mongoose')
 const graphql = require('graphql')
 
-const Member = mongoose.model('member')
+const Member 			= mongoose.model('member')
+const MemberType 	= require('../types/MemberType')
 
-const MemberType = require('../types/MemberType')
-
-const {
-	GraphQLList,
-	GraphQLID,
-	GraphQLNonNull,
-} = graphql
+const { GraphQLList, GraphQLID, GraphQLNonNull } = graphql
 
 module.exports = {
 	members: {
 		type: new GraphQLList(MemberType),
-		args: { groupId: { type: new GraphQLNonNull(GraphQLID) } },
-		resolve(parentValue, { groupId }) {
-			return Member.find({ groupId: groupId }, null, {sort: { name: 1 }})
+		args: {
+			groupId: { type: new GraphQLNonNull(GraphQLID) }
+		},
+		resolve(parentValue, args) {
+			return Member.findList(args)
 		}
 	},
 	member: {
 		type: MemberType,
-		args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-		resolve(parentValue, { id }) {
-			return Member.findById(id)
+		args: {
+			id: { type: new GraphQLNonNull(GraphQLID) }
+		},
+		resolve(parentValue, args) {
+			return Member.findItem(args)
 		}
 	},
 }

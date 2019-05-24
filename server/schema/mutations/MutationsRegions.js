@@ -1,16 +1,10 @@
 const graphql = require('graphql')
 const mongoose = require('mongoose')
-const uuidv4 = require('uuid/v4')
 
-const Region = mongoose.model('region')
+const Region 			= mongoose.model('region')
+const RegionType 	= require('../types/RegionType')
 
-const RegionType = require('../types/RegionType')
-
-const {
-	GraphQLString,
-	GraphQLNonNull,
-	GraphQLID,
-} = graphql
+const { GraphQLString, GraphQLNonNull, GraphQLID } = graphql
 
 module.exports = {
 	addRegion: {
@@ -18,22 +12,18 @@ module.exports = {
 		args: {
 			name: { type: new GraphQLNonNull(GraphQLString) }
 		},
-		resolve(parentValue, { name }) {
-			return (new Region({
-				name			: name,
-				moderator	: uuidv4(),
-				password	: uuidv4().substr(0, 8)
-			})).save()
+		resolve(parentValue, args) {
+			return Region.add(args)
 		}
 	},
 	editRegion: {
 		type: RegionType,
 		args: {
-			id: { type: new GraphQLNonNull(GraphQLID) },
+			id	: { type: new GraphQLNonNull(GraphQLID) },
 			name: { type: new GraphQLNonNull(GraphQLString) },
 		},
-		resolve(parentValue, { id, name }) {
-			return Region.edit(id, name)
+		resolve(parentValue, args) {
+			return Region.edit(args)
 		}
 	},
 	editModerator: {
@@ -43,8 +33,8 @@ module.exports = {
 			moderator	: { type: new GraphQLNonNull(GraphQLString) },
 			password	: { type: new GraphQLNonNull(GraphQLString) },
 		},
-		resolve(parentValue, { id, moderator, password }) {
-			return Region.editModerator(id, moderator, password)
+		resolve(parentValue, args) {
+			return Region.editModerator(args)
 		}
 	},
 	deleteRegion: {
@@ -52,8 +42,8 @@ module.exports = {
 		args: {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, { id }) {
-			return Region.delete(id)
+		resolve(parentValue, args) {
+			return Region.delete(args)
 		}
 	},
 }
