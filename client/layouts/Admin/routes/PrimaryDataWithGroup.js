@@ -1,14 +1,14 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
-import Workspace  from '../Workspace/Workspace.tsx'
+import Workspace  from '../workspace/AdministratorWorkspace.tsx'
 
-import SimpleList   from '../../../../components/SimpleList.tsx'
-import NewRecord    from '../../../../components/NewRecord.tsx'
-import ViewRecord   from '../../../../components/ViewRecord.tsx'
-import DeleteRecord from '../../../../components/DeleteRecord.tsx'
+import SimpleList   from '../components/SimpleList.tsx'
+import NewRecord    from '../components/NewRecord.tsx'
+import ViewRecord   from '../components/ViewRecord.tsx'
+import DeleteRecord from '../components/DeleteRecord.tsx'
 
-const DatasetWithGroup = (props) => {
+const PrimaryDataWithGroup = (props) => {
 	const {
 		baseURL,
 		labelListName,
@@ -105,4 +105,4 @@ const DatasetWithGroup = (props) => {
 	)
 }
 
-export default DatasetWithGroup
+export default PrimaryDataWithGroup

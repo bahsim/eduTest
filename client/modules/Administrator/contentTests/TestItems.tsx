@@ -10,8 +10,8 @@ import ArrowBackIcon  from '@material-ui/icons/ArrowBack'
 import EditIcon       from '@material-ui/icons/Edit'
 import DeleteIcon     from '@material-ui/icons/DeleteForever'
 
-import SimpleList 	from '../../../components/SimpleList.tsx'
-import DeleteRecord	from '../../../components/DeleteRecord.tsx'
+import SimpleList 	from '../../../layouts/Admin/components/SimpleList.tsx'
+import DeleteRecord	from '../../../layouts/Admin/components/DeleteRecord.tsx'
 
 import NewTestItem	from './NewTestItem.tsx'
 import EditTestItem	from './EditTestItem.tsx'
@@ -58,6 +58,7 @@ interface ComponentProps {
 	labelListName	: string,
 	scrollTop			: number,
 	roofTop				: number,
+	roofLeft				: number,
 }
 
 interface ComponentState {
@@ -82,7 +83,9 @@ class TestItems extends Component<ComponentProps,ComponentState> {
 
 		const formatListRow = (item) => (
 			<Fragment>
-				{item.value}<br/>
+				<span style={{fontWeight: 'bold'}}>
+					{item.value}<br/>
+				</span>
 				<span style={{ fontStyle: 'italic' }}>
 					{item.variants.map((variant, index) => (
 							(variant.mark === true ?
@@ -201,12 +204,13 @@ class TestItems extends Component<ComponentProps,ComponentState> {
 		)
 
 		const panelStyle = {
-			margin: 0,
-	    top: this.props.roofTop,
-	    right: 'auto',
-	    bottom: 'auto',
-	    left: 20,
+			margin	: 0,
+	    top			: this.props.roofTop + 20,
+	    right		: 'auto',
+	    bottom	: 'auto',
+	    left		: this.props.roofLeft + 20,
 	    position: 'fixed',
+			zIndex	: 1001,
 		}
 
 		return (

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react'
 
-import DeleteGraphQL 	from '../database/components/DeleteGraphQL'
+import DeleteGraphQL 	from '../../../database/components/DeleteGraphQL'
 
 import { withStyles } from '@material-ui/core/styles'
 import Typography 		from '@material-ui/core/Typography'

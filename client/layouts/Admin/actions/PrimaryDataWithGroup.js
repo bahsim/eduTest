@@ -12,7 +12,7 @@ const LABEL_OPEN    = 'Открыть'
 
 const button = (icon, label, link) => ({ link, icon, label })
 
-export default class DatasetOneLevel {
+export default class PrimaryDataWithGroup {
   constructor({setState, getState, props, followLink}) {
     this.setState   = setState
     this.getState   = getState

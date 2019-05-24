@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import EditGraphQL  from '../database/components/EditGraphQL'
+import EditGraphQL  from '../../../database/components/EditGraphQL'
 
 import { withStyles } from '@material-ui/core/styles'
 import TextField      from '@material-ui/core/TextField'

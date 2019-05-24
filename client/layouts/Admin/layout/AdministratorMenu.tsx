@@ -20,7 +20,7 @@ interface ComponentProps {
   history : {replace : (url: string) => any},
 }
 
-const Menu = ({list, history}: ComponentProps) => (
+const AdministratorMenu = ({list, history}: ComponentProps) => (
   <div>
     <List component="nav">
   		{list.map((el,idx) => (
@@ -36,4 +36,4 @@ const Menu = ({list, history}: ComponentProps) => (
   </div>
 )
 
-export default withRouter(Menu)
+export default withRouter(AdministratorMenu)

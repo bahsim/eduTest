@@ -1,14 +1,14 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
-import Workspace  from '../Workspace/Workspace.tsx'
+import Workspace  from '../workspace/AdministratorWorkspace.tsx'
 
-import SimpleList   from '../../../../components/SimpleList.tsx'
-import NewRecord    from '../../../../components/NewRecord.tsx'
-import ViewRecord   from '../../../../components/ViewRecord.tsx'
-import DeleteRecord from '../../../../components/DeleteRecord.tsx'
+import SimpleList   from '../components/SimpleList.tsx'
+import NewRecord    from '../components/NewRecord.tsx'
+import ViewRecord   from '../components/ViewRecord.tsx'
+import DeleteRecord from '../components/DeleteRecord.tsx'
 
-const DatasetOneLevel = (props) => {
+const PrimaryDataSimple = (props) => {
 	const {
 		baseURL,
 		labelListName,
@@ -22,7 +22,7 @@ const DatasetOneLevel = (props) => {
 	return (
 		<Switch>
       <Route path={baseURL} exact component={() => (
-        <Workspace datasetType="oneLevel" componentType="viewList" {...props}>
+        <Workspace datasetType="simple" componentType="viewList" {...props}>
           <SimpleList
             queryProps={{
               query       : props.queryList,
@@ -33,7 +33,7 @@ const DatasetOneLevel = (props) => {
         </Workspace>
       )}/>
       <Route path={`${baseURL}/new`} exact component={() => (
-        <Workspace datasetType="oneLevel" componentType="newItem" {...props}>
+        <Workspace datasetType="simple" componentType="newItem" {...props}>
           <NewRecord
             queryProps = {{
               mutation    : props.mutateAdd,
@@ -44,7 +44,7 @@ const DatasetOneLevel = (props) => {
         </Workspace>
       )}/>
       <Route path={`${baseURL}/items/:id`} exact component={(extra) => (
-        <Workspace datasetType="oneLevel" componentType="viewItem" {...props}>
+        <Workspace datasetType="simple" componentType="viewItem" {...props}>
           <ViewRecord
             queryProps = {{
       				query			    : queryItem,
@@ -57,7 +57,7 @@ const DatasetOneLevel = (props) => {
         </Workspace>
       )}/>
       <Route path={`${baseURL}/items/:id/delete`} exact component={(extra) => (
-        <Workspace datasetType="oneLevel" componentType="deleteItem" {...props}>
+        <Workspace datasetType="simple" componentType="deleteItem" {...props}>
           <DeleteRecord
             queryProps = {{
       				query			    : queryItem,
@@ -76,4 +76,4 @@ const DatasetOneLevel = (props) => {
 	)
 }
 
-export default DatasetOneLevel
+export default PrimaryDataSimple

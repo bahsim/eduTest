@@ -13,8 +13,8 @@ import DeleteIcon     from '@material-ui/icons/DeleteForever'
 import Breadcrumbs    from './Breadcrumbs.tsx'
 import ComandsPanel   from './ComandsPanel.tsx'
 
-import DatasetOneLevel  from '../actions/DatasetOneLevel.js'
-import DatasetWithGroup from '../actions/DatasetWithGroup.js'
+import PrimaryDataSimple  from '../actions/PrimaryDataSimple.js'
+import PrimaryDataWithGroup from '../actions/PrimaryDataWithGroup.js'
 
 const styles = theme => ({
   panel: {
@@ -73,6 +73,7 @@ interface WorkspaceState {
   contentData	        : any,
   scrollTop	          : number,
   roofTop	            : number,
+  roofLeft	          : number,
 }
 
 class Workspace extends Component<WorkspaceProps, WorkspaceState> {
@@ -85,6 +86,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
     contentData         : {},
     scrollTop           : 0,
     roofTop             : 0,
+    roofLeft            : 0,
 	}
 
   mainspace
@@ -100,8 +102,8 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
       props       : this.props,
     }
     switch (this.props.datasetType) {
-      case 'oneLevel'   : return new DatasetOneLevel(params)
-      case 'withGroup'  : return new DatasetWithGroup(params)
+      case 'simple'     : return new PrimaryDataSimple(params)
+      case 'withGroup'  : return new PrimaryDataWithGroup(params)
     }
   }
   actions: any  = this.defineActions()
@@ -126,7 +128,8 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
   setScrollParams() {
     this.setState({
       scrollTop : this.mainpaper.scrollTop,
-      roofTop   : this.mainspace.getBoundingClientRect().top
+      roofTop   : this.mainspace.getBoundingClientRect().top,
+      roofLeft  : this.mainspace.getBoundingClientRect().left,
     })
   }
 
@@ -193,6 +196,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
                           data={contentData}
                           scrollTop={this.state.scrollTop}
                           roofTop={this.state.roofTop}
+                          roofLeft={this.state.roofLeft}
                           {...content[componentType].params}
                         />
                       </div>

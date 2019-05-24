@@ -10,10 +10,10 @@ import ArrowBackIcon  from '@material-ui/icons/ArrowBack'
 import EditIcon       from '@material-ui/icons/Edit'
 import DeleteIcon     from '@material-ui/icons/DeleteForever'
 
-import SimpleList 		from '../../../components/SimpleList.tsx'
-import NewRecord			from '../../../components/NewRecord.tsx'
-import EditRecord			from '../../../components/EditRecord.tsx'
-import DeleteRecord		from '../../../components/DeleteRecord.tsx'
+import SimpleList 		from '../../../layouts/Admin/components/SimpleList.tsx'
+import NewRecord			from '../../../layouts/Admin/components/NewRecord.tsx'
+import EditRecord			from '../../../layouts/Admin/components/EditRecord.tsx'
+import DeleteRecord		from '../../../layouts/Admin/components/DeleteRecord.tsx'
 
 const styles = theme => ({
 	title: {
@@ -58,6 +58,7 @@ interface ComponentProps {
 	labelListName	: any,
 	scrollTop			: number,
 	roofTop				: number,
+	roofLeft			: number,
 }
 
 interface ComponentState {
@@ -183,11 +184,11 @@ class MembersList extends Component<ComponentProps,ComponentState> {
 		)
 
 		const panelStyle = {
-			margin: 0,
-	    top: this.props.roofTop,
-	    right: 'auto',
-	    bottom: 'auto',
-	    left: 20,
+			margin	: 0,
+	    top			: this.props.roofTop + 20,
+	    right		: 'auto',
+	    bottom	: 'auto',
+	    left		: this.props.roofLeft + 20,
 	    position: 'fixed',
 		}
 

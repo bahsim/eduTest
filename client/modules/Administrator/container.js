@@ -10,8 +10,8 @@ import ListIcon 			from '@material-ui/icons/List'
 import ScheduleIcon 	from '@material-ui/icons/Schedule'
 import ArchiveIcon 		from '@material-ui/icons/Archive'
 
-import Layout 				from '../../layouts/Admin/AdminLayout/AdminLayout.tsx'
-import PrimaryDataset	from '../../layouts/Admin/PrimaryDataset/PrimaryDataset.js'
+import Layout 				from '../../layouts/Admin/layout/AdministratorLayout.tsx'
+import Workspace			from '../../layouts/Admin/container.js'
 
 import RegionDetails	from './contentRegions/RegionDetails.tsx'
 import MembersList 		from './contentMembers/MembersList.tsx'
@@ -54,7 +54,7 @@ const Main = () => (
 				<Route path="/admin" exact component={null} />
 
 				<Route path="/admin/regions" component={() => (
-					<PrimaryDataset
+					<Workspace
 						params={{
 							baseURL				: '/admin/regions',
 							labelName 		: 'Регионы',
@@ -79,7 +79,7 @@ const Main = () => (
 				)}/>
 
 				<Route path="/admin/tests" component={() => (
-					<PrimaryDataset
+					<Workspace
 						params={{
 							baseURL				: '/admin/tests',
 							labelName 		: 'Тесты',
@@ -108,7 +108,7 @@ const Main = () => (
 				)}/>
 
 				<Route path="/admin/members" component={() => (
-					<PrimaryDataset
+					<Workspace
 						params={{
 							groupParams	: {
 								labelListName	: 'Регионы',
