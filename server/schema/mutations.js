@@ -8,6 +8,7 @@ const MutationsGroups 		= require('./mutations/MutationsGroups')
 const MutationsMembers 		= require('./mutations/MutationsMembers')
 const MutationsTests 			= require('./mutations/MutationsTests')
 const MutationsTestItems 	= require('./mutations/MutationsTestItems')
+const MutationsEvents     = require('./mutations/MutationsEvents')
 
 module.exports = new GraphQLObjectType({
   name: 'Mutation',
@@ -17,5 +18,6 @@ module.exports = new GraphQLObjectType({
 		...MutationsMembers,
 		...MutationsTests,
 		...MutationsTestItems,
+		...MutationsEvents,
   })
 })

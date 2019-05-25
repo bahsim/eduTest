@@ -44,7 +44,7 @@ module.exports = {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return TestItem.delete(args)
+			return TestItem.del(args)
 		}
 	},
 }

@@ -21,7 +21,8 @@
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.4",
     "query-string": "^6.4.2",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "validator": "^11.0.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.0",

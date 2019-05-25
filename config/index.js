@@ -1,7 +1,7 @@
 const Config = function () {
 	return {
-		// appMode:	"production",
-		appMode:	"development",
+		appMode:	"production",
+		// appMode:	"development",
 		appPort:	"80",
 
 		dbPath: 	"mongodb://localhost:27017/edutTest",

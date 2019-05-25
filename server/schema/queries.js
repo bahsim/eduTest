@@ -8,6 +8,7 @@ const QueriesGroups 		= require('./queries/QueriesGroups')
 const QueriesMembers 		= require('./queries/QueriesMembers')
 const QueriesTests 			= require('./queries/QueriesTests')
 const QueriesTestItems 	= require('./queries/QueriesTestItems')
+const QueriesEvents     = require('./queries/QueriesEvents')
 
 module.exports = new GraphQLObjectType({
   name: 'RootQueryType',
@@ -17,5 +18,6 @@ module.exports = new GraphQLObjectType({
 		...QueriesMembers,
 		...QueriesTests,
 		...QueriesTestItems,
+		...QueriesEvents,
 	})
 })

@@ -1,3 +1,12 @@
+const mongoose  = require('mongoose')
+const plugins   = require('./plugins')
+
+mongoose.plugin(plugins.item)
+mongoose.plugin(plugins.list)
+mongoose.plugin(plugins.add)
+mongoose.plugin(plugins.edit)
+mongoose.plugin(plugins.del)
+
 require('./region')
 require('./group')
 require('./member')

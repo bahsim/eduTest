@@ -33,7 +33,9 @@ module.exports = {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Group.delete(args)
+			return Group.del(args, [
+				{ model: 'member', field: 'groupId' }
+			])
 		}
 	},
 }

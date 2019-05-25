@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const EventSchema = new Schema({
+const that = new Schema({
   name      : { type: String },
   items     : { type: [{
     value   : { type: String },
@@ -10,10 +10,6 @@ const EventSchema = new Schema({
   session   : {
     count   : { type: Number },
     interval: { type: Number },
-  },
-  scaleSystem: {
-    limit   : { type: Number },
-    score   : { type: Number },
   },
   regionId  : {
     type    : Schema.Types.ObjectId,
@@ -27,15 +23,28 @@ const EventSchema = new Schema({
   dateEnd   : { type: Date },
 })
 
-EventSchema.statics.add = function(args) {
-  const Model = mongoose.model('event');
-  const item = new Model(args)
-  return item.save()
+that.statics.add = (args) => {
+  const Test  = mongoose.model('test')
+  const { testId } = args
+
+  Test.findById({ _id: testId })
+    .then((testRecord) => {
+      console.log(testRecord.name)
+
+      const item = new model({
+        name: testRecord.name
+      })
+
+      return item.save()
+    })
 }
 
-EventSchema.statics.delete = function({ id }) {
-  const Modal = mongoose.model('event');
-	return Modal.deleteOne({ _id: id })
-}
+that.statics.delete = ({ id }) => (
+  model.deleteOne({ _id: id })
+)
 
-mongoose.model('event', EventSchema)
+that.statics.findListCurrent = (args) => (
+  model.find(args, null, {sort: { dateEnd: 1 }})
+)
+
+const model = mongoose.model('event', that)

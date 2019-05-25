@@ -1,28 +1,29 @@
 const mongoose = require('mongoose')
 const graphql = require('graphql')
 
-const Group 		= mongoose.model('group')
-const GroupType = require('../types/GroupType')
+const Event 			= mongoose.model('event')
+const EventType 	= require('../types/EventType')
 
 const { GraphQLList, GraphQLID, GraphQLNonNull } = graphql
 
 module.exports = {
-	groups: {
-		type: new GraphQLList(GroupType),
+	eventsCurrent: {
+		type: new GraphQLList(EventType),
 		args: {
-			regionId: { type: new GraphQLNonNull(GraphQLID) }
+			regionId: { type: GraphQLID },
+			groupId	: { type: GraphQLID },
 		},
 		resolve(parentValue, args) {
-			return Group.list(args, { name: 1 })
+			return Event.findListCurrent(args)
 		}
 	},
-	group: {
-		type: GroupType,
+	event: {
+		type: EventType,
 		args: {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Group.item(args)
+			return Event.findItem(args)
 		}
 	},
 }

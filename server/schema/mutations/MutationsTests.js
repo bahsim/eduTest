@@ -32,7 +32,9 @@ module.exports = {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Test.delete(args)
+			return Test.del(args, [
+				{ model: 'testItem', field: 'testId' }
+			])
 		}
 	},
 }

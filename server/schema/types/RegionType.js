@@ -1,13 +1,9 @@
-const mongoose = require('mongoose')
-const graphql = require('graphql')
+const mongoose 	= require('mongoose')
+const graphql 	= require('graphql')
 
-const {
-	GraphQLObjectType,
-	GraphQLString,
-	GraphQLID,
-} = graphql
+const { GraphQLObjectType, GraphQLString, GraphQLID } = graphql
 
-const RegionType = new GraphQLObjectType({
+module.exports = new GraphQLObjectType({
   name:  'RegionType',
   fields: () => ({
     id				: { type: GraphQLID },
@@ -16,5 +12,3 @@ const RegionType = new GraphQLObjectType({
     password	: { type: GraphQLString },
   })
 })
-
-module.exports = RegionType

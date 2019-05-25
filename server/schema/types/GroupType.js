@@ -1,28 +1,21 @@
-const mongoose = require('mongoose')
-const graphql = require('graphql')
+const mongoose  = require('mongoose')
+const graphql   = require('graphql')
 
-const Region = mongoose.model('region')
+const Region 			= mongoose.model('region')
+const RegionType 	= require('./RegionType')
 
-const RegionType = require('./RegionType')
+const { GraphQLObjectType, GraphQLString, GraphQLID } = graphql
 
-const {
-	GraphQLObjectType,
-	GraphQLString,
-	GraphQLID,
-} = graphql
-
-const GroupType = new GraphQLObjectType({
+module.exports = new GraphQLObjectType({
   name:  'GroupType',
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
+    id    : { type: GraphQLID },
+    name  : { type: GraphQLString },
 		parent: {
 			type: RegionType,
 			resolve(parentValue) {
-				return Region.findById(parentValue.regionId)
+				return Region.item({ id: parentValue.regionId })
 			}
     }
   })
 })
-
-module.exports = GroupType

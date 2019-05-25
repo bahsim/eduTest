@@ -34,7 +34,7 @@ module.exports = {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Member.delete(args)
+			return Member.del(args)
 		}
 	},
 }

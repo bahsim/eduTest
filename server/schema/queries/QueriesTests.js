@@ -10,7 +10,7 @@ module.exports = {
 	tests: {
 		type: new GraphQLList(TestType),
 		resolve() {
-			return Test.findList()
+			return Test.list({}, { name: 1 })
 		}
 	},
 	test: {
@@ -19,7 +19,7 @@ module.exports = {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Test.findItem(args)
+			return Test.item(args)
 		}
 	},
 }

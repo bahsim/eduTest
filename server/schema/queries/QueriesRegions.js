@@ -11,7 +11,7 @@ module.exports = {
 	regions: {
 		type: new GraphQLList(RegionType),
 		resolve() {
-			return Region.findList()
+			return Region.list()
 		}
 	},
 	region: {
@@ -20,7 +20,7 @@ module.exports = {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Region.findItem(args)
+			return Region.item(args)
 		}
 	},
 	regionGroups: {
@@ -29,7 +29,7 @@ module.exports = {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Region.findItem(args)
+			return Region.item(args)
 		}
 	},
 }

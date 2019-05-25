@@ -13,7 +13,7 @@ module.exports = {
 			groupId: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Member.findList(args)
+			return Member.list(args, { name: 1 })
 		}
 	},
 	member: {
@@ -22,7 +22,7 @@ module.exports = {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Member.findItem(args)
+			return Member.item(args)
 		}
 	},
 }
