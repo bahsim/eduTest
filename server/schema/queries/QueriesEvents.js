@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const graphql = require('graphql')
+const mongoose 	= require('mongoose')
+const graphql 	= require('graphql')
 
 const Event 			= mongoose.model('event')
 const EventType 	= require('../types/EventType')

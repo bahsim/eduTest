@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const graphql = require('graphql')
+const mongoose 	= require('mongoose')
+const graphql 	= require('graphql')
 
 const Member 			= mongoose.model('member')
 const MemberType 	= require('../types/MemberType')

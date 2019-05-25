@@ -1,11 +1,10 @@
-const mongoose  = require('mongoose')
-const Schema    = mongoose.Schema
+const mongoose = require('mongoose')
 
-const that = new Schema({
+const that = new mongoose.Schema({
   value   : { type: String },
   variants: { type: [{ value: String, mark: Boolean }] },
   testId  : {
-    type  : Schema.Types.ObjectId,
+    type  : mongoose.Schema.Types.ObjectId,
     ref   : 'test'
   },
 })

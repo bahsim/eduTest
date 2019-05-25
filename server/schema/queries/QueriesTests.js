@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const graphql = require('graphql')
+const mongoose 	= require('mongoose')
+const graphql 	= require('graphql')
 
 const Test 			= mongoose.model('test')
 const TestType 	= require('../types/TestType')

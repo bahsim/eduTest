@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 
-const that = new Schema({
+const that = new mongoose.Schema({
   name      : { type: String },
   items     : { type: [{
     value   : { type: String },
@@ -12,11 +11,11 @@ const that = new Schema({
     interval: { type: Number },
   },
   regionId  : {
-    type    : Schema.Types.ObjectId,
+    type    : mongoose.Schema.Types.ObjectId,
     ref     : 'region'
   },
   groupId   : {
-    type    : Schema.Types.ObjectId,
+    type    : mongoose.Schema.Types.ObjectId,
     ref     : 'group'
   },
   dateStart : { type: Date },
@@ -38,10 +37,6 @@ that.statics.add = (args) => {
       return item.save()
     })
 }
-
-that.statics.delete = ({ id }) => (
-  model.deleteOne({ _id: id })
-)
 
 that.statics.findListCurrent = (args) => (
   model.find(args, null, {sort: { dateEnd: 1 }})

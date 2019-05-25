@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const graphql = require('graphql')
+const mongoose 	= require('mongoose')
+const graphql 	= require('graphql')
 
 const Region 						= mongoose.model('region')
 const RegionType 				= require('../types/RegionType')

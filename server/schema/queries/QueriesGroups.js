@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const graphql = require('graphql')
+const mongoose 	= require('mongoose')
+const graphql 	= require('graphql')
 
 const Group 		= mongoose.model('group')
 const GroupType = require('../types/GroupType')

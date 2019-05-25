@@ -23,7 +23,7 @@ module.exports = {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
 		resolve(parentValue, args) {
-			return Event.delete(args)
+			return Event.del(args)
 		}
 	},
 }
