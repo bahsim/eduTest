@@ -30,7 +30,7 @@ const EventType = new GraphQLObjectType({
 				return Group.item({ id: parent.groupId })
 			}
     },
-		items			: { type: new GraphQLList(EventItemType)},
+		items: { type: new GraphQLList(EventItemType)},
   })
 })
 

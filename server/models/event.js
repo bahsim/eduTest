@@ -22,12 +22,6 @@ const that = new mongoose.Schema({
   }]},
 })
 
-// that.statics.listCurrent = (args, sort) => {
-//   return model.find({...args, dateEnd: { $gte: new Date() }}, null, sort)
-//   // const now = new Date()
-//   // return model.find({...args, dateStart: {$lte: now}, dateEnd: {$gte: now}}, null, sort)
-// }
-
 that.statics.compile = async (args) => {
   const { testId, regionId, groupId, session, dateStart, dateEnd } = args
 
