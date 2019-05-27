@@ -14,7 +14,7 @@ module.exports = {
 			groupId	: { type: new GraphQLNonNull(GraphQLString) },
 			name		: { type: new GraphQLNonNull(GraphQLString) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Member.add(args)
 		}
 	},
@@ -24,7 +24,7 @@ module.exports = {
 			id	: { type: new GraphQLNonNull(GraphQLID) },
 			name: { type: new GraphQLNonNull(GraphQLString) },
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Member.edit(args)
 		}
 	},
@@ -33,7 +33,7 @@ module.exports = {
 		args: {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Member.del(args)
 		}
 	},

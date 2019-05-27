@@ -13,7 +13,7 @@ module.exports = {
 		args: {
 			name: { type: new GraphQLNonNull(GraphQLString) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Region.add({
 				name			: args.name,
 		    moderator	: uuidv4(),
@@ -27,7 +27,7 @@ module.exports = {
 			id	: { type: new GraphQLNonNull(GraphQLID) },
 			name: { type: new GraphQLNonNull(GraphQLString) },
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Region.edit(args)
 		}
 	},
@@ -38,7 +38,7 @@ module.exports = {
 			moderator	: { type: new GraphQLNonNull(GraphQLString) },
 			password	: { type: new GraphQLNonNull(GraphQLString) },
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Region.edit(args)
 		}
 	},
@@ -47,7 +47,7 @@ module.exports = {
 		args: {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Region.del(args, [
 				{ model: 'group', 	field: 'regionId' },
 				{ model: 'member', 	field: 'regionId' },

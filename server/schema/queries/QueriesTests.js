@@ -18,7 +18,7 @@ module.exports = {
 		args: {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Test.item(args)
 		}
 	},

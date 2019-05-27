@@ -14,8 +14,8 @@ module.exports = new GraphQLObjectType({
     name: { type: GraphQLString },
     list: {
 			type: new GraphQLList(GroupType),
-			resolve(parentValue) {
-				return Group.list({ regionId: parentValue.id }, { name: 1 })
+			resolve(parent) {
+				return Group.list({ regionId: parent.id }, { name: 1 })
 			}
     }
   })

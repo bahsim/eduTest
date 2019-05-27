@@ -12,7 +12,7 @@ module.exports = {
 		args: {
 			testId: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return TestItem.list(args, { value: 1 })
 		}
 	},
@@ -21,7 +21,7 @@ module.exports = {
 		args: {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return TestItem.item(args)
 		}
 	},

@@ -2,13 +2,9 @@ const mongoose = require('mongoose')
 
 const that = new mongoose.Schema({
   name      : { type: String },
-  items     : { type: [{
-    value   : { type: String },
-    variants: { type: [{ value: String, mark: Boolean }] },
-  }]},
   session   : {
     count   : { type: Number },
-    interval: { type: Number },
+    time    : { type: Number },
   },
   regionId  : {
     type    : mongoose.Schema.Types.ObjectId,
@@ -20,26 +16,38 @@ const that = new mongoose.Schema({
   },
   dateStart : { type: Date },
   dateEnd   : { type: Date },
+  items     : { type: [{
+    value   : { type: String },
+    variants: { type: [{ value: String, mark: Boolean }] },
+  }]},
 })
 
-that.statics.add = (args) => {
+// that.statics.listCurrent = (args, sort) => {
+//   return model.find({...args, dateEnd: { $gte: new Date() }}, null, sort)
+//   // const now = new Date()
+//   // return model.find({...args, dateStart: {$lte: now}, dateEnd: {$gte: now}}, null, sort)
+// }
+
+that.statics.compile = async (args) => {
+  const { testId, regionId, groupId, session, dateStart, dateEnd } = args
+
   const Test  = mongoose.model('test')
-  const { testId } = args
+  const testRecord = await Test.item({ id: testId })
 
-  Test.findById({ _id: testId })
-    .then((testRecord) => {
-      console.log(testRecord.name)
+  const TestItems = mongoose.model('testItem')
+  const testItemsRecords = await TestItems.list({ testId })
 
-      const item = new model({
-        name: testRecord.name
-      })
+  const item = new model({
+    name      : testRecord.name,
+    items     : testItemsRecords,
+    session   : session,
+    regionId  : regionId,
+    groupId   : groupId,
+    dateStart : dateStart,
+    dateEnd   : dateEnd,
+  })
 
-      return item.save()
-    })
+  return item.save()
 }
-
-that.statics.findListCurrent = (args) => (
-  model.find(args, null, {sort: { dateEnd: 1 }})
-)
 
 const model = mongoose.model('event', that)

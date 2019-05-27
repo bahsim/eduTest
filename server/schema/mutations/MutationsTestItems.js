@@ -23,7 +23,7 @@ module.exports = {
 			value		: { type: new GraphQLNonNull(GraphQLString) },
 			variants: { type: new GraphQLList(TestItemVariantType) },
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return TestItem.add(args)
 		}
 	},
@@ -34,7 +34,7 @@ module.exports = {
 			value		: { type: new GraphQLNonNull(GraphQLString) },
 			variants: { type: new GraphQLList(TestItemVariantType) },
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return TestItem.edit(args)
 		}
 	},
@@ -43,7 +43,7 @@ module.exports = {
 		args: {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return TestItem.del(args)
 		}
 	},

@@ -13,8 +13,8 @@ module.exports = new GraphQLObjectType({
     name  : { type: GraphQLString },
 		parent: {
 			type: RegionType,
-			resolve(parentValue) {
-				return Region.item({ id: parentValue.regionId })
+			resolve(parent) {
+				return Region.item({ id: parent.regionId })
 			}
     }
   })

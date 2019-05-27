@@ -12,7 +12,7 @@ module.exports = {
 		args: {
 			regionId: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Group.list(args, { name: 1 })
 		}
 	},
@@ -21,7 +21,7 @@ module.exports = {
 		args: {
 			id: { type: new GraphQLNonNull(GraphQLID) }
 		},
-		resolve(parentValue, args) {
+		resolve(parent, args) {
 			return Group.item(args)
 		}
 	},

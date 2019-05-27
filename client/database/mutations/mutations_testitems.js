@@ -37,10 +37,6 @@ export const MUTATE_DELETE_TESTITEM = {
 			deleteTestItem(id: $id) {
 				id
 				value
-				variants {
-					value
-					mark
-				}
 			}
 		}
 	`

@@ -1,6 +1,5 @@
 const mongoose 	= require('mongoose')
 const graphql 	= require('graphql')
-const isISO8601 = require('validator')
 
 const Region 			= mongoose.model('region')
 const RegionType 	= require('./RegionType')
@@ -16,22 +15,31 @@ const EventType = new GraphQLObjectType({
   fields: () => ({
     id				: { type: GraphQLID },
     name			: { type: GraphQLString },
-		items			: { type: new GraphQLList(EventItemType)},
 	  session   : { type: EventSessionType },
-		dateStart	: { type: DateTimeType },
-		dateEnd   : { type: DateTimeType },
+		dateStart	: { type: GraphQLString },
+		dateEnd   : { type: GraphQLString },
 		region: {
 			type: RegionType,
-			resolve(parentValue) {
-				return Region.findItem(parentValue.regionId)
+			resolve(parent) {
+				return Region.item({ id: parent.regionId })
 			}
     },
 		group: {
 			type: GroupType,
-			resolve(parentValue) {
-				return Group.findItem(parentValue.groupId)
+			resolve(parent) {
+				return Group.item({ id: parent.groupId })
 			}
     },
+		items			: { type: new GraphQLList(EventItemType)},
+  })
+})
+
+const EventItemType = new GraphQLObjectType({
+  name:  'EventItemType',
+  fields: () => ({
+    id			: { type: GraphQLID },
+    value		: { type: GraphQLString },
+    variants: { type: new GraphQLList(EventVariantType) },
   })
 })
 
@@ -44,37 +52,12 @@ const EventVariantType = new GraphQLObjectType({
 	})
 })
 
-const EventItemType = new GraphQLObjectType({
-  name:  'EventItemType',
-  fields: () => ({
-    id			: { type: GraphQLID },
-    value		: { type: GraphQLString },
-    variants: { type: new GraphQLList(EventVariantType) },
-  })
-})
-
 const EventSessionType = new GraphQLObjectType({
   name:  'EventSessionType',
   fields: () => ({
-		count   : { type: GraphQLInt },
-		interval: { type: GraphQLInt },
+		count : { type: GraphQLInt },
+		time	: { type: GraphQLInt },
   })
-})
-
-const DateTimeType = new GraphQLScalarType({
-	name: 'DateTime',
-	serialize		: (value) => {
-		if (isISO8601(value)) return value
-	  throw new Error('DateTime cannot represent an invalid ISO-8601 Date string')
-	},
-	parseValue	: (value) => {
-		if (isISO8601(value)) return value
-		throw new Error('DateTime cannot represent an invalid ISO-8601 Date string')
-	},
-	parseLiteral: (ast) => {
-		if (isISO8601(ast.value)) return ast.value
-		throw new Error('DateTime cannot represent an invalid ISO-8601 Date string')
-	},
 })
 
 module.exports = EventType
