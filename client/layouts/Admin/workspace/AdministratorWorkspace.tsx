@@ -176,7 +176,6 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
                   React.Children.map(children, child => (
                     React.cloneElement(child, {
                       onClick       : this.actions.handleMainAction,
-                      onDoubleClick : this.actions.handleSecondAction,
                       extraAction   : this.actions.handleExtraAction,
                       current       : this.state.routeQueryParams.current,
                     })

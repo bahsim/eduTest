@@ -81,26 +81,33 @@ class TestItems extends Component<ComponentProps,ComponentState> {
 		const { mode, itemId } = this.state
 		const { classes } = this.props
 
-		const formatListRow = (item) => (
+		const formatListRow = (item) => ({
+			primary		: item.value,
+			secondary	: formatVariants(item.variants)
+		})
+
+		const formatRow = (item) => (
 			<Fragment>
 				<span style={{fontWeight: 'bold'}}>
 					{item.value}<br/>
 				</span>
 				<span style={{ fontStyle: 'italic' }}>
-					{item.variants.map((variant, index) => (
-							(variant.mark === true ?
-								<span key={index} style={{fontWeight: 'bold'}}>
-									{`${index+1}) ${variant.value}`}&nbsp;&nbsp;&nbsp;
-								</span>
-							:
-								<span key={index}>
-									{`${index+1}) ${variant.value}`}&nbsp;&nbsp;&nbsp;
-								</span>
-							)
-					))}
+					{formatVariants(item.variants)}
 				</span>
 			</Fragment>
 		)
+
+		const formatVariants = (variants) => variants.map((variant, index) => (
+			(variant.mark === true ?
+				<span key={index} style={{fontWeight: 'bold'}}>
+					{`${index+1}) ${variant.value}`}&nbsp;&nbsp;&nbsp;
+				</span>
+			:
+				<span key={index}>
+					{`${index+1}) ${variant.value}`}&nbsp;&nbsp;&nbsp;
+				</span>
+			)
+		))
 
 		const compoentRegistry = (
 			<SimpleList
@@ -109,7 +116,6 @@ class TestItems extends Component<ComponentProps,ComponentState> {
 					queryParams : { testId	: this.props.data.ownerId },
 				}}
 				onClick				= {(item)	=> this.setState({ itemId: item.id})}
-				onDoubleClick = {() 		=> this.setState({ mode: MODE_EDIT_ITEM})}
 				extraAction 	= {() 		=> {}}
 				current 			= {itemId}
 				label 				= {this.props.labelListName}
@@ -161,7 +167,7 @@ class TestItems extends Component<ComponentProps,ComponentState> {
 				onClick = {(item) => {
 					this.setState({ mode: MODE_REGISTRY, itemId: '' })
 				}}
-				formatItem	= {(item) => formatListRow(item)}
+				formatItem	= {(item) => formatRow(item)}
 				extraAction = {() => {}}
 			/>
 		)

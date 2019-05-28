@@ -89,7 +89,6 @@ class MembersList extends Component<ComponentProps,ComponentState> {
 					queryParams : { groupId	: this.props.data.ownerId },
 				}}
 				onClick				= {(item)	=> this.setState({ itemId: item.id})}
-				onDoubleClick = {() 		=> this.setState({ mode: MODE_EDIT_ITEM})}
 				extraAction 	= {() 		=> {}}
 				current 			= {itemId}
 				label 				= {this.props.labelListName}
@@ -190,6 +189,7 @@ class MembersList extends Component<ComponentProps,ComponentState> {
 	    bottom	: 'auto',
 	    left		: this.props.roofLeft + 20,
 	    position: 'fixed',
+			zIndex	: 1001,
 		}
 
 		return (

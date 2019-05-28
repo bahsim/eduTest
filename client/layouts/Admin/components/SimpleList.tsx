@@ -1,25 +1,16 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component, Fragment } from 'react'
 import RootRef from '@material-ui/core/RootRef';
 
 import ViewGraphQL from '../../../database/components/ViewGraphQL'
 
 import { withStyles } from '@material-ui/core/styles'
-import Table 					from '@material-ui/core/Table'
-import TableBody 			from '@material-ui/core/TableBody'
-import TableCell 			from '@material-ui/core/TableCell'
-import TableHead 			from '@material-ui/core/TableHead'
-import TableRow 			from '@material-ui/core/TableRow'
-
-const styles = theme => ({
-	tableRow: {
-		cursor: 'pointer',
-	},
-})
+import Divider 				from '@material-ui/core/Divider'
+import List         	from '@material-ui/core/List'
+import ListSubheader	from '@material-ui/core/ListSubheader'
+import ListItem     	from '@material-ui/core/ListItem'
+import ListItemText 	from '@material-ui/core/ListItemText'
 
 interface ComponentProps {
-	classes: {
-		tableRow		: object
-	},
 	queryData			: {
 		map					: (list: any) => any,
 		forEach			: (list: any) => any,
@@ -28,7 +19,6 @@ interface ComponentProps {
 	label					: string,
 	current				: string,
 	onClick				: (data: any) => any,
-	onDoubleClick	: (data: any) => any,
 	extraAction		: (data: any, extra: any) => any,
 	formatListRow	: (item: object) => any,
 }
@@ -45,10 +35,7 @@ const SimpleList = (props) => (
 
 class BaseComponent extends Component<ComponentProps,{}> {
 
-	state = {
-		currentItem: ''
-	}
-
+	state 		= { currentItem: '' }
 	domRefs 	= {}
 	firstLoad	= true
 
@@ -67,22 +54,15 @@ class BaseComponent extends Component<ComponentProps,{}> {
 		}
 	}
 
-	scrollToCurrent = (id) => {
-		setTimeout(() => {
-			this.domRefs[id].current.scrollIntoView(
-				{ block: 'center', behavior: 'instant' }
-			)
-		}, 50)
-	}
+	scrollToCurrent = (id) => setTimeout(() => {
+		this.domRefs[id].current.scrollIntoView(
+			{ block: 'center', behavior: 'instant' }
+		)
+	}, 50)
 
 	handleOnClick = (item) => {
 		this.setState({currentItem: item.id})
 		this.props.onClick && this.props.onClick(item)
-	}
-
-	handleOnDoubleClick = (item) => {
-		this.setState({currentItem: item.id})
-		this.props.onDoubleClick && this.props.onDoubleClick(item)
 	}
 
 	render() {
@@ -95,33 +75,31 @@ class BaseComponent extends Component<ComponentProps,{}> {
 		}
 
 		return (
-			<Table>
-				<TableHead>
-					<TableRow>
-						<TableCell>{this.props.label}</TableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{this.props.queryData.map(item => (
-						<RootRef key={item.id} rootRef={this.domRefs[item.id]}>
-							<TableRow hover
-								className={this.props.classes.tableRow}
+			<List component="nav">
+				<ListSubheader disableSticky>
+					{this.props.label}
+				</ListSubheader>
+				<Divider/>
+				{this.props.queryData.map(item => (
+					<RootRef key={item.id} rootRef={this.domRefs[item.id]}>
+						<Fragment>
+							<ListItem button
 								selected={this.state.currentItem === item.id}
 								onClick={() => this.handleOnClick(item)}
-								onDoubleClick={() => this.handleOnDoubleClick(item)}
 							>
-								<TableCell component="th" scope="row" >
-									{this.props.formatListRow ?
-										this.props.formatListRow(item) : item.name
-									}
-								</TableCell>
-							</TableRow>
-						</RootRef>
-					))}
-				</TableBody>
-			</Table>
+								{this.props.formatListRow ? (
+									<ListItemText {...this.props.formatListRow(item)} />
+								) : (
+									<ListItemText primary={item.name} />
+								)}
+							</ListItem>
+							<Divider/>
+						</Fragment>
+					</RootRef>
+	  		))}
+	  	</List>
 		)
 	}
 }
 
-export default withStyles(styles)(SimpleList)
+export default SimpleList

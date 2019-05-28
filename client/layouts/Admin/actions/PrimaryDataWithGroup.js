@@ -1,5 +1,4 @@
 import AddIcon 			  from '@material-ui/icons/Add'
-import PageviewIcon   from '@material-ui/icons/Pageview'
 import ArrowBackIcon  from '@material-ui/icons/ArrowBack'
 import DeleteIcon     from '@material-ui/icons/DeleteForever'
 
@@ -8,7 +7,6 @@ const BREADCRUMBS_DEL_TEST  = 'Удаление'
 const LABEL_BACK    = 'Назад'
 const LABEL_ADD     = 'Добавить'
 const LABEL_DELETE  = 'Удалить'
-const LABEL_OPEN    = 'Открыть'
 
 const button = (icon, label, link) => ({ link, icon, label })
 
@@ -39,17 +37,11 @@ export default class PrimaryDataWithGroup {
       case 'viewList-groups':
         this.followLink(`${baseURL}/groups/${args[0].id}`)
         break
-      case 'viewList-items': {
-        const { groupId } = this.props.match.params
-        const breadcrumbsContent = [labelName, args[0].parentName, args[0].name]
-        const panelContent = [
-          button(ArrowBackIcon, LABEL_BACK, `${baseURL}?current=${groupId}`),
-          button(AddIcon, LABEL_ADD, `${baseURL}/groups/${groupId}/new`),
-          button(PageviewIcon, LABEL_OPEN, `${baseURL}/groups/${groupId}/items/${args[0].id}`),
-    		]
-        this.setState({panelContent, breadcrumbsContent})
+      case 'viewList-items':
+        this.followLink(
+          `${baseURL}/groups/${args[0].parentId}/items/${args[0].id}`
+        )
         break
-      }
     }
 
     switch (componentType) {
@@ -71,19 +63,6 @@ export default class PrimaryDataWithGroup {
     }
   }
 
-  handleSecondAction = (...args) => {
-    const { componentType, role, baseURL } = this.props
-
-    switch (`${componentType}-${role}`) {
-      case 'viewList-items': {
-        this.followLink(
-          `${baseURL}/groups/${args[0].parentId}/items/${args[0].id}`
-        )
-        break
-      }
-    }
-  }
-
   handleExtraAction = (...args) => {
     const { componentType, role, baseURL, labelNew, labelName } = this.props
 
@@ -97,7 +76,6 @@ export default class PrimaryDataWithGroup {
             const panelContent = [
               button(ArrowBackIcon, LABEL_BACK, `${baseURL}?current=${args[0].id}`),
               button(AddIcon, LABEL_ADD, `${baseURL}/groups/${args[0].id}/new`),
-              button(PageviewIcon, LABEL_OPEN, `${baseURL}/groups/${args[0].id}/items/${item.id}`),
         		]
             this.setState({ panelContent, breadcrumbsContent})
           }
