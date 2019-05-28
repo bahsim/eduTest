@@ -3,18 +3,14 @@ import { withRouter } from 'react-router-dom'
 import queryString    from 'query-string'
 
 import { withStyles } from '@material-ui/core/styles'
-import Grid        		from '@material-ui/core/Grid'
 import Paper          from '@material-ui/core/Paper'
-import AddIcon 			  from '@material-ui/icons/Add'
-import PageviewIcon   from '@material-ui/icons/Pageview'
-import ArrowBackIcon  from '@material-ui/icons/ArrowBack'
-import DeleteIcon     from '@material-ui/icons/DeleteForever'
 
 import Breadcrumbs    from './Breadcrumbs.tsx'
 import ComandsPanel   from './ComandsPanel.tsx'
 
-import PrimaryDataSimple  from '../actions/PrimaryDataSimple.js'
+import PrimaryDataSimple    from '../actions/PrimaryDataSimple.js'
 import PrimaryDataWithGroup from '../actions/PrimaryDataWithGroup.js'
+import SecondaryData        from '../actions/SecondaryData.js'
 
 const styles = theme => ({
   panel: {
@@ -33,14 +29,6 @@ const styles = theme => ({
   },
 })
 
-const panelLink = (link, icon, label) => ({ link, icon, label })
-
-const BREADCRUMBS_DEL_TEST  = 'Удаление'
-const LABEL_BACK            = 'Назад'
-const LABEL_ADD             = 'Добавить'
-const LABEL_DELETE          = 'Удалить'
-const LABEL_OPEN            = 'Открыть'
-
 interface WorkspaceProps {
   classes: {
     breadcrumbs : object,
@@ -55,12 +43,7 @@ interface WorkspaceProps {
   content       : any,
   datasetType   : string,
   componentType : string,
-  role          : string,
-  baseURL       : string,
-  labelName     : string,
-  labelNew      : string,
   history       : { replace: (url: string) => any },
-  match         : { params: { groupId: string } },
 }
 
 interface WorkspaceState {
@@ -104,6 +87,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
     switch (this.props.datasetType) {
       case 'simple'     : return new PrimaryDataSimple(params)
       case 'withGroup'  : return new PrimaryDataWithGroup(params)
+      case 'secondary'  : return new SecondaryData(params)
     }
   }
   actions: any  = this.defineActions()

@@ -17,6 +17,8 @@ import RegionDetails	from './contentRegions/RegionDetails.tsx'
 import MembersList 		from './contentMembers/MembersList.tsx'
 import TestItems 			from './contentTests/TestItems.tsx'
 
+import FilterEvents		from './Events/FilterEvents.tsx'
+
 const Menu = [
 	{
 		link	: '/admin/regions',
@@ -55,6 +57,7 @@ const Main = () => (
 
 				<Route path="/admin/regions" component={() => (
 					<Workspace
+						type='PrimaryDataSimple'
 						params={{
 							baseURL				: '/admin/regions',
 							labelName 		: 'Регионы',
@@ -80,6 +83,7 @@ const Main = () => (
 
 				<Route path="/admin/tests" component={() => (
 					<Workspace
+						type='PrimaryDataSimple'
 						params={{
 							baseURL				: '/admin/tests',
 							labelName 		: 'Тесты',
@@ -109,6 +113,7 @@ const Main = () => (
 
 				<Route path="/admin/members" component={() => (
 					<Workspace
+						type='PrimaryDataWithGroup'
 						params={{
 							groupParams	: {
 								labelListName	: 'Регионы',
@@ -140,7 +145,27 @@ const Main = () => (
 					/>
 				)}/>
 
-				<Route path="/admin/events" component={() => null} />
+				<Route path="/admin/events" component={() => (
+					<Workspace
+						type='SecondaryData'
+						params={{
+							role					: 'current',
+							baseURL				: '/admin/events',
+							labelName 		: 'Мероприятия',
+							labelListName	: 'Наименование',
+							labelNew			: 'Новое мепроприятие',
+							queryList			: Queries.QUERY_EVENTS_CURRENT,
+							queryItem			: Queries.QUERY_EVENT,
+							mutateAdd			: Mutations.MUTATE_ADD_EVENT,
+							mutateDel			: Mutations.MUTATE_DELETE_EVENT,
+						}}
+						components={{
+							filter: FilterEvents,
+						}}
+						content={{}}
+					/>
+				)}/>
+
 				<Route path="/admin/results" component={() => null} />
 				<Route path="/*" render={() => <Redirect to="/admin" />}/>
 			</Switch>

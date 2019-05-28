@@ -1,5 +1,4 @@
 import AddIcon 			  from '@material-ui/icons/Add'
-import PageviewIcon   from '@material-ui/icons/Pageview'
 import ArrowBackIcon  from '@material-ui/icons/ArrowBack'
 import DeleteIcon     from '@material-ui/icons/DeleteForever'
 
@@ -8,7 +7,6 @@ const BREADCRUMBS_DEL_TEST  = 'Удаление'
 const LABEL_BACK    = 'Назад'
 const LABEL_ADD     = 'Добавить'
 const LABEL_DELETE  = 'Удалить'
-const LABEL_OPEN    = 'Открыть'
 
 const button = (icon, label, link) => ({ link, icon, label })
 
@@ -43,15 +41,9 @@ export default class PrimaryDataSimple {
     const { componentType, baseURL, labelName } = this.props
 
     switch (componentType) {
-      case 'viewList': {
-        const breadcrumbsContent = [labelName, args[0].name]
-        const panelContent = [
-          button(AddIcon, LABEL_ADD, `${baseURL}/new`),
-          button(PageviewIcon, LABEL_OPEN, `${baseURL}/items/${args[0].id}`),
-        ]
-        this.setState({panelContent, breadcrumbsContent})
+      case 'viewList':
+        this.followLink(`${baseURL}/items/${args[0].id}`)
         break
-      }
       case 'newItem':
       case 'deleteItem':
         this.followLink(baseURL)
@@ -65,16 +57,6 @@ export default class PrimaryDataSimple {
     }
   }
 
-  handleSecondAction = (...args) => {
-    const { componentType, baseURL } = this.props
-
-    switch (componentType) {
-      case 'viewList':
-        this.followLink(`${baseURL}/items/${args[0].id}`)
-        break
-    }
-  }
-
   handleExtraAction = (...args) => {
     const { componentType, baseURL, labelName } = this.props
 
@@ -85,10 +67,7 @@ export default class PrimaryDataSimple {
           const item = args[1].find((item) => item.id === current)
           if (item) {
             const breadcrumbsContent = [labelName, item.name]
-            const panelContent = [
-              button(AddIcon, LABEL_ADD, `${baseURL}/new`),
-              button(PageviewIcon, LABEL_OPEN, `${baseURL}/items/${item.id}`),
-            ]
+            const panelContent = [button(AddIcon, LABEL_ADD, `${baseURL}/new`)]
             this.setState({ panelContent, breadcrumbsContent})
           }
         }

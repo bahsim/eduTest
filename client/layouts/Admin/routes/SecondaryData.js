@@ -19,32 +19,28 @@ export default (props) => {
 		mutateDel,
 	} = props
 
+	const Filter = props.components.filter
+
 	return (
 		<Switch>
       <Route path={baseURL} exact component={() => (
-        <Workspace datasetType="simple" componentType="viewList" {...props}>
-          <SimpleList
-            queryProps={{
-              query       : props.queryList,
-              queryParams : {}
-            }}
-            label={props.labelListName}
-          />
+        <Workspace datasetType="secondary" componentType="filter" {...props}>
+          <Filter />
         </Workspace>
       )}/>
       <Route path={`${baseURL}/new`} exact component={() => (
-        <Workspace datasetType="simple" componentType="newItem" {...props}>
+        <Workspace datasetType="secondary" componentType="newItem" {...props}>
           <NewRecord
             queryProps = {{
-              mutation    : props.mutateAdd,
-              update      : props.queryList,
+              mutation    : mutateAdd,
+              update      : queryList,
               updateParams: {},
             }}
           />
         </Workspace>
       )}/>
       <Route path={`${baseURL}/items/:id`} exact component={(extra) => (
-        <Workspace datasetType="simple" componentType="viewItem" {...props}>
+        <Workspace datasetType="secondary" componentType="viewItem" {...props}>
           <ViewRecord
             queryProps = {{
       				query			    : queryItem,
@@ -57,7 +53,7 @@ export default (props) => {
         </Workspace>
       )}/>
       <Route path={`${baseURL}/items/:id/delete`} exact component={(extra) => (
-        <Workspace datasetType="simple" componentType="deleteItem" {...props}>
+        <Workspace datasetType="secondary" componentType="deleteItem" {...props}>
           <DeleteRecord
             queryProps = {{
       				query			    : queryItem,
