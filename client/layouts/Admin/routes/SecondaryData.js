@@ -25,7 +25,9 @@ export default (props) => {
 		<Switch>
       <Route path={baseURL} exact component={() => (
         <Workspace datasetType="secondary" componentType="filter" {...props}>
-          <Filter />
+          <Filter
+						{...props.filterParams}
+					/>
         </Workspace>
       )}/>
       <Route path={`${baseURL}/new`} exact component={() => (

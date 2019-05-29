@@ -3,7 +3,6 @@ import RootRef from '@material-ui/core/RootRef';
 
 import ViewGraphQL from '../../../database/components/ViewGraphQL'
 
-import { withStyles } from '@material-ui/core/styles'
 import Divider 				from '@material-ui/core/Divider'
 import List         	from '@material-ui/core/List'
 import ListSubheader	from '@material-ui/core/ListSubheader'

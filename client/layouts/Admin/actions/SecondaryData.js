@@ -1,5 +1,6 @@
 import AddIcon 			  from '@material-ui/icons/Add'
 import ArrowBackIcon  from '@material-ui/icons/ArrowBack'
+import RefreshIcon 	  from '@material-ui/icons/Refresh'
 import DeleteIcon     from '@material-ui/icons/DeleteForever'
 
 const BREADCRUMBS_DEL_TEST  = 'Удаление'
@@ -7,6 +8,7 @@ const BREADCRUMBS_DEL_TEST  = 'Удаление'
 const LABEL_BACK    = 'Назад'
 const LABEL_ADD     = 'Добавить'
 const LABEL_DELETE  = 'Удалить'
+const LABEL_REFRESH = 'Обновить'
 
 const button = (icon, label, link) => ({ link, icon, label })
 
@@ -19,15 +21,28 @@ export default class PrimaryDataSimple {
   }
 
   putPanelContentDefault = () => {
-    const { componentType, baseURL, labelName, labelNew } = this.props
+    const { role, componentType, baseURL, labelName, labelNew } = this.props
 
     let panelContent = [], breadcrumbsContent = []
 
-    switch (componentType) {
-      case 'viewList':
+    switch (`${componentType}-${role}`) {
+      case 'filter-current': {
+        panelContent.push(
+          button(AddIcon, LABEL_ADD, `${baseURL}/new`),
+          button(RefreshIcon, LABEL_REFRESH, `${baseURL}`)
+        )
         breadcrumbsContent.push(labelName)
-        panelContent.push(button(AddIcon, LABEL_ADD, `${baseURL}/new`))
         break
+      }
+      case 'filter-history': {
+        panelContent.push(
+          button(RefreshIcon, LABEL_REFRESH, `${baseURL}`)
+        )
+        breadcrumbsContent.push(labelName)
+        break
+      }
+    }
+    switch (componentType) {
       case 'newItem':
         breadcrumbsContent.push(labelName, labelNew)
         panelContent.push(button(ArrowBackIcon, LABEL_BACK, baseURL))
@@ -38,7 +53,25 @@ export default class PrimaryDataSimple {
   }
 
   handleMainAction = (...args) => {
-    const { componentType, baseURL, labelName } = this.props
+    const { role, componentType, baseURL, labelName } = this.props
+
+    switch (`${componentType}-${role}`) {
+      case 'filter-current': {
+        const panelContent = [
+          button(AddIcon, LABEL_ADD, `${baseURL}/new`),
+          button(RefreshIcon, LABEL_REFRESH, `${baseURL}`)
+        ]
+        this.setState({panelContent})
+        break
+      }
+      case 'filter-history': {
+        const panelContent = [
+          button(RefreshIcon, LABEL_REFRESH, `${baseURL}`)
+        ]
+        this.setState({panelContent})
+        break
+      }
+    }
 
     switch (componentType) {
       case 'viewList':
@@ -58,8 +91,9 @@ export default class PrimaryDataSimple {
   }
 
   handleExtraAction = (...args) => {
-    const { componentType, baseURL, labelName } = this.props
+    const { role, componentType, baseURL, labelName } = this.props
 
+    // switch (`${componentType}-${role}`) {
     switch (componentType) {
       case 'viewList': {
         const { current } = this.getState('routeQueryParams')
