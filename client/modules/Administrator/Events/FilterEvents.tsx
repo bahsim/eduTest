@@ -25,7 +25,7 @@ class FilterEvents extends Component<ComponentProps> {
 
   handleAction = (value, role) => {
     this.setState({[role]: value}, () => {
-      this.props.onClick()
+      this.props.onClick('')
     })
   }
 

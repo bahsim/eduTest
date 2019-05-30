@@ -54,13 +54,13 @@ class FilterResults extends Component<ComponentProps,ComponentState> {
     }
 
     this.setState(state, () => {
-      this.props.onClick()
+      this.props.onClick('')
     })
   }
 
   render() {
     const { regionId, dateStart, dateEnd, refresh } = this.state
-    const { classes, region } = this.props
+    const { region } = this.props
 
     const group = cloneDeep(this.props.group)
     group.queryProps.queryParams = { parentId: regionId }
