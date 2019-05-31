@@ -1,6 +1,11 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { cloneDeep } from 'lodash'
 import moment from 'moment'
+import queryString from 'query-string'
+
+import Grid         from '@material-ui/core/Grid'
+import Button       from '@material-ui/core/Button'
+import RefreshIcon  from '@material-ui/icons/Refresh'
 
 import DatePicker from '../../../layouts/Admin/components/DatePicker'
 import SimpleSelect from '../../../layouts/Admin/components/SimpleSelect.tsx'
@@ -13,29 +18,38 @@ interface ComponentProps {
 }
 
 interface ComponentState {
-  refresh   : boolean,
   dateStart : string,
   dateEnd   : string,
   regionId  : string,
   groupId   : string,
 }
 
+const getPropValue = (props, name, defaultValue) => (
+  props[name] ? props[name] : defaultValue
+)
+
+const today = moment().format('YYYY-MM-DD')
+
 class FilterResults extends Component<ComponentProps,ComponentState> {
 
   state = {
     refresh   : false,
-    dateStart : moment().format('YYYY-MM-DD'),
-    dateEnd   : moment().format('YYYY-MM-DD'),
-    regionId  : '',
-    groupId   : '',
+    dateStart : getPropValue(this.props.urlQueryParams, 'dateStart', today),
+    dateEnd   : getPropValue(this.props.urlQueryParams, 'dateEnd', today),
+    regionId  : getPropValue(this.props.urlQueryParams, 'regionId', ''),
+    groupId   : getPropValue(this.props.urlQueryParams, 'groupId', ''),
   }
 
   handleAction = (value, role) => {
     const state = cloneDeep(this.state)
 
-    state[role]   = value
+    if (role === 'regionId') {
+      state.groupId = ''
+    }
 
     if (role === 'dateStart') {
+      if (value === '') return
+
       const date1 = (new Date(value)).getTime()
       const date2 = (new Date(state.dateEnd)).getTime()
 
@@ -45,6 +59,8 @@ class FilterResults extends Component<ComponentProps,ComponentState> {
     }
 
     if (role === 'dateEnd') {
+      if (value === '') return
+
       const date1 = (new Date(state.dateStart)).getTime()
       const date2 = (new Date(value)).getTime()
 
@@ -53,20 +69,35 @@ class FilterResults extends Component<ComponentProps,ComponentState> {
       }
     }
 
-    this.setState(state, () => {
-      this.props.onClick('')
-    })
+    state.refresh = true
+    state[role] = value
+
+    this.setState(state)
+  }
+
+  handleRefresh = () => {
+    const { match, history } = this.props
+    const { regionId, groupId, dateStart, dateEnd } = this.state
+
+    const query = [`dateStart=${dateStart}`, `dateEnd=${dateEnd}`]
+
+    if (regionId !== '')  query.push(`regionId=${regionId}`)
+    if (groupId !== '')   query.push(`groupId=${groupId}`)
+
+    const queryStr = query.length > 0 ? `?${query.join('&')}` : ''
+
+    history.replace(`${match.url}${queryStr}`)
   }
 
   render() {
-    const { regionId, dateStart, dateEnd, refresh } = this.state
+    const { regionId, groupId, dateStart, dateEnd, refresh } = this.state
     const { region } = this.props
 
     const group = cloneDeep(this.props.group)
     group.queryProps.queryParams = { parentId: regionId }
 
     return (
-      <Fragment>
+      <Grid container item alignItems="center">
         <DatePicker
           label='Дата с'
           value={dateStart}
@@ -79,15 +110,23 @@ class FilterResults extends Component<ComponentProps,ComponentState> {
         />
         <SimpleSelect
           onClick={(value) => this.handleAction(value, 'regionId')}
+          currentItem={regionId}
           {...region}
         />
         {regionId !=='' &&
           <SimpleSelect
             onClick={(value) => this.handleAction(value, 'groupId')}
+            currentItem={groupId}
             {...group}
           />
         }
-      </Fragment>
+        {refresh &&
+          <Button onClick={() => this.handleRefresh()}>
+            <RefreshIcon/>
+            {'Обновить'}
+          </Button>
+        }
+      </Grid>
     )
   }
 }

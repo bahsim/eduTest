@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
+import queryString from 'query-string'
 
 import Workspace  from '../workspace/AdministratorWorkspace.tsx'
 
@@ -23,10 +24,19 @@ export default (props) => {
 
 	return (
 		<Switch>
-      <Route path={baseURL} exact component={() => (
+      <Route path={baseURL} exact component={(extra) => (
         <Workspace datasetType="secondary" componentType="filter" {...props}>
           <Filter
+						urlQueryParams={queryString.parse(extra.location.search)}
 						{...props.filterParams}
+						{...extra}
+					/>
+					<SimpleList
+						queryProps={{
+							query				: props.queryList,
+							queryParams : {}
+						}}
+						label={props.labelListName}
 					/>
         </Workspace>
       )}/>
@@ -45,11 +55,11 @@ export default (props) => {
         <Workspace datasetType="secondary" componentType="viewItem" {...props}>
           <ViewRecord
             queryProps = {{
-      				query			    : queryItem,
-      				mutation      : mutateEdit,
-              queryParams   : { id: extra.match.params.id },
-      				update        : queryList,
-              updateParams  : {}
+      				query			  : queryItem,
+      				mutation    : mutateEdit,
+              queryParams : { id: extra.match.params.id },
+      				update     	: queryList,
+              updateParams: {}
             }}
           />
         </Workspace>
@@ -58,11 +68,11 @@ export default (props) => {
         <Workspace datasetType="secondary" componentType="deleteItem" {...props}>
           <DeleteRecord
             queryProps = {{
-      				query			    : queryItem,
-      				mutation      : mutateDel,
-              queryParams   : { id: extra.match.params.id },
-      				update		    : queryList,
-              updateParams  : {}
+      				query			  : queryItem,
+      				mutation    : mutateDel,
+              queryParams : { id: extra.match.params.id },
+      				update			: queryList,
+              updateParams: {}
             }}
           />
         </Workspace>

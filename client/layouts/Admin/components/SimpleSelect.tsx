@@ -40,7 +40,9 @@ const SimpleList = (props) => (
 
 class BaseComponent extends Component<ComponentProps,{}> {
 
-	state = { currentItem: '' }
+	state = {
+    currentItem: this.props.currentItem
+  }
 
 	handleOnClick = (itemId) => {
 		this.setState({currentItem: itemId})

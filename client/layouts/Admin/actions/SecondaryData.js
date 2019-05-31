@@ -1,6 +1,5 @@
 import AddIcon 			  from '@material-ui/icons/Add'
 import ArrowBackIcon  from '@material-ui/icons/ArrowBack'
-import RefreshIcon 	  from '@material-ui/icons/Refresh'
 import DeleteIcon     from '@material-ui/icons/DeleteForever'
 
 const BREADCRUMBS_DEL_TEST  = 'Удаление'
@@ -27,17 +26,11 @@ export default class PrimaryDataSimple {
 
     switch (`${componentType}-${role}`) {
       case 'filter-current': {
-        panelContent.push(
-          button(AddIcon, LABEL_ADD, `${baseURL}/new`),
-          button(RefreshIcon, LABEL_REFRESH, `${baseURL}`)
-        )
+        panelContent.push(button(AddIcon, LABEL_ADD, `${baseURL}/new`))
         breadcrumbsContent.push(labelName)
         break
       }
       case 'filter-history': {
-        panelContent.push(
-          button(RefreshIcon, LABEL_REFRESH, `${baseURL}`)
-        )
         breadcrumbsContent.push(labelName)
         break
       }
@@ -53,27 +46,12 @@ export default class PrimaryDataSimple {
   }
 
   handleMainAction = (...args) => {
-    const { role, componentType, baseURL, labelName } = this.props
-
-    switch (`${componentType}-${role}`) {
-      case 'filter-current': {
-        const panelContent = [
-          button(AddIcon, LABEL_ADD, `${baseURL}/new`),
-          button(RefreshIcon, LABEL_REFRESH, `${baseURL}`)
-        ]
-        this.setState({panelContent})
-        break
-      }
-      case 'filter-history': {
-        const panelContent = [
-          button(RefreshIcon, LABEL_REFRESH, `${baseURL}`)
-        ]
-        this.setState({panelContent})
-        break
-      }
-    }
+    const { componentType, baseURL, labelName } = this.props
 
     switch (componentType) {
+      case 'filter':
+        this.followLink(`${baseURL}${args[0]}`)
+        break
       case 'viewList':
         this.followLink(`${baseURL}/items/${args[0].id}`)
         break

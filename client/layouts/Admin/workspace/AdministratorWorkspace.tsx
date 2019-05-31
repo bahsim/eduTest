@@ -156,35 +156,23 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
               onScroll={() => this.setScrollParams()}
             >
               <div className={classes.mainspace}>
-                {componentType === "viewList" &&
-                  React.Children.map(children, child => (
-                    React.cloneElement(child, {
-                      onClick       : this.actions.handleMainAction,
-                      extraAction   : this.actions.handleExtraAction,
-                      current       : this.state.routeQueryParams.current,
-                    })
-                  ))
-                }
-                {componentType !== "viewList" &&
-                  <Fragment>
-                    {React.Children.map(children, child => (
-                      React.cloneElement(child, {
-                        onClick     : this.actions.handleMainAction,
-                        extraAction : this.actions.handleExtraAction,
-                      })
-                    ))}
-                    {Content &&
-                      <div className={classes.content}>
-                        <Content
-                          data={contentData}
-                          scrollTop={this.state.scrollTop}
-                          roofTop={this.state.roofTop}
-                          roofLeft={this.state.roofLeft}
-                          {...content[componentType].params}
-                        />
-                      </div>
-                    }
-                  </Fragment>
+                {React.Children.map(children, child => (
+                  React.cloneElement(child, {
+                    onClick     : this.actions.handleMainAction,
+                    extraAction : this.actions.handleExtraAction,
+                    current     : this.state.routeQueryParams.current,
+                  })
+                ))}
+                {Content &&
+                  <div className={classes.content}>
+                    <Content
+                      data={contentData}
+                      scrollTop={this.state.scrollTop}
+                      roofTop={this.state.roofTop}
+                      roofLeft={this.state.roofLeft}
+                      {...content[componentType].params}
+                    />
+                  </div>
                 }
               </div>
             </div>
