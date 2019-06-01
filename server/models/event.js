@@ -2,10 +2,7 @@ const mongoose = require('mongoose')
 
 const that = new mongoose.Schema({
   name      : { type: String },
-  session   : {
-    count   : { type: Number },
-    time    : { type: Number },
-  },
+  time      : { type: Number },
   regionId  : {
     type    : mongoose.Schema.Types.ObjectId,
     ref     : 'region'
@@ -23,7 +20,7 @@ const that = new mongoose.Schema({
 })
 
 that.statics.compile = async (args) => {
-  const { testId, regionId, groupId, session, dateStart, dateEnd } = args
+  const { testId, regionId, groupId, time, dateStart, dateEnd } = args
 
   const Test  = mongoose.model('test')
   const testRecord = await Test.item({ id: testId })
@@ -34,7 +31,7 @@ that.statics.compile = async (args) => {
   const item = new model({
     name      : testRecord.name,
     items     : testItemsRecords,
-    session   : session,
+    time      : time,
     regionId  : regionId,
     groupId   : groupId,
     dateStart : dateStart,

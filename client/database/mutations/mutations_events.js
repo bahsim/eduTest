@@ -7,7 +7,7 @@ export const MUTATE_ADD_EVENT = {
 			$testId		: String!,
 			$regionId	: String!,
 			$groupId	: String!,
-			$session	: EventSessionInputType,
+			$time			: Int!,
 			$dateStart: String!,
 			$dateEnd	: String!,
 		) {
@@ -15,7 +15,7 @@ export const MUTATE_ADD_EVENT = {
 				testId		: $testId,
 				regionId	: $regionId,
 				groupId		: $groupId,
-				session		: $session,
+				time			: $time,
 				dateStart	: $dateStart,
 				dateEnd		: $dateEnd,
 			) {
@@ -23,10 +23,7 @@ export const MUTATE_ADD_EVENT = {
 				name
 				dateStart
 				dateEnd
-				session {
-					count
-					time
-				}
+				time
 				region {
 					id
 					name

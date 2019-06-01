@@ -6,10 +6,7 @@ const FRAGMENT_COMMON = gql`
 		name
 		dateStart
 		dateEnd
-		session {
-			count
-			time
-		}
+		time
 		region {
 			id
 			name
@@ -45,8 +42,8 @@ export const QUERY_EVENTS_HISTORY = {
 	query EventsHistory(
 		$regionId: String,
 		$groupId: String,
-		$dateStart: String!,
-		$dateEnd: String!,
+		$dateStart: String,
+		$dateEnd: String,
 	) {
 			eventsHistory(
 				regionId: $regionId,

@@ -37,8 +37,9 @@ export default class PrimaryDataSimple {
     }
     switch (componentType) {
       case 'newItem':
+        const url = `${baseURL}${this.getState('routeQueryString')}`
+        panelContent.push(button(ArrowBackIcon, LABEL_BACK, url))
         breadcrumbsContent.push(labelName, labelNew)
-        panelContent.push(button(ArrowBackIcon, LABEL_BACK, baseURL))
         break
     }
 
@@ -56,6 +57,12 @@ export default class PrimaryDataSimple {
         this.followLink(`${baseURL}/items/${args[0].id}`)
         break
       case 'newItem':
+        console.log(args[0])
+        const urlQueryParams = (
+          `?regionId=${args[0].region.id}&groupId=${args[0].group.id}&current=${args[0].id}`
+        )
+        this.followLink(`${baseURL}${urlQueryParams}`)
+        break
       case 'deleteItem':
         this.followLink(baseURL)
         break
@@ -73,18 +80,6 @@ export default class PrimaryDataSimple {
 
     // switch (`${componentType}-${role}`) {
     switch (componentType) {
-      case 'viewList': {
-        const { current } = this.getState('routeQueryParams')
-        if (current) {
-          const item = args[1].find((item) => item.id === current)
-          if (item) {
-            const breadcrumbsContent = [labelName, item.name]
-            const panelContent = [button(AddIcon, LABEL_ADD, `${baseURL}/new`)]
-            this.setState({ panelContent, breadcrumbsContent})
-          }
-        }
-        break
-      }
       case 'viewItem': {
         const breadcrumbsContent = [ labelName, args[0].name ]
         const panelContent = [

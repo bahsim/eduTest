@@ -7,14 +7,6 @@ const EventType	= require('../types/EventType')
 const { GraphQLInputObjectType, GraphQLString, GraphQLDate,
 				GraphQLNonNull, GraphQLID, GraphQLInt } = graphql
 
-const EventSessionInputType = new GraphQLInputObjectType({
-	name: 'EventSessionInputType',
-	fields: {
-		count : { type: GraphQLInt },
-		time	: { type: GraphQLInt },
-	}
-})
-
 module.exports = {
 	addEvent: {
 		type: EventType,
@@ -22,7 +14,7 @@ module.exports = {
 			testId		: { type: new GraphQLNonNull(GraphQLString) },
 			regionId	: { type: new GraphQLNonNull(GraphQLString) },
 			groupId		: { type: new GraphQLNonNull(GraphQLString) },
-			session		: { type: new GraphQLNonNull(EventSessionInputType) },
+			time			: { type: new GraphQLNonNull(GraphQLInt) },
 			dateStart	: { type: new GraphQLNonNull(GraphQLString) },
 			dateEnd		: { type: new GraphQLNonNull(GraphQLString) },
 		},

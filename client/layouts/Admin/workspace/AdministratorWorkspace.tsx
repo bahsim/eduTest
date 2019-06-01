@@ -47,6 +47,7 @@ interface WorkspaceProps {
 }
 
 interface WorkspaceState {
+  routeQueryString		: any,
   routeQueryParams		: {
     current           : object,
   },
@@ -62,6 +63,7 @@ interface WorkspaceState {
 class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 
   state = {
+		routeQueryString		: this.props.location.search,
 		routeQueryParams		: queryString.parse(this.props.location.search),
 		mainspaceTop				: 0,
 		panelContent				: [],
@@ -157,7 +159,7 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
             >
               <div className={classes.mainspace}>
                 {React.Children.map(children, child => (
-                  React.cloneElement(child, {
+                  child && React.cloneElement(child, {
                     onClick     : this.actions.handleMainAction,
                     extraAction : this.actions.handleExtraAction,
                     current     : this.state.routeQueryParams.current,

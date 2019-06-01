@@ -6,14 +6,15 @@ import TextField 			from '@material-ui/core/TextField'
 const styles = theme => ({
   textField: {
     margin: theme.spacing.unit,
-    width: 150,
+    // width: 200,
+    // flexBasis: 200,
   },
 })
 
-const DatePicker = (props) => (
+const NumberInput = (props) => (
   <TextField
     label={props.label}
-    type="date"
+    type="number"
     value={props.value}
     className={props.classes.textField}
     onChange={(e) => props.onChange(e.target.value)}
@@ -23,4 +24,4 @@ const DatePicker = (props) => (
   />
 )
 
-export default withStyles(styles)(DatePicker)
+export default withStyles(styles)(NumberInput)

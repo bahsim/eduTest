@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import queryString from 'query-string'
+import moment from 'moment'
 
 import Workspace  from '../workspace/AdministratorWorkspace.tsx'
 
@@ -21,6 +22,12 @@ export default (props) => {
 	} = props
 
 	const Filter = props.components.filter
+	const NewItem = props.components.newItem
+
+	const getUrlQueryParam = (search, param) => {
+		const params = queryString.parse(search)
+		return params[param] ? params[param] : ''
+	}
 
 	return (
 		<Switch>
@@ -34,23 +41,60 @@ export default (props) => {
 					<SimpleList
 						queryProps={{
 							query				: props.queryList,
-							queryParams : {}
+							queryParams : queryString.parse(extra.location.search)
 						}}
 						label={props.labelListName}
+						formatListRow={(item) => {
+							const { name, dateStart, region, group} = item
+							const date = moment.unix(dateStart/1000).format('DD.MM HH:mm')
+							return {
+								primary		: name,
+								secondary	: `${date}, ${region.name}, ${group.name}`,
+						}}}
 					/>
         </Workspace>
       )}/>
-      <Route path={`${baseURL}/new`} exact component={() => (
-        <Workspace datasetType="secondary" componentType="newItem" {...props}>
-          <NewRecord
-            queryProps = {{
-              mutation    : mutateAdd,
-              update      : queryList,
-              updateParams: {},
-            }}
-          />
-        </Workspace>
-      )}/>
+			{NewItem &&
+				<Route path={`${baseURL}/new`} exact component={(extra) => (
+	        <Workspace datasetType="secondary" componentType="newItem" {...props}>
+	          <NewItem
+							urlQueryParams={queryString.parse(extra.location.search)}
+	            queryProps = {{
+	              mutation    : mutateAdd,
+	              update      : queryList,
+	              updateParams: {},
+	            }}
+							{...props.newItemParams}
+							{...extra}
+	          />
+						{getUrlQueryParam(extra.location.search, 'testId') !== '' &&
+							<SimpleList
+								queryProps={{
+									...props.newItemTestParams.queryProps,
+									queryParams : {
+										testId: getUrlQueryParam(extra.location.search,'testId')
+									},
+								}}
+								label={props.newItemTestParams.labelListName}
+								formatListRow={(item) => ({
+									primary		: item.value,
+									secondary	: item.variants.map((variant, index) => (
+										(variant.mark === true ?
+											<span key={index} style={{fontWeight: 'bold'}}>
+												{`${index+1}) ${variant.value}`}&nbsp;&nbsp;&nbsp;
+											</span>
+										:
+											<span key={index}>
+												{`${index+1}) ${variant.value}`}&nbsp;&nbsp;&nbsp;
+											</span>
+										)
+									))
+								})}
+							/>
+						}
+	        </Workspace>
+	      )}/>
+			}
       <Route path={`${baseURL}/items/:id`} exact component={(extra) => (
         <Workspace datasetType="secondary" componentType="viewItem" {...props}>
           <ViewRecord

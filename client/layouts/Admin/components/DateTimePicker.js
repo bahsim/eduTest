@@ -6,14 +6,14 @@ import TextField 			from '@material-ui/core/TextField'
 const styles = theme => ({
   textField: {
     margin: theme.spacing.unit,
-    width: 150,
+    width: 200,
   },
 })
 
 const DatePicker = (props) => (
   <TextField
     label={props.label}
-    type="date"
+    type="datetime-local"
     value={props.value}
     className={props.classes.textField}
     onChange={(e) => props.onChange(e.target.value)}

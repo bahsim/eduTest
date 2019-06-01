@@ -18,6 +18,8 @@ import MembersList 		from './contentMembers/MembersList.tsx'
 import TestItems 			from './contentTests/TestItems.tsx'
 
 import FilterEvents		from './Events/FilterEvents.tsx'
+import NewEvent				from './Events/NewEvent.tsx'
+
 import FilterResults	from './Results/FilterResults.tsx'
 
 const Menu = [
@@ -159,6 +161,7 @@ const Main = () => (
 							queryItem			: Queries.QUERY_EVENT,
 							mutateAdd			: Mutations.MUTATE_ADD_EVENT,
 							mutateDel			: Mutations.MUTATE_DELETE_EVENT,
+
 							filterParams	: {
 								region: {
 									label					: 'Регион',
@@ -174,10 +177,41 @@ const Main = () => (
 			              queryParams : {},
 									}
 								},
-							}
+							},
+
+							newItemParams	: {
+								test: {
+									label					: 'Тест',
+									queryProps: {
+										query			  : Queries.QUERY_TESTS,
+			              queryParams : {},
+									}
+								},
+								region: {
+									label					: 'Регион',
+									queryProps: {
+										query			  : Queries.QUERY_REGIONS,
+			              queryParams : {},
+									}
+								},
+								group: {
+									label					: 'Группа',
+									queryProps: {
+										query			  : Queries.QUERY_GROUPS,
+			              queryParams : {},
+									}
+								},
+							},
+							newItemTestParams: {
+								queryProps: {
+									query				: Queries.QUERY_TESTITEMS,
+								},
+								labelListName	: 'Вопросы',
+							},
 						}}
 						components={{
-							filter: FilterEvents,
+							filter	: FilterEvents,
+							newItem	: NewEvent,
 						}}
 						content={{}}
 					/>

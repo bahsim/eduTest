@@ -11,13 +11,19 @@ import DatePicker from '../../../layouts/Admin/components/DatePicker'
 import SimpleSelect from '../../../layouts/Admin/components/SimpleSelect.tsx'
 
 interface ComponentProps {
-  action  : (args: { variables: { name } }) => any,
-  onClick : (data: any) => any,
-  region  : any,
-  group   : any,
+  region          : any,
+  group           : any,
+  urlQueryParams  : any,
+  match: {
+    url           : string,
+  },
+  history: {
+    replace       : (url:string) => any,
+  }
 }
 
 interface ComponentState {
+  refresh   : boolean,
   dateStart : string,
   dateEnd   : string,
   regionId  : string,
@@ -38,6 +44,14 @@ class FilterResults extends Component<ComponentProps,ComponentState> {
     dateEnd   : getPropValue(this.props.urlQueryParams, 'dateEnd', today),
     regionId  : getPropValue(this.props.urlQueryParams, 'regionId', ''),
     groupId   : getPropValue(this.props.urlQueryParams, 'groupId', ''),
+  }
+
+  componentDidMount() {
+    const { dateStart, dateEnd } = this.props.urlQueryParams
+
+    if (!dateStart || !dateEnd) {
+      this.handleRefresh()
+    }
   }
 
   handleAction = (value, role) => {

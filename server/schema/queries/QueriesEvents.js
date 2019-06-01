@@ -25,10 +25,12 @@ module.exports = {
 		args: {
 			regionId	: { type: GraphQLString },
 			groupId		: { type: GraphQLString },
-			dateStart	: { type: new GraphQLNonNull(GraphQLString) },
-			dateEnd		: { type: new GraphQLNonNull(GraphQLString) },
+			dateStart	: { type: GraphQLString },
+			dateEnd		: { type: GraphQLString },
 		},
 		resolve(parent, {dateStart, dateEnd, ...args}) {
+			if (!dateStart || !dateEnd) return []
+
 			return Event.list(
 				{...args, dateStart: {
 					$gte: new Date(dateStart	+ "T00:00"),

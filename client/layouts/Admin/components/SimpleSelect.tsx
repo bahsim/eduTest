@@ -26,6 +26,7 @@ interface ComponentProps {
 	},
 	onClick				: (data: any) => any,
 	label					: string,
+  currentItem   : string,
 }
 
 interface ComponentState {

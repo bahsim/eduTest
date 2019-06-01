@@ -8,11 +8,19 @@ import RefreshIcon  from '@material-ui/icons/Refresh'
 import SimpleSelect from '../../../layouts/Admin/components/SimpleSelect.tsx'
 
 interface ComponentProps {
-  region  : any,
-  group   : any,
+  region          : any,
+  group           : any,
+  urlQueryParams  : any,
+  match: {
+    url           : string,
+  },
+  history: {
+    replace       : (url:string) => any,
+  }
 }
 
 interface ComponentState {
+  refresh   : boolean,
   regionId  : string,
   groupId   : string,
 }

@@ -15,7 +15,7 @@ const EventType = new GraphQLObjectType({
   fields: () => ({
     id				: { type: GraphQLID },
     name			: { type: GraphQLString },
-	  session   : { type: EventSessionType },
+	  time   		: { type: GraphQLInt },
 		dateStart	: { type: GraphQLString },
 		dateEnd   : { type: GraphQLString },
 		region: {
@@ -50,14 +50,6 @@ const EventVariantType = new GraphQLObjectType({
 		value	: { type: GraphQLString },
 		mark	: { type: GraphQLBoolean},
 	})
-})
-
-const EventSessionType = new GraphQLObjectType({
-  name:  'EventSessionType',
-  fields: () => ({
-		count : { type: GraphQLInt },
-		time	: { type: GraphQLInt },
-  })
 })
 
 module.exports = EventType
