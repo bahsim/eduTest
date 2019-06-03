@@ -248,7 +248,8 @@ const Main = () => (
 							}
 						}}
 						components={{
-							filter: FilterResults,
+							filter	: FilterResults,
+							viewItem: ViewEvent,
 						}}
 						content={{}}
 					/>
