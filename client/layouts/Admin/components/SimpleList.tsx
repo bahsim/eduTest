@@ -41,7 +41,9 @@ class BaseComponent extends Component<ComponentProps,{}> {
 	componentDidMount() {
 		const { extraAction, queryData, extraData, current } = this.props
 
-		setTimeout(() => extraAction(extraData, queryData), 50)
+		setTimeout(() => {
+			extraAction && extraAction(extraData, queryData)
+		}, 50)
 
 		if (current) {
 			queryData.forEach((item) => {

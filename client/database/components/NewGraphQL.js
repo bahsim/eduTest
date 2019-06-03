@@ -44,9 +44,7 @@ const NewGraphQL = (props) => {
 								[update.name]: [ data[mutation.name], ...fullData[update.name] ]
 							},
 						})
-					} catch(e) {
-						console.log(e)
-					}
+					} catch(e) {}
 				}}
 			>
 				{(action, { data }) => (

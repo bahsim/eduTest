@@ -19,6 +19,7 @@ import TestItems 			from './contentTests/TestItems.tsx'
 
 import FilterEvents		from './Events/FilterEvents.tsx'
 import NewEvent				from './Events/NewEvent.tsx'
+import ViewEvent			from './Events/ViewEvent.tsx'
 
 import FilterResults	from './Results/FilterResults.tsx'
 
@@ -212,6 +213,7 @@ const Main = () => (
 						components={{
 							filter	: FilterEvents,
 							newItem	: NewEvent,
+							viewItem: ViewEvent,
 						}}
 						content={{}}
 					/>

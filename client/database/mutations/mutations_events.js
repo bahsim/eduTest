@@ -51,7 +51,7 @@ export const MUTATE_DELETE_EVENT = {
 		mutation DeleteEvent($id: ID!) {
 			deleteEvent(id: $id) {
 				id
-				value
+				name
 			}
 		}
 	`

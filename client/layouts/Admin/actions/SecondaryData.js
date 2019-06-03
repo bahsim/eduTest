@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash'
+
 import AddIcon 			  from '@material-ui/icons/Add'
 import ArrowBackIcon  from '@material-ui/icons/ArrowBack'
 import DeleteIcon     from '@material-ui/icons/DeleteForever'
@@ -26,7 +28,8 @@ export default class PrimaryDataSimple {
 
     switch (`${componentType}-${role}`) {
       case 'filter-current': {
-        panelContent.push(button(AddIcon, LABEL_ADD, `${baseURL}/new`))
+        const url = `${baseURL}/new${this.getState('routeQueryString')}`
+        panelContent.push(button(AddIcon, LABEL_ADD, url))
         breadcrumbsContent.push(labelName)
         break
       }
@@ -36,11 +39,23 @@ export default class PrimaryDataSimple {
       }
     }
     switch (componentType) {
-      case 'newItem':
-        const url = `${baseURL}${this.getState('routeQueryString')}`
-        panelContent.push(button(ArrowBackIcon, LABEL_BACK, url))
+      case 'newItem': {
+        const routeQueryParams = cloneDeep(this.getState('routeQueryParams'))
+        if (routeQueryParams.testId) {
+          delete routeQueryParams.testId
+        }
+        const routeQueryString = Object.keys(routeQueryParams).map(key => (
+          `${key}=${routeQueryParams[key]}`
+        )).join('&')
+
+        const urlBack = (
+          routeQueryString !== '' ? `${baseURL}?${routeQueryString}` : baseURL
+        )
+
+        panelContent.push(button(ArrowBackIcon, LABEL_BACK, urlBack))
         breadcrumbsContent.push(labelName, labelNew)
         break
+      }
     }
 
     this.setState({panelContent, breadcrumbsContent})
@@ -51,50 +66,57 @@ export default class PrimaryDataSimple {
 
     switch (componentType) {
       case 'filter':
-        this.followLink(`${baseURL}${args[0]}`)
+        const routeQueryString = this.getState('routeQueryString')
+        this.followLink(`${baseURL}/items/${args[0].id}${routeQueryString}`)
         break
-      case 'viewList':
-        this.followLink(`${baseURL}/items/${args[0].id}`)
-        break
-      case 'newItem':
-        console.log(args[0])
+      case 'newItem': {
         const urlQueryParams = (
           `?regionId=${args[0].region.id}&groupId=${args[0].group.id}&current=${args[0].id}`
         )
         this.followLink(`${baseURL}${urlQueryParams}`)
         break
-      case 'deleteItem':
-        this.followLink(baseURL)
-        break
-      case 'viewItem': {
-        const breadcrumbsContent = [labelName, args[0].name]
-        const panelContent = this.getState('panelContent')
-        this.setState({panelContent, breadcrumbsContent})
+      }
+      case 'deleteItem': {
+        const urlQueryParams = this.getState('routeQueryString')
+        this.followLink(`${baseURL}${urlQueryParams}`)
         break
       }
     }
   }
 
   handleExtraAction = (...args) => {
-    const { role, componentType, baseURL, labelName } = this.props
+    const { componentType, baseURL, labelName } = this.props
 
-    // switch (`${componentType}-${role}`) {
     switch (componentType) {
-      case 'viewItem': {
-        const breadcrumbsContent = [ labelName, args[0].name ]
+      case 'viewItem':{
+        const routeQueryParams = cloneDeep(this.getState('routeQueryParams'))
+        routeQueryParams.current = args[0].id
+
+        const routeQueryString = Object.keys(routeQueryParams).map(key => (
+          `${key}=${routeQueryParams[key]}`
+        )).join('&')
+
+        const urlBack = `${baseURL}?${routeQueryString}`
+        const urlDelete = (
+          `${baseURL}/items/${args[0].id}/delete?${routeQueryString}`
+        )
+
         const panelContent = [
-          button(ArrowBackIcon, LABEL_BACK, `${baseURL}?current=${args[0].id}`),
-          button(DeleteIcon, LABEL_DELETE, `${baseURL}/items/${args[0].id}/delete`),
-    		]
-        const contentData = { ownerId : args[0].id }
-        this.setState({ panelContent, breadcrumbsContent, contentData })
+          button(ArrowBackIcon, LABEL_BACK, urlBack),
+          button(DeleteIcon, LABEL_DELETE, urlDelete),
+        ]
+        const breadcrumbsContent = [labelName, args[0].name]
+
+        this.setState({ panelContent, breadcrumbsContent })
         break
       }
       case 'deleteItem': {
+        const routeQueryString = this.getState('routeQueryString')
+        const urlBack = `${baseURL}/items/${args[0].id}${routeQueryString}`
+
+        const panelContent = [ button(ArrowBackIcon, LABEL_BACK, urlBack) ]
         const breadcrumbsContent = [ labelName, args[0].name, BREADCRUMBS_DEL_TEST ]
-        const panelContent = [
-          button(ArrowBackIcon, LABEL_BACK, `${baseURL}/items/${args[0].id}`)
-        ]
+
         this.setState({ panelContent, breadcrumbsContent})
         break
       }

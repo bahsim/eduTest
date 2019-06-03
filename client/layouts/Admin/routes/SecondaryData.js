@@ -23,6 +23,7 @@ export default (props) => {
 
 	const Filter = props.components.filter
 	const NewItem = props.components.newItem
+	const ViewItem = props.components.viewItem
 
 	const getUrlQueryParam = (search, param) => {
 		const params = queryString.parse(search)
@@ -62,7 +63,10 @@ export default (props) => {
 	            queryProps = {{
 	              mutation    : mutateAdd,
 	              update      : queryList,
-	              updateParams: {},
+	              updateParams: {
+									regionId: getUrlQueryParam(extra.location.search,'regionId'),
+									groupId	: getUrlQueryParam(extra.location.search,'groupId'),
+								},
 	            }}
 							{...props.newItemParams}
 							{...extra}
@@ -96,17 +100,16 @@ export default (props) => {
 	      )}/>
 			}
       <Route path={`${baseURL}/items/:id`} exact component={(extra) => (
-        <Workspace datasetType="secondary" componentType="viewItem" {...props}>
-          <ViewRecord
-            queryProps = {{
-      				query			  : queryItem,
-      				mutation    : mutateEdit,
-              queryParams : { id: extra.match.params.id },
-      				update     	: queryList,
-              updateParams: {}
-            }}
-          />
-        </Workspace>
+				<Workspace datasetType="secondary" componentType="viewItem" {...props}>
+					<ViewItem
+						urlQueryParams={queryString.parse(extra.location.search)}
+						queryProps = {{
+							query    		: queryItem,
+							queryParams : { id: extra.match.params.id },
+						}}
+						{...extra}
+					/>
+				</Workspace>
       )}/>
       <Route path={`${baseURL}/items/:id/delete`} exact component={(extra) => (
         <Workspace datasetType="secondary" componentType="deleteItem" {...props}>
@@ -116,7 +119,10 @@ export default (props) => {
       				mutation    : mutateDel,
               queryParams : { id: extra.match.params.id },
       				update			: queryList,
-              updateParams: {}
+							updateParams: {
+								regionId: getUrlQueryParam(extra.location.search,'regionId'),
+								groupId	: getUrlQueryParam(extra.location.search,'groupId'),
+							},
             }}
           />
         </Workspace>

@@ -80,9 +80,7 @@ const EditGraphQL = (props) => {
 										data			: { [update.name]: result },
 									});
 								}
-							} catch(e) {
-								console.log(e)
-							}
+							} catch(e) {}
 						}}
 					>
 						{(action, { data }) => (

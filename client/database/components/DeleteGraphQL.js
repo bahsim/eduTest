@@ -80,9 +80,7 @@ const DeleteGraphQL = (props) => {
 									variables	: {...updateParams},
 									data			: { [update.name]: result },
 								})
-							} catch(e) {
-								console.log(e)
-							}
+							} catch(e) {}
 						}}
 					>
 						{(action, { data }) => (

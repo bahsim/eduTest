@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import queryString from 'query-string'
 import { cloneDeep } from 'lodash'
 import moment from 'moment'
 
@@ -40,7 +41,15 @@ interface ComponentProps {
   },
   history: {
     replace       : (url:string) => any,
-  }
+  },
+  queryProps: {
+    queryParams   : string,
+    mutation: {
+      name        : string,
+    }
+  },
+  onClick         : (data: any) => any,
+  action          : (data: any) => any,
 }
 
 interface ComponentState {
@@ -64,23 +73,47 @@ const NewEvent = (props) => (
   </NewGraphQL>
 )
 
-class BaseComponent extends Component<ComponentProps> {
+class BaseComponent extends Component<ComponentProps,ComponentState> {
 
   state = {
     testId        : getPropValue(this.props.urlQueryParams, 'testId', ''),
     dateStart     : today,
     dateEnd       : today,
     time          : 0,
-    regionId      : '',
-    groupId       : '',
+    regionId      : getPropValue(this.props.urlQueryParams, 'regionId', ''),
+    groupId       : getPropValue(this.props.urlQueryParams, 'groupId', ''),
     complete      : false,
   }
 
   handleAction = (value, role) => {
+    const { match, history, location } = this.props
+    const routeQueryParams = queryString.parse(this.props.location.search)
+
     if (role === 'testId') {
-      const { match, history } = this.props
-      const queryStr = value !== '' ? `?testId=${value}` : ''
-      history.replace(`${match.url}${queryStr}`)
+      routeQueryParams.testId = value
+      const routeQueryString = Object.keys(routeQueryParams).map(key => (
+        `${key}=${routeQueryParams[key]}`
+      )).join('&')
+      history.replace(`${match.url}?${routeQueryString}`)
+    }
+
+    if (role === 'regionId') {
+      routeQueryParams.regionId = value
+      if (routeQueryParams.groupId) {
+        delete routeQueryParams.groupId
+      }
+      const routeQueryString = Object.keys(routeQueryParams).map(key => (
+        `${key}=${routeQueryParams[key]}`
+      )).join('&')
+      history.replace(`${match.url}?${routeQueryString}`)
+    }
+
+    if (role === 'groupId') {
+      routeQueryParams.groupId = value
+      const routeQueryString = Object.keys(routeQueryParams).map(key => (
+        `${key}=${routeQueryParams[key]}`
+      )).join('&')
+      history.replace(`${match.url}?${routeQueryString}`)
     }
 
     const state = cloneDeep(this.state)
@@ -109,9 +142,9 @@ class BaseComponent extends Component<ComponentProps> {
       }
     }
 
-    if (role === 'regionId') {
-      state.groupId = ''
-    }
+    // if (role === 'regionId') {
+    //   state.groupId = ''
+    // }
 
     if (role === 'time') {
       state.time = parseInt(value)
@@ -135,7 +168,7 @@ class BaseComponent extends Component<ComponentProps> {
 
   handleOnSave = () => {
     const { complete, ...variables } = this.state
-    console.log(variables)
+
     this.props.action({ variables })
 			.then(({ data }) => this.props.onClick(
         data[this.props.queryProps.mutation.name])
@@ -153,6 +186,20 @@ class BaseComponent extends Component<ComponentProps> {
     return (
       <Fragment>
         <Grid container alignItems="center">
+          <Grid item xs={12}>
+            <SimpleSelect
+              onClick={(value) => this.handleAction(value, 'regionId')}
+              currentItem={regionId}
+              {...region}
+            />
+            {regionId !=='' &&
+              <SimpleSelect
+                onClick={(value) => this.handleAction(value, 'groupId')}
+                currentItem={groupId}
+                {...group}
+              />
+            }
+          </Grid>
           <Grid item xs={12}>
             <SimpleSelect
               onClick={(value) => this.handleAction(value, 'testId')}
@@ -178,20 +225,6 @@ class BaseComponent extends Component<ComponentProps> {
                   value={time}
                   onChange={(value) => this.handleAction(value, 'time')}
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <SimpleSelect
-                  onClick={(value) => this.handleAction(value, 'regionId')}
-                  currentItem={regionId}
-                  {...region}
-                />
-                {regionId !=='' &&
-                  <SimpleSelect
-                    onClick={(value) => this.handleAction(value, 'groupId')}
-                    currentItem={groupId}
-                    {...group}
-                  />
-                }
               </Grid>
             </Fragment>
           }
