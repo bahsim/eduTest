@@ -41,6 +41,8 @@ interface ComponentProps {
     replace       : (url:string) => any,
   },
   queryData       : any,
+  queryProps      : any,
+  extraAction     : (data: any) => any,
 }
 
 const NewEvent = (props) => (

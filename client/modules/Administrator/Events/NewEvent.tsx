@@ -42,6 +42,9 @@ interface ComponentProps {
   history: {
     replace       : (url:string) => any,
   },
+  location: {
+    search        : string,
+  }
   queryProps: {
     queryParams   : string,
     mutation: {
