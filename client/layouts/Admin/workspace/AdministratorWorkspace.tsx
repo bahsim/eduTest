@@ -123,7 +123,6 @@ class Workspace extends Component<WorkspaceProps, WorkspaceState> {
 		const {
       classes,
       children,
-      datasetType,
       componentType,
       content,
     } = this.props

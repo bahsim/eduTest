@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { createBrowserHistory } from 'history'
-import { Router, Route, Switch } from 'react-router'
+import { Router } from 'react-router'
 
 import { ApolloClient }   from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'

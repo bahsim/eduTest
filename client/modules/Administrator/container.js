@@ -75,10 +75,10 @@ const Main = () => (
 						}}
 						content={{
 							viewItem: {
-								component				: RegionDetails,
+								component		: RegionDetails,
 								params: {
-									queryItem			: Queries.QUERY_REGION,
-									mutateEdit		: Mutations.MUTATE_EDIT_MODERATOR,
+									queryItem	: Queries.QUERY_REGION,
+									mutateEdit: Mutations.MUTATE_EDIT_MODERATOR,
 								}
 							},
 						}}
