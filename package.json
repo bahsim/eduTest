@@ -16,7 +16,7 @@
     "express-graphql": "^0.8.0",
     "graphql": "^14.2.1",
     "history": "^4.9.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.4",
