@@ -17,7 +17,7 @@
     "graphql": "^14.2.1",
     "history": "^4.9.0",
     "lodash": "^4.17.11",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.4",
     "query-string": "^6.4.2",
