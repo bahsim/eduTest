@@ -12,7 +12,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.129",
     "apollo-client": "^2.5.1",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "express-graphql": "^0.8.0",
     "graphql": "^14.2.1",
     "history": "^4.9.0",
